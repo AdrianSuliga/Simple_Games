@@ -1,4 +1,4 @@
-Guessing game
+# Guessing game
 
 In this game you are trying to guess a number from given array of natural numbers. After each guess computer can give you 3 types of feedback:
 
