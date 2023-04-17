@@ -1,14 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QMainWindow>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui -> textEdit -> hide();
-    ui -> saveButton -> hide();
+    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), ui->progressBar, SLOT(setValue(int)));
+    connect(ui->numberSlider, SIGNAL(valueChanged(int)), ui->lcdNumber, SLOT(display(int)));
+    ui -> connectButton -> hide();
 }
 
 MainWindow::~MainWindow()
@@ -16,20 +16,22 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_editTextButton_clicked()
+
+void MainWindow::on_connectButton_clicked()
 {
-    ui -> label -> hide();
-    ui -> editTextButton -> hide();
-    ui -> textEdit -> show();
-    ui -> saveButton -> show();
+    connect(ui -> horizontalSlider, SIGNAL(valueChanged(int)), ui -> progressBar, SLOT(setValue(int)));
+    ui -> progressBar -> setValue(ui->horizontalSlider->value());
+    ui -> disconnectButton -> show();
+    ui -> connectButton -> hide();
 }
 
-void MainWindow::on_saveButton_clicked()
+
+void MainWindow::on_disconnectButton_clicked()
 {
-    ui -> label -> setText(ui->textEdit->toPlainText());
-    ui -> textEdit -> hide();
-    ui -> label -> show();
-    ui -> saveButton -> hide();
-    ui -> editTextButton -> show();
+    disconnect(ui -> horizontalSlider, SIGNAL(valueChanged(int)), ui -> progressBar, SLOT(setValue(int)));
+    ui -> horizontalSlider -> setValue(0);
+    ui -> progressBar -> setValue(0);
+    ui -> connectButton -> show();
+    ui -> disconnectButton -> hide();
 }
 
