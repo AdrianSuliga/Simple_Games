@@ -4,24 +4,23 @@
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }              //creates namespaces which is used in MainWindow class
+namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow           //MainWindow class inherits from QMainWindow
+class MainWindow : public QMainWindow
 {
-    Q_OBJECT                                    //This macro converts all characteristic for QT commands and words (namespace
-                                                //declared above) into C++ language
+    Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);      //Constructor for MainWindow objects
-    ~MainWindow();                              //Destructor for MainWindow objects
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
 
 private slots:
-    void on_editTextButton_clicked();
+    void on_connectButton_clicked();
 
-    void on_saveButton_clicked();
+    void on_disconnectButton_clicked();
 
 private:
-    Ui::MainWindow *ui;                         //Creates pointer which we're going to use to access widgets in our Main Window
+    Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H
