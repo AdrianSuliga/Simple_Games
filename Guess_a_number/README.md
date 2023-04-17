@@ -8,6 +8,4 @@ In this game you are trying to guess a number from given array of natural number
 
 3) You guessed it!
 
-Update:
 
-As of today this folder contains QT app which allows you to insert plain text and save it in a label
