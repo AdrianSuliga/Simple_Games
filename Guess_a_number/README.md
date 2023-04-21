@@ -8,4 +8,7 @@ In this game you are trying to guess a number from given array of natural number
 
 3) You guessed it!
 
+Update:
+
+As of today, the programm shows you title screen with a button which begins the game. Game mechanic is not implemented.
 
