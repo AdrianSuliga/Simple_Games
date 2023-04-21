@@ -5,4 +5,4 @@ During my educational jurney I have started learning QT in order to create C++ d
 
 As of today this repository contains:
 
-NOTHING
+Guessing game (in progress)
