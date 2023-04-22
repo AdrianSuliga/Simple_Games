@@ -20,7 +20,14 @@ private slots:
 
     void on_quitButton_clicked();
 
+    void on_secondNumSlider_valueChanged(int value);
+
+    void on_firstNumSlider_valueChanged(int value);
+
+    void on_SaveRangeButton_clicked();
+
 private:
     Ui::MainWindow *ui;
+    int first, second, random_number;
 };
 #endif // MAINWINDOW_H
