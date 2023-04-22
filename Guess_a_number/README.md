@@ -8,6 +8,8 @@ In this game you are trying to guess a number from given array of natural number
 
 3) You guessed it!
 
+Download current version of Guessing Game [HERE](https://github.com/AdrianSuliga/Simple_Games/releases/tag/guessing_game_1)
+
 Update:
 
   As of today, the programm shows you title screen with a button which begins the game. After beginning you choose a range which the computer is going to choose from.
