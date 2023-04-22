@@ -21,3 +21,6 @@ to enter negative numbers and I prevented the situation when last number in rang
 someone types words instead of numbers (yet).
   After you've entered input game shows you chosen range. Mechanics of drawing number from this range isn't implemented.
 
+Update:
+
+  Programm draws one number from this range. User can attempt to guess it, but the programm does not check if answer is correct or not.
