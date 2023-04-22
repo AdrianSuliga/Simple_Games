@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -7,24 +8,33 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    ui->alertLabel->hide();
     ui->RangeTitle->hide();
+    ui->SaveRangeButton->hide();
+
+    ui->FirstNumEdit->hide();
+    ui->SecondNumEdit->hide();
 
     ui->firstNumLcd->hide();
     ui->firstNumSlider->hide();
     ui->firstNumLabel->hide();
+
     ui->secondNumSlider->hide();
     ui->secondNumLcd->hide();
     ui->secondNumLabel->hide();
 
-    connect(ui->firstNumSlider, SIGNAL(valueChanged(int)), ui->firstNumLcd, SLOT(display(int)));
-    connect(ui->secondNumSlider, SIGNAL(valueChanged(int)), ui->secondNumLcd, SLOT(display(int)));
+    ui->gameLabel->hide();
+    ui->beginIntervalNum->hide();
+    ui->beginIntervalLcd->hide();
+    ui->endIntervalNum->hide();
+    ui->endIntervalLcd->hide();
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-
 
 void MainWindow::on_BeginButton_clicked()
 {
@@ -33,18 +43,104 @@ void MainWindow::on_BeginButton_clicked()
     ui->BeginButton->hide();
 
     ui->RangeTitle->show();
+    ui->SaveRangeButton->show();
 
+    ui->FirstNumEdit->show();
     ui->firstNumSlider->show();
     ui->firstNumLcd->show();
     ui->firstNumLabel->show();
+
+    ui->SecondNumEdit->show();
     ui->secondNumSlider->show();
     ui->secondNumLcd->show();
     ui->secondNumLabel->show();
-}
 
+    ui->SecondNumEdit->setText("0");
+    ui->FirstNumEdit->setText("0");
+}
 
 void MainWindow::on_quitButton_clicked()
 {
     close();
+}
+
+void MainWindow::on_secondNumSlider_valueChanged(int value)
+{
+    ui->secondNumLcd->display(value);
+}
+
+void MainWindow::on_firstNumSlider_valueChanged(int value)
+{
+    if (ui->secondNumSlider->value() > value)
+        ui->firstNumLcd->display(value);
+}
+
+void MainWindow::on_SaveRangeButton_clicked()
+{
+    bool flag1, flag2;
+    int num1 = ui->FirstNumEdit->toPlainText().toInt(&flag1, 10);
+    int num2 = ui->SecondNumEdit->toPlainText().toInt(&flag2, 10);
+    if (num2 >= num1 && num1 >= 0 && num2 > 0)
+    {
+        ui->RangeTitle->hide();
+        ui->SaveRangeButton->hide();
+        ui->alertLabel->hide();
+
+        ui->FirstNumEdit->hide();
+        ui->SecondNumEdit->hide();
+
+        ui->firstNumLcd->hide();
+        ui->firstNumSlider->hide();
+        ui->firstNumLabel->hide();
+
+        ui->secondNumSlider->hide();
+        ui->secondNumLcd->hide();
+        ui->secondNumLabel->hide();
+
+        ui->gameLabel->show();
+        ui->beginIntervalNum->show();
+        ui->beginIntervalLcd->show();
+        ui->endIntervalNum->show();
+        ui->endIntervalLcd->show();
+
+        first = num1;
+        second = num2;
+
+        ui->beginIntervalLcd->display(first);
+        ui->endIntervalLcd->display(second);
+    }
+    else if (num2 < num1 || num1 < 0 || num2 < 0)
+    {
+        ui->alertLabel->show();
+    }
+    else if (num1 == 0 && num2 == 0)
+    {
+        ui->RangeTitle->hide();
+        ui->SaveRangeButton->hide();
+        ui->alertLabel->hide();
+
+        ui->FirstNumEdit->hide();
+        ui->SecondNumEdit->hide();
+
+        ui->firstNumLcd->hide();
+        ui->firstNumSlider->hide();
+        ui->firstNumLabel->hide();
+
+        ui->secondNumSlider->hide();
+        ui->secondNumLcd->hide();
+        ui->secondNumLabel->hide();
+
+        ui->gameLabel->show();
+        ui->beginIntervalNum->show();
+        ui->beginIntervalLcd->show();
+        ui->endIntervalNum->show();
+        ui->endIntervalLcd->show();
+
+        first = ui->firstNumLcd->value();
+        second = ui->secondNumLcd->value();
+
+        ui->beginIntervalLcd->display(first);
+        ui->endIntervalLcd->display(second);
+    }
 }
 
