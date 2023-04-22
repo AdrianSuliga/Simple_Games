@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -10,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->alertLabel->hide();
     ui->RangeTitle->hide();
     ui->SaveRangeButton->hide();
+    ui->answerEdit->hide();
 
     ui->FirstNumEdit->hide();
     ui->SecondNumEdit->hide();
@@ -97,6 +99,8 @@ void MainWindow::on_SaveRangeButton_clicked()
         ui->secondNumLabel->hide();
 
         ui->gameLabel->show();
+        ui->answerEdit->show();
+
         ui->beginIntervalNum->show();
         ui->beginIntervalLcd->show();
         ui->endIntervalNum->show();
@@ -104,6 +108,9 @@ void MainWindow::on_SaveRangeButton_clicked()
 
         first = num1;
         second = num2;
+        random_number = randomize_number(first,second);
+
+        ui->solutionNum->display(random_number);
 
         ui->beginIntervalLcd->display(first);
         ui->endIntervalLcd->display(second);
@@ -130,6 +137,8 @@ void MainWindow::on_SaveRangeButton_clicked()
         ui->secondNumLabel->hide();
 
         ui->gameLabel->show();
+        ui->answerEdit->show();
+
         ui->beginIntervalNum->show();
         ui->beginIntervalLcd->show();
         ui->endIntervalNum->show();
@@ -138,8 +147,17 @@ void MainWindow::on_SaveRangeButton_clicked()
         first = ui->firstNumLcd->value();
         second = ui->secondNumLcd->value();
 
+        random_number = randomize_number(first,second);
+
+        ui->solutionNum->display(random_number);
+
         ui->beginIntervalLcd->display(first);
         ui->endIntervalLcd->display(second);
     }
+}
+int MainWindow::randomize_number(int fst, int snd)
+{
+    srand(time(NULL));
+    return rand()%snd+fst;
 }
 
