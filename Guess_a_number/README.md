@@ -23,4 +23,4 @@ someone types words instead of numbers (yet).
 
 Update:
 
-  Programm draws one number from this range. User can attempt to guess it, but the programm does not check if answer is correct or not.
+  Program draws one number from this range. User can attempt to guess it, but the programm does not check if answer is correct or not.
