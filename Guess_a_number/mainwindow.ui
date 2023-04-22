@@ -120,10 +120,13 @@
      <number>5</number>
     </property>
     <property name="text">
-     <string>Choose a range using sliders or by typing integer numbers.</string>
+     <string>Choose a range using sliders or by typing integer numbers (typed input is prioritized).</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="quitButton">
@@ -143,12 +146,12 @@
     <property name="geometry">
      <rect>
       <x>490</x>
-      <y>300</y>
+      <y>220</y>
       <width>211</width>
       <height>191</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <layout class="QVBoxLayout" name="SecondNumLayout">
      <item>
       <widget class="QLabel" name="secondNumLabel">
        <property name="font">
@@ -192,16 +195,16 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>300</y>
+      <y>220</y>
       <width>206</width>
       <height>195</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QVBoxLayout" name="FirstNumLayout">
      <item>
       <widget class="QLabel" name="firstNumLabel">
        <property name="font">
@@ -242,6 +245,142 @@
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QPushButton" name="SaveRangeButton">
+    <property name="geometry">
+     <rect>
+      <x>325</x>
+      <y>330</y>
+      <width>150</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>SAVE THIS RANGE</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="FirstNumEdit">
+    <property name="geometry">
+     <rect>
+      <x>307</x>
+      <y>280</y>
+      <width>70</width>
+      <height>30</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="SecondNumEdit">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>280</y>
+      <width>70</width>
+      <height>30</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="alertLabel">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>190</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::WinPanel</enum>
+    </property>
+    <property name="text">
+     <string>INVALID INPUT</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="gameLabel">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>751</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Panel</enum>
+    </property>
+    <property name="lineWidth">
+     <number>5</number>
+    </property>
+    <property name="text">
+     <string>Computer has just chosen a number from an interval described below. Try to guess it.</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+    <property name="margin">
+     <number>5</number>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>180</y>
+      <width>181</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="beginInterval">
+     <item>
+      <widget class="QLabel" name="beginIntervalNum">
+       <property name="text">
+        <string>First number: </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLCDNumber" name="beginIntervalLcd"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>180</y>
+      <width>181</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="endInterval">
+     <item>
+      <widget class="QLabel" name="endIntervalNum">
+       <property name="text">
+        <string>Last number: </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLCDNumber" name="endIntervalLcd"/>
      </item>
     </layout>
    </widget>
