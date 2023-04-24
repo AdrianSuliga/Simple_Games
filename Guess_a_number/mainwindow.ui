@@ -120,7 +120,7 @@
      <number>5</number>
     </property>
     <property name="text">
-     <string>Choose a range using sliders or by typing integer numbers (typed input is prioritized).</string>
+     <string>Choose a range using sliders or by typing positive, integer numbers (typed input is prioritized).</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -142,117 +142,11 @@
      <string>Quit</string>
     </property>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>490</x>
-      <y>220</y>
-      <width>211</width>
-      <height>191</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="SecondNumLayout">
-     <item>
-      <widget class="QLabel" name="secondNumLabel">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Panel</enum>
-       </property>
-       <property name="lineWidth">
-        <number>2</number>
-       </property>
-       <property name="text">
-        <string>Last number in range:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="margin">
-        <number>5</number>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLCDNumber" name="secondNumLcd">
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QSlider" name="secondNumSlider">
-       <property name="maximum">
-        <number>9999</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>220</y>
-      <width>206</width>
-      <height>195</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="FirstNumLayout">
-     <item>
-      <widget class="QLabel" name="firstNumLabel">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Panel</enum>
-       </property>
-       <property name="lineWidth">
-        <number>2</number>
-       </property>
-       <property name="text">
-        <string>First number in range:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="margin">
-        <number>5</number>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLCDNumber" name="firstNumLcd">
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QSlider" name="firstNumSlider">
-       <property name="maximum">
-        <number>9999</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
    <widget class="QPushButton" name="SaveRangeButton">
     <property name="geometry">
      <rect>
       <x>325</x>
-      <y>330</y>
+      <y>440</y>
       <width>150</width>
       <height>40</height>
      </rect>
@@ -261,49 +155,14 @@
      <string>SAVE THIS RANGE</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="FirstNumEdit">
-    <property name="geometry">
-     <rect>
-      <x>307</x>
-      <y>280</y>
-      <width>70</width>
-      <height>30</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QTextEdit" name="SecondNumEdit">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>280</y>
-      <width>70</width>
+      <x>500</x>
+      <y>375</y>
+      <width>200</width>
       <height>30</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="alertLabel">
-    <property name="geometry">
-     <rect>
-      <x>330</x>
-      <y>190</y>
-      <width>131</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::WinPanel</enum>
-    </property>
-    <property name="text">
-     <string>INVALID INPUT</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="gameLabel">
@@ -340,68 +199,239 @@
      <number>5</number>
     </property>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>180</y>
-      <width>181</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="beginInterval">
-     <item>
-      <widget class="QLabel" name="beginIntervalNum">
-       <property name="text">
-        <string>First number: </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLCDNumber" name="beginIntervalLcd"/>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>490</x>
-      <y>180</y>
-      <width>181</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="endInterval">
-     <item>
-      <widget class="QLabel" name="endIntervalNum">
-       <property name="text">
-        <string>Last number: </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLCDNumber" name="endIntervalLcd"/>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QLCDNumber" name="solutionNum">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>430</y>
-      <width>171</width>
-      <height>71</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QTextEdit" name="answerEdit">
     <property name="geometry">
      <rect>
-      <x>325</x>
-      <y>370</y>
+      <x>500</x>
+      <y>285</y>
       <width>150</width>
-      <height>31</height>
+      <height>30</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="FirstNumEdit">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>375</y>
+      <width>200</width>
+      <height>30</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="yGuessLabel">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>255</y>
+      <width>150</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Panel</enum>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
+    </property>
+    <property name="text">
+     <string>Your guess:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="yGuessButton">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>315</y>
+      <width>150</width>
+      <height>35</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Guess</string>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="firstNumLcd">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>270</y>
+      <width>200</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+   </widget>
+   <widget class="QSlider" name="firstNumSlider">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>350</y>
+      <width>200</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>9999</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="firstNumLabel">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>230</y>
+      <width>200</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Panel</enum>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
+    </property>
+    <property name="text">
+     <string>First number in range:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="margin">
+     <number>5</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="secondNumLabel">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>230</y>
+      <width>200</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Panel</enum>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
+    </property>
+    <property name="text">
+     <string>Last number in range:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="margin">
+     <number>5</number>
+    </property>
+   </widget>
+   <widget class="QSlider" name="secondNumSlider">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>350</y>
+      <width>200</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>9999</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="secondNumLcd">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>270</y>
+      <width>200</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="beginIntervalNum">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>210</y>
+      <width>150</width>
+      <height>102</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::WinPanel</enum>
+    </property>
+    <property name="text">
+     <string>First number: </string>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="beginIntervalLcd">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>210</y>
+      <width>250</width>
+      <height>100</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="endIntervalLcd">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>310</y>
+      <width>250</width>
+      <height>100</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="endIntervalNum">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>310</y>
+      <width>150</width>
+      <height>100</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::WinPanel</enum>
+    </property>
+    <property name="text">
+     <string>Last number: </string>
     </property>
    </widget>
   </widget>
