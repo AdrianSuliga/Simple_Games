@@ -1,4 +1,6 @@
 #include <cstdlib>
+#include <QMessageBox>
+#include <QDebug>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -8,7 +10,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->alertLabel->hide();
     ui->RangeTitle->hide();
     ui->SaveRangeButton->hide();
     ui->answerEdit->hide();
@@ -30,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->endIntervalNum->hide();
     ui->endIntervalLcd->hide();
 
+    ui->yGuessLabel->hide();
+    ui->yGuessButton->hide();
 }
 
 MainWindow::~MainWindow()
@@ -85,7 +88,6 @@ void MainWindow::on_SaveRangeButton_clicked()
     {
         ui->RangeTitle->hide();
         ui->SaveRangeButton->hide();
-        ui->alertLabel->hide();
 
         ui->FirstNumEdit->hide();
         ui->SecondNumEdit->hide();
@@ -100,6 +102,8 @@ void MainWindow::on_SaveRangeButton_clicked()
 
         ui->gameLabel->show();
         ui->answerEdit->show();
+        ui->yGuessLabel->show();
+        ui->yGuessButton->show();
 
         ui->beginIntervalNum->show();
         ui->beginIntervalLcd->show();
@@ -110,20 +114,17 @@ void MainWindow::on_SaveRangeButton_clicked()
         second = num2;
         random_number = randomize_number(first,second);
 
-        ui->solutionNum->display(random_number);
-
         ui->beginIntervalLcd->display(first);
         ui->endIntervalLcd->display(second);
     }
     else if (num2 < num1 || num1 < 0 || num2 < 0)
     {
-        ui->alertLabel->show();
+        QMessageBox::critical(this, "Invalid range", "Range you've chosen is invalid. Please choose again.");
     }
     else if (num1 == 0 && num2 == 0)
     {
         ui->RangeTitle->hide();
         ui->SaveRangeButton->hide();
-        ui->alertLabel->hide();
 
         ui->FirstNumEdit->hide();
         ui->SecondNumEdit->hide();
@@ -138,6 +139,8 @@ void MainWindow::on_SaveRangeButton_clicked()
 
         ui->gameLabel->show();
         ui->answerEdit->show();
+        ui->yGuessLabel->show();
+        ui->yGuessButton->show();
 
         ui->beginIntervalNum->show();
         ui->beginIntervalLcd->show();
@@ -149,15 +152,34 @@ void MainWindow::on_SaveRangeButton_clicked()
 
         random_number = randomize_number(first,second);
 
-        ui->solutionNum->display(random_number);
-
         ui->beginIntervalLcd->display(first);
         ui->endIntervalLcd->display(second);
     }
 }
 int MainWindow::randomize_number(int fst, int snd)
 {
+    snd++;
     srand(time(NULL));
     return rand()%snd+fst;
+}
+
+
+void MainWindow::on_yGuessButton_clicked()
+{
+    bool flag;
+    int yGuess = ui->answerEdit->toPlainText().toInt(&flag, 10);
+    if (ui->answerEdit->toPlainText() == "")
+        QMessageBox::critical(this, "Invalid input", "You didn't enter any number.");
+    else if (yGuess < random_number)
+        QMessageBox::information(this, "Hint", "Actual number is bigger");
+    else if (yGuess > random_number)
+        QMessageBox::information(this, "Hint", "Actual number is smaller");
+    else if (yGuess == random_number)
+    {
+        QMessageBox::StandardButton reply = QMessageBox::information(this, "You guessed it", "Congratulations, you found the number!",
+                                          QMessageBox::Ok);
+        if (reply == QMessageBox::Ok)
+            close();
+    }
 }
 
