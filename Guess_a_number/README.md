@@ -24,3 +24,10 @@ someone types words instead of numbers (yet).
 Update:
 
   Program draws one number from this range. User can attempt to guess it, but the programm does not check if answer is correct or not.
+  
+Update:
+
+  Core mechanick is done. You can attempt many times to guess a number and as a result you receive one of 3 messages (described above). After guessing the number,
+  programm closes. There are a few bugs to fix, though. If users enters words as input, computer interprets them as 0 (better than nothing I guess) but it should give an
+  error message to the user. Maximum range of numbers you can choose by typing is different than the one created by using sliders. They should be the same. Game should
+  also allow user to play many times, not just once. 
