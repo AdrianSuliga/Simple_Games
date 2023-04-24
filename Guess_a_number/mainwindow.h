@@ -14,7 +14,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    //int randomize_number(int fst, int snd);
 
 private slots:
     void on_BeginButton_clicked();
@@ -28,6 +27,8 @@ private slots:
     void on_SaveRangeButton_clicked();
 
     int randomize_number(int fst, int snd);
+
+    void on_yGuessButton_clicked();
 
 private:
     Ui::MainWindow *ui;
