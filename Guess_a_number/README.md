@@ -37,7 +37,7 @@ User can no longer enter words as input, there was a major bug while using rand(
   
 Update:
 
-Ranges which can be chosen via typing and sliders is the same now. Player can play multiple times. I also added ,,Quit to title" button which allows user to     return to the initial interface at any point.
+Ranges which can be chosen via typing and sliders are the same now. Player can play multiple times. I also added ,,Quit to title" button which allows user to     return to the initial interface at any point.
 
 Bugs to fix in the future:
 
