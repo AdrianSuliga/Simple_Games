@@ -39,3 +39,7 @@ Update:
 Update:
 
   Ranges which can be chosen via typing and sliders is the same now.
+  
+Update:
+
+  Player can play multiple times. 
