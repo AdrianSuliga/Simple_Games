@@ -242,3 +242,43 @@ void MainWindow::on_yGuessButton_clicked()
     }
 }
 
+void MainWindow::on_toTitleButton_clicked()
+{
+    ui->RangeTitle->hide();
+    ui->SaveRangeButton->hide();
+    ui->answerEdit->hide();
+
+    ui->FirstNumEdit->hide();
+    ui->SecondNumEdit->hide();
+
+    ui->firstNumLcd->hide();
+    ui->firstNumSlider->hide();
+    ui->firstNumLabel->hide();
+
+    ui->secondNumSlider->hide();
+    ui->secondNumLcd->hide();
+    ui->secondNumLabel->hide();
+
+    ui->gameLabel->hide();
+    ui->beginIntervalNum->hide();
+    ui->beginIntervalLcd->hide();
+    ui->endIntervalNum->hide();
+    ui->endIntervalLcd->hide();
+
+    ui->yGuessLabel->hide();
+    ui->yGuessButton->hide();
+
+    ui->TitleLabel->show();
+    ui->IntroLabel->show();
+    ui->BeginButton->show();
+
+    ui->SecondNumEdit->setText("0");
+    ui->FirstNumEdit->setText("0");
+
+    ui->firstNumSlider->setValue(0);
+    ui->secondNumSlider->setValue(0);
+    ui->answerEdit->setText("");
+    ui->firstNumLcd->display(0);
+    ui->secondNumLcd->display(0);
+}
+
