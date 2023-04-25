@@ -35,3 +35,7 @@ Update:
 Update:
 
   User can no longer enter words as input, there was a major bug while using rand() function but I fortunately managed to fix it.
+  
+Update:
+
+  Ranges which can be chosen via typing and sliders is the same now.
