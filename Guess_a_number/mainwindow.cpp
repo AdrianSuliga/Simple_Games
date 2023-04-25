@@ -1,6 +1,7 @@
 #include <cstdlib>
+#include <string>
 #include <QMessageBox>
-#include <QDebug>
+//#include <QDebug>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -82,9 +83,19 @@ void MainWindow::on_firstNumSlider_valueChanged(int value)
 void MainWindow::on_SaveRangeButton_clicked()
 {
     bool flag1, flag2;
+    std::string num1str = ui->FirstNumEdit->toPlainText().toStdString();
+    std::string num2str = ui->SecondNumEdit->toPlainText().toStdString();
     int num1 = ui->FirstNumEdit->toPlainText().toInt(&flag1, 10);
     int num2 = ui->SecondNumEdit->toPlainText().toInt(&flag2, 10);
-    if (num2 >= num1 && num1 >= 0 && num2 > 0)
+
+    flag1 = isDigit(num1str);
+    flag2 = isDigit(num2str);
+
+    if (flag1 == false || flag2 == false)
+        QMessageBox::critical(this, "Invalid range", "Range you've chosen is invalid. Please choose again.");
+    else if (num2 < num1 || num1 < 0 || num2 < 0)
+        QMessageBox::critical(this, "Invalid range", "Range you've chosen is invalid. Please choose again.");
+    else if (num2 >= num1 && num1 >= 0 && num2 > 0)
     {
         ui->RangeTitle->hide();
         ui->SaveRangeButton->hide();
@@ -113,13 +124,8 @@ void MainWindow::on_SaveRangeButton_clicked()
         first = num1;
         second = num2;
         random_number = randomize_number(first,second);
-
         ui->beginIntervalLcd->display(first);
         ui->endIntervalLcd->display(second);
-    }
-    else if (num2 < num1 || num1 < 0 || num2 < 0)
-    {
-        QMessageBox::critical(this, "Invalid range", "Range you've chosen is invalid. Please choose again.");
     }
     else if (num1 == 0 && num2 == 0)
     {
@@ -151,25 +157,39 @@ void MainWindow::on_SaveRangeButton_clicked()
         second = ui->secondNumLcd->value();
 
         random_number = randomize_number(first,second);
-
         ui->beginIntervalLcd->display(first);
         ui->endIntervalLcd->display(second);
     }
 }
+
 int MainWindow::randomize_number(int fst, int snd)
 {
-    snd++;
+    int size = snd - fst + 1;
     srand(time(NULL));
-    return rand()%snd+fst;
+    return rand()%size+fst;
 }
 
+bool MainWindow::isDigit(std::string s)
+{
+    for (int i=0; i < s.length(); i++)
+    {
+        if (s[i] < 48 || s[i] > 57)
+            return false;
+    }
+    return true;
+}
 
 void MainWindow::on_yGuessButton_clicked()
 {
     bool flag;
+    std::string yGuessStr = ui->answerEdit->toPlainText().toStdString();
     int yGuess = ui->answerEdit->toPlainText().toInt(&flag, 10);
+    flag = isDigit(yGuessStr);
+
     if (ui->answerEdit->toPlainText() == "")
         QMessageBox::critical(this, "Invalid input", "You didn't enter any number.");
+    else if (flag == false)
+        QMessageBox::critical(this, "Invalid input", "Your input is invalid");
     else if (yGuess < random_number)
         QMessageBox::information(this, "Hint", "Actual number is bigger");
     else if (yGuess > random_number)
@@ -182,4 +202,3 @@ void MainWindow::on_yGuessButton_clicked()
             close();
     }
 }
-
