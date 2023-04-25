@@ -198,9 +198,47 @@ void MainWindow::on_yGuessButton_clicked()
     else if (yGuess == random_number)
     {
         QMessageBox::StandardButton reply = QMessageBox::information(this, "You guessed it", "Congratulations, you found the number!",
-                                          QMessageBox::Ok);
-        if (reply == QMessageBox::Ok)
+                                          QMessageBox::Close | QMessageBox::Retry);
+        if (reply == QMessageBox::Close)
             close();
+        if (reply == QMessageBox::Retry)
+        {
+            ui->RangeTitle->show();
+            ui->SaveRangeButton->show();
+
+            ui->FirstNumEdit->show();
+            ui->firstNumSlider->show();
+            ui->firstNumLcd->show();
+            ui->firstNumLabel->show();
+
+            ui->SecondNumEdit->show();
+            ui->secondNumSlider->show();
+            ui->secondNumLcd->show();
+            ui->secondNumLabel->show();
+
+            ui->SecondNumEdit->setText("0");
+            ui->FirstNumEdit->setText("0");
+
+            ui->firstNumSlider->setValue(0);
+            ui->secondNumSlider->setValue(0);
+            ui->answerEdit->setText("");
+            ui->firstNumLcd->display(0);
+            ui->secondNumLcd->display(0);
+
+            ui->gameLabel->hide();
+            ui->beginIntervalNum->hide();
+            ui->beginIntervalLcd->hide();
+            ui->endIntervalNum->hide();
+            ui->endIntervalLcd->hide();
+
+            ui->yGuessLabel->hide();
+            ui->answerEdit->hide();
+            ui->yGuessButton->hide();
+
+            random_number = 0;
+            first = 0;
+            second = 0;
+        }
     }
 }
 
