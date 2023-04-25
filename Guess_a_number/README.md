@@ -31,3 +31,7 @@ Update:
   programm closes. There are a few bugs to fix, though. If users enters words as input, computer interprets them as 0 (better than nothing I guess) but it should give an
   error message to the user. Maximum range of numbers you can choose by typing is different than the one created by using sliders. They should be the same. Game should
   also allow user to play many times, not just once. 
+  
+Update:
+
+  User can no longer enter words as input, there was a major bug while using rand() function but I fortunately managed to fix it.
