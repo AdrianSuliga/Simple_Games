@@ -41,4 +41,4 @@ Ranges which can be chosen via typing and sliders is the same now. Player can pl
 
 Bugs to fix in the future:
 
-Size of widgets does not scale when user decides to change to fullscreen mode.
+Size of widgets does not scale when user decides to change to fullscreen mode. I should also add comments to the source code.
