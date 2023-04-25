@@ -42,7 +42,7 @@
      <number>5</number>
     </property>
     <property name="text">
-     <string>Welcome in a guessing game!</string>
+     <string>Welcome to the guessing game!</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -432,6 +432,19 @@
     </property>
     <property name="text">
      <string>Last number: </string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="toTitleButton">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>10</y>
+      <width>90</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Quit to title</string>
     </property>
    </widget>
   </widget>
