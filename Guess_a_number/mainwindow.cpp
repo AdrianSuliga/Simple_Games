@@ -1,7 +1,6 @@
 #include <cstdlib>
 #include <string>
 #include <QMessageBox>
-//#include <QDebug>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -93,8 +92,10 @@ void MainWindow::on_SaveRangeButton_clicked()
 
     if (flag1 == false || flag2 == false)
         QMessageBox::critical(this, "Invalid range", "Range you've chosen is invalid. Please choose again.");
-    else if (num2 < num1 || num1 < 0 || num2 < 0)
+    else if (num2 < num1)
         QMessageBox::critical(this, "Invalid range", "Range you've chosen is invalid. Please choose again.");
+    else if (num1 >= 100000 || num2 >= 100000)
+        QMessageBox::critical(this, "Invalid range", "One of the numbers you chose is too big.");
     else if (num2 >= num1 && num1 >= 0 && num2 > 0)
     {
         ui->RangeTitle->hide();
@@ -202,3 +203,4 @@ void MainWindow::on_yGuessButton_clicked()
             close();
     }
 }
+
