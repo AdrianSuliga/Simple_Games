@@ -32,4 +32,4 @@ After successfully guessing a number user can begin next round or quit.
 
 Things to improve:
 ---
-My application is not responsive. Today, I am starting working on improving it.
+My application is not responsive. Today, I am starting working on improving it. In order to fix it, I had to remake everything so description which you have read in "Description" section will soon be outdated (I will fix it too, do not worry).
