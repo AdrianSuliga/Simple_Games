@@ -29,3 +29,7 @@ Having chosen the range, user may now attempt to guess one number which computer
 After successfully guessing a number user can begin next round or quit.
 
 ![Screenshot of meassage which user receives after a correct guess](/Guess_a_number/Screenshots/Screenshot_4.png "Message")
+
+Things to improve:
+---
+My application is not responsive. Today, I am starting working on improving it.
