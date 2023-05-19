@@ -5,6 +5,6 @@ During my educational jurney I have started learning QT in order to create C++ d
 
 As of today this repository contains:
 
-Guessing game (completed)
+Guessing game (improvements in progress)
 
 Download current version of Guessing Game [HERE](https://github.com/AdrianSuliga/Simple_Games/releases/tag/guessing_game_5)
