@@ -20,6 +20,14 @@ private slots:
 
     void on_QuitToTitleButton_clicked();
 
+    void on_FirstNumSlider_valueChanged(int value);
+
+    void on_SecondNumSlider_valueChanged(int value);
+
+    void on_SaveRangeButton_clicked();
+
+    bool areTheyValid(std::string s1, std::string s2);
+
 private:
     Ui::Choose_Range *ui;
 
