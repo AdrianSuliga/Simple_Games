@@ -2,6 +2,7 @@
 #define TITLESCREEN_H
 
 #include <QMainWindow>
+#include "choose_range.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class TitleScreen; }
@@ -22,5 +23,6 @@ private slots:
 
 private:
     Ui::TitleScreen *ui;
+    Choose_Range *ChR;
 };
 #endif // TITLESCREEN_H
