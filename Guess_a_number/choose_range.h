@@ -3,6 +3,7 @@
 
 #include <QDialog>
 
+
 namespace Ui {
 class Choose_Range;
 }
@@ -16,7 +17,8 @@ public:
     ~Choose_Range();
 
 private slots:
-    void on_pushButton_clicked();
+
+    void on_QuitToTitleButton_clicked();
 
 private:
     Ui::Choose_Range *ui;
