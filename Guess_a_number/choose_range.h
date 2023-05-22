@@ -13,7 +13,7 @@ class Choose_Range : public QDialog
     Q_OBJECT
 
 public:
-    explicit Choose_Range(QWidget *parent = nullptr);
+    explicit Choose_Range(QWidget *parent = nullptr, int firstNum = 0, int secondNum = 0);
     ~Choose_Range();
 
 private slots:
@@ -30,6 +30,7 @@ private slots:
 
 private:
     Ui::Choose_Range *ui;
+    int firstNum, secondNum;
 
 };
 
