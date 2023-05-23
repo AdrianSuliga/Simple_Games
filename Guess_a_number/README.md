@@ -19,7 +19,7 @@ When you open this game, it shows a title screen. In simple labels I explained t
 
 After beginning, player can choose a range by using sliders or simply typing numbers. I added some form of validation. Users cannot enter characters, floating point numbers nor negative numbers as input. If one tries to do it, this application shows an error message.
 
-![Screenshot of window where user can choose an array of numbers](/Guess_a_number/Screenshots/Choose Range.png "Choose Range")
+![Screenshot of window where user can choose an array of numbers](/Guess_a_number/Screenshots/ChooseRange.png "Choose Range")
 
 **FURTHER WORK IN PROGRESS**
 
