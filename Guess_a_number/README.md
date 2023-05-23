@@ -15,21 +15,25 @@ Descrtiption:
 
 When you open this game, it shows a title screen. In simple labels I explained the rules of the game, there are also buttons which begin or quit the game.
 
-![Screenshot of title screen](/Guess_a_number/Screenshots/Screenshot_1.png "Title screen")
+![Screenshot of title screen]()
 
-After beginning, player can choose a range by using sliders or simply typing numbers. I added some form of validation. Users cannot enter characters, floating point
-numbers nor negative numbers as input. If one tries to do it, this application shows an error message.
+After beginning, player can choose a range by using sliders or simply typing numbers. I added some form of validation. Users cannot enter characters, floating point numbers nor negative numbers as input. If one tries to do it, this application shows an error message.
 
-![Screenshot of window where user can choose an array of numbers](/Guess_a_number/Screenshots/Screenshot_2.png "Choose range")
+![Screenshot of window where user can choose an array of numbers]()
+
+**FURTHER WORK IN PROGRESS**
 
 Having chosen the range, user may now attempt to guess one number which computer chose from said range.
 
-![Screenshot of window where user tries to guess a number](/Guess_a_number/Screenshots/Screenshot_3.png "Guess a number")
+![Screenshot of window where user tries to guess a number]()
 
 After successfully guessing a number user can begin next round or quit.
 
-![Screenshot of meassage which user receives after a correct guess](/Guess_a_number/Screenshots/Screenshot_4.png "Message")
+![Screenshot of meassage which user receives after a correct guess]()
 
 Things to improve:
 ---
-My application is not responsive. Today, I am starting working on improving it. In order to fix it, I had to remake everything so description which you have read in "Description" section will soon be outdated (I will fix it too, do not worry).
+Third window is not responsive (work in progress)
+
+Closing 2nd and 3rd window does not close entire app (major bug)
+
