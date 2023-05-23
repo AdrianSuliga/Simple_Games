@@ -4,7 +4,7 @@
 #include <QMessageBox>
 #include <string>
 
-Choose_Range::Choose_Range(QWidget *parent, int firstNum, int secondNum) :
+Choose_Range::Choose_Range(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Choose_Range)
 {
@@ -56,12 +56,25 @@ void Choose_Range::on_SaveRangeButton_clicked()
     { //when this else if executes we take numbers from TextEdits
         firstNum = ui->FirstNumEdit->toPlainText().toInt(nullptr, 10);
         secondNum = ui->SecondNumEdit->toPlainText().toInt(nullptr, 10);
+        showGuessNumberWindow(firstNum, secondNum);
     }
     else //else executes when user did not enter values into TextEdits. We tak nums from LCD displayers
     {
         firstNum = ui->FirstNumLcd->value();
         secondNum = ui->SecondNumLcd->value();
+        showGuessNumberWindow(firstNum, secondNum);
     }
+}
+
+void Choose_Range::showGuessNumberWindow(int firstNum, int secondNum)
+{
+    gN = new Guess_Number(this, firstNum, secondNum);
+    setAttribute(Qt::WA_DeleteOnClose);
+    connect(gN, SIGNAL(accepted()), this, SLOT(showMain()));
+    //connect(gN, SIGNAL(close()), this, SLOT(showMain()));
+    connect(gN, SIGNAL(accepted()), this, SLOT(close()));
+    gN -> show();
+    this -> hide();
 }
 
 bool Choose_Range::areTheyValid(std::string s1, std::string s2)
@@ -91,4 +104,6 @@ bool Choose_Range::areTheyValid(std::string s1, std::string s2)
 
     return true;
 }
+
+void Choose_Range::showMain() {emit accepted();}
 
