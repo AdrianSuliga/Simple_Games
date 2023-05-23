@@ -2,7 +2,7 @@
 #define CHOOSE_RANGE_H
 
 #include <QDialog>
-
+#include "guess_number.h"
 
 namespace Ui {
 class Choose_Range;
@@ -13,7 +13,7 @@ class Choose_Range : public QDialog
     Q_OBJECT
 
 public:
-    explicit Choose_Range(QWidget *parent = nullptr, int firstNum = 0, int secondNum = 0);
+    explicit Choose_Range(QWidget *parent = nullptr);
     ~Choose_Range();
 
 private slots:
@@ -26,10 +26,13 @@ private slots:
 
     void on_SaveRangeButton_clicked();
 
+    void showMain();
+    void showGuessNumberWindow(int firstNum, int SecondNum);
     bool areTheyValid(std::string s1, std::string s2);
 
 private:
     Ui::Choose_Range *ui;
+    Guess_Number *gN;
     int firstNum, secondNum;
 
 };
