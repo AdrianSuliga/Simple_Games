@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>762</width>
     <height>550</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
+    <width>550</width>
     <height>400</height>
    </size>
   </property>
@@ -24,7 +24,7 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,3,1,6,1">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
@@ -42,6 +42,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="QuiToTitleButton">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>30</height>
+        </size>
+       </property>
        <property name="text">
         <string>QUIT TO TITLE</string>
        </property>
@@ -50,10 +56,10 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="InfoLabel">
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>16</pointsize>
        <bold>true</bold>
       </font>
      </property>
@@ -64,7 +70,7 @@
       <number>5</number>
      </property>
      <property name="text">
-      <string>Computer has just chosen a number from an interval described below. Try to guess it.</string>
+      <string>Computer has just chosen a number from an interval described below. Try to guess it!</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -94,9 +100,18 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="FirstNumLabel">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <bold>false</bold>
+            </font>
+           </property>
            <property name="text">
-            <string>TextLabel</string>
+            <string>First number in range:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
@@ -108,9 +123,18 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QLabel" name="label_4">
+          <widget class="QLabel" name="LastNumLable">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <bold>false</bold>
+            </font>
+           </property>
            <property name="text">
-            <string>TextLabel</string>
+            <string>Last number in range:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
@@ -135,21 +159,54 @@
       </spacer>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="2,1,4">
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="TryToGuessLabel">
+         <property name="minimumSize">
+          <size>
+           <width>220</width>
+           <height>120</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>16</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Panel</enum>
+         </property>
+         <property name="lineWidth">
+          <number>5</number>
+         </property>
          <property name="text">
-          <string>TextLabel</string>
+          <string>Your guess</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QTextEdit" name="textEdit"/>
+        <widget class="QTextEdit" name="YourGuessEdit"/>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="GuessButton">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>400</width>
+           <height>120</height>
+          </size>
+         </property>
          <property name="text">
-          <string>PushButton</string>
+          <string>Guess</string>
          </property>
         </widget>
        </item>
