@@ -12,6 +12,7 @@ Choose_Range::Choose_Range(QWidget *parent) :
     setWindowTitle("Guessing Game");
     ui->FirstNumEdit->insertPlainText("0");
     ui->SecondNumEdit->insertPlainText("0");
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 Choose_Range::~Choose_Range()
@@ -22,7 +23,6 @@ Choose_Range::~Choose_Range()
 //Coding QUIT TO TITLE button
 void Choose_Range::on_QuitToTitleButton_clicked()
 {
-    setAttribute(Qt::WA_DeleteOnClose);
     emit accepted();
     this->close();
 }
@@ -69,10 +69,8 @@ void Choose_Range::on_SaveRangeButton_clicked()
 void Choose_Range::showGuessNumberWindow(int firstNum, int secondNum)
 {
     gN = new Guess_Number(this, firstNum, secondNum);
-    setAttribute(Qt::WA_DeleteOnClose);
-    connect(gN, SIGNAL(accepted()), this, SLOT(showMain()));
-    //connect(gN, SIGNAL(close()), this, SLOT(showMain()));
     connect(gN, SIGNAL(accepted()), this, SLOT(close()));
+    connect(gN, SIGNAL(destroyed()), this, SLOT(close()));
     gN -> show();
     this -> hide();
 }
