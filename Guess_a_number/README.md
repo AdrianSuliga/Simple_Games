@@ -8,7 +8,7 @@ In this game you are trying to guess a number from an array of natural numbers. 
 
 3) You guessed it!
 
-Download current version of Guessing Game [HERE](https://github.com/AdrianSuliga/Simple_Games/releases/tag/guessing_game_5)
+Download current version of Guessing Game [HERE](https://github.com/AdrianSuliga/Simple_Games/releases/tag/guessing_game_7)
 
 Descrtiption:
 ---
