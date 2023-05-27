@@ -23,6 +23,7 @@ void TitleScreen::on_BeginGameButton_clicked()
 {
     ChR = new Choose_Range(this);
     connect(ChR, SIGNAL(accepted()), this, SLOT(show()));
+    connect(ChR, SIGNAL(destroyed()), this, SLOT(show()));
     ChR->show();
     this -> hide();
 }
