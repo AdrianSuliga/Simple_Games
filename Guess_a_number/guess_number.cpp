@@ -50,10 +50,18 @@ void Guess_Number::on_GuessButton_pressed()
         QMessageBox::information(this,"Hint","Number you are looking for is actually smaller");
     else if (yGuess < randomNum)
         QMessageBox::information(this,"Hint", "Number you are looking for is actually bigger");
-    else if (yGuess == randomNum)
+    else if (yGuess == randomNum && randomNum != 69)
     {
         QMessageBox::StandardButton reply = QMessageBox::information(this,"You won", "Congratulations! You guessed it!",
                                                                   QMessageBox::Ok);
+
+        if (reply == QMessageBox::Ok)
+            on_QuiToTitleButton_pressed();
+    }
+    else if (yGuess == randomNum && randomNum == 69)
+    {
+        QMessageBox::StandardButton reply = QMessageBox::information(this, "696969", "6969696969696969696969",
+                                                                     QMessageBox::Ok);
 
         if (reply == QMessageBox::Ok)
             on_QuiToTitleButton_pressed();
