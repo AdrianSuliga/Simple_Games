@@ -21,6 +21,10 @@ private slots:
 
     int randomize(int n1, int n2);
 
+    void on_GuessButton_pressed();
+
+    bool areTheyValid(std::string s);
+
 private:
     Ui::Guess_Number *ui;
     int firstNum, secondNum, randomNum;
