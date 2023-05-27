@@ -21,19 +21,10 @@ After beginning, player can choose a range by using sliders or simply typing num
 
 ![Screenshot of window where user can choose an array of numbers](/Guess_a_number/Screenshots/ChooseRange.png "Choose Range")
 
-**FURTHER WORK IN PROGRESS**
-
 Having chosen the range, user may now attempt to guess one number which computer chose from said range.
 
-![Screenshot of window where user tries to guess a number]()
+![Screenshot of window where user tries to guess a number](/Guess_a_number/Screenshots/GuessNum.png "Guess a Number")
 
 After successfully guessing a number user can begin next round or quit.
 
-![Screenshot of meassage which user receives after a correct guess]()
-
-Things to improve:
----
-Third window is not responsive (work in progress)
-
-Closing 2nd and 3rd window does not close entire app (major bug)
-
+![Screenshot of meassage which user receives after a correct guess](/Guess_a_number/Screenshots/YouWon.png "Congratulations dialog")
