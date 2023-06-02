@@ -22,6 +22,8 @@ public:
 private slots:
     void setLayoutForTitleScreen();
 
+    void beginGame();
+
 private:
     Ui::MainWindow *ui;
     QPushButton *quitButton, *beginButton;
@@ -32,6 +34,8 @@ private:
     QSpacerItem *hQuitSpacer, *hBetweenRulesAndBeginSpacer, *vBeginSpacer;
     QVBoxLayout *mainLayout, *rulesLayout, *roundsAndBeginLayout;
     QHBoxLayout *quitLayout, *mainBodyLayout, *roundsLayout, *rBsLayout, *sBpLayout, *pBrLayout;
+
+    int numberOfRounds;
 
 };
 #endif // MAINWINDOW_H
