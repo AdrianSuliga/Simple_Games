@@ -4,3 +4,6 @@ It is a simple game where you play rock, paper, scissors against a computer. You
 - You won (show total score)
 - You lost (show total score)
 - Game ended in a draw (show total score)
+
+## Progress
+I am working on title screen where player is informed about the rules and can choose number of rounds that he wants to play.
