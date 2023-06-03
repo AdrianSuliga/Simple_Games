@@ -10,8 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setLayoutForTitleScreen();
-    ui->centralwidget->setStyleSheet("background-color: rgb(96, 96, 96)");
-    ui->statusbar->setStyleSheet("background-color: rgb(96, 96, 96)");
+    ui->centralwidget->setStyleSheet("background-color: rgb(11, 83, 81);");
+    ui->statusbar->setStyleSheet("background-color: rgb(11, 83, 81);");
 }
 //std::this_thread::sleep_for(std::chrono::seconds(2));
 MainWindow::~MainWindow()
@@ -21,18 +21,17 @@ MainWindow::~MainWindow()
 
 void MainWindow::setLayoutForTitleScreen()
 {
+    //colors: rgb(9, 35, 39) ; rgb(11, 83, 81) ; rgb(0, 204, 201);
     //code title label
     titleLabel = new QLabel("ROCK, PAPER, SCISSORS");
     titleLabel -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    titleLabel -> setStyleSheet("font-size: 40px;");
+    titleLabel -> setStyleSheet("font-size: 40px; background-color: rgb(0, 169, 165); color: white; border-radius: 14px;");
     titleLabel -> setMargin(6);
-    titleLabel -> setFrameStyle(QFrame::Panel);
-    titleLabel -> setLineWidth(5);
 
     //set layout with quit button
     quitButton = new QPushButton("QUIT");
     quitButton -> setMinimumSize(80,30);
-    quitButton -> setStyleSheet("background-color: rgb(0, 81, 179); font-size: 20px; color: white;"
+    quitButton -> setStyleSheet("background-color: rgb(0, 169, 165); font-size: 20px; color: white;"
                                 "border-radius: 14px;");
 
     hQuitSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
@@ -44,12 +43,10 @@ void MainWindow::setLayoutForTitleScreen()
     //set layout with rounds editor
     roundsLabel = new QLabel("ROUNDS YOU WANT TO PLAY: ");
     roundsLabel -> wordWrap();
-    roundsLabel -> setStyleSheet("font-size:20px;");
-    roundsLabel -> setFrameStyle(QFrame::Panel);
-    roundsLabel -> setLineWidth(1);
+    roundsLabel -> setStyleSheet("font-size:20px; background-color: rgb(0, 169, 165); color: white; padding: 2px; border-radius: 14px;");
 
     roundsEdit = new QLineEdit("1");
-    roundsEdit -> setStyleSheet("font-size:20px;");
+    roundsEdit -> setStyleSheet("font-size:20px; color: white; background-color: rgb(0, 169, 165); border-style: solid;");
 
     roundsLayout = new QHBoxLayout();
     roundsLayout -> insertWidget(0, roundsLabel);
@@ -58,7 +55,7 @@ void MainWindow::setLayoutForTitleScreen()
 
     //set layout for begin button
     beginButton = new QPushButton("BEGIN");
-    beginButton -> setStyleSheet("background-color: rgb(0, 81, 179); font-size: 30px; color: white;"
+    beginButton -> setStyleSheet("background-color: rgb(0, 169, 165); font-size: 30px; color: white;"
                                  "border-radius: 14px;");
     beginButton -> setMinimumSize(150, 56);
     beginButton -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -82,23 +79,26 @@ void MainWindow::setLayoutForTitleScreen()
 
     //set layouts with rules
     rulesLabel = new QLabel("RULES");
-    rulesLabel -> setStyleSheet("font-size: 36px;");
+    rulesLabel -> setStyleSheet("font-size: 36px; color: white; background-color: rgb(0, 169, 165); border-style: solid;");
     rulesLabel -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     rulesLabel -> setFrameStyle(QFrame::Panel);
     rulesLabel -> setLineWidth(1);
 
     rBeatsSLabel_Rock = new QLabel();
     rBeatsSLabel_Rock ->setPixmap(QPixmap(":/img/images/rock.png"));
+    rBeatsSLabel_Rock -> setStyleSheet("background-color: rgb(0, 169, 165); border-radius: 20px; padding: 2px;");
     rBeatsSLabel_Rock ->setScaledContents(true);
     rBeatsSLabel_Rock ->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
     rBeatsSLabel_Beats = new QLabel("BEATS");
     rBeatsSLabel_Beats -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    rBeatsSLabel_Beats -> setStyleSheet("color: white; background-color: rgb(0, 169, 165); border-radius: 20px; font-size: 16px;");
 
-    rBeatsSLabel_Scissors = new QLabel("SCISSORS.png");
+    rBeatsSLabel_Scissors = new QLabel();
     rBeatsSLabel_Scissors ->setPixmap(QPixmap(":/img/images/scissors.png"));
     rBeatsSLabel_Scissors ->setScaledContents(true);
     rBeatsSLabel_Scissors ->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    rBeatsSLabel_Scissors -> setStyleSheet("background-color: rgb(0, 169, 165); border-radius: 20px; padding: 3px;");
 
     rBsLayout = new QHBoxLayout();
     rBsLayout -> insertWidget(0, rBeatsSLabel_Rock);
@@ -111,14 +111,18 @@ void MainWindow::setLayoutForTitleScreen()
     sBeatsPLabel_Scissors ->setPixmap(QPixmap(":/img/images/scissors.png"));
     sBeatsPLabel_Scissors ->setScaledContents(true);
     sBeatsPLabel_Scissors ->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    sBeatsPLabel_Scissors ->setStyleSheet("background-color: rgb(0, 169, 165); border-radius: 20px; padding: 3px;");
+
 
     sBeatsPLabel_Beats = new QLabel("BEATS");
     sBeatsPLabel_Beats -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    sBeatsPLabel_Beats -> setStyleSheet("color: white; background-color: rgb(0, 169, 165); border-radius: 20px; font-size: 16px;");
 
     sBeatsPLabel_Paper = new QLabel();
     sBeatsPLabel_Paper ->setPixmap(QPixmap(":/img/images/paper.png"));
     sBeatsPLabel_Paper ->setScaledContents(true);
     sBeatsPLabel_Paper ->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    sBeatsPLabel_Paper -> setStyleSheet("background-color: rgb(0, 169, 165); border-radius: 20px; padding: 2px;");
 
     sBpLayout = new QHBoxLayout();
     sBpLayout -> insertWidget(0, sBeatsPLabel_Scissors);
@@ -131,14 +135,17 @@ void MainWindow::setLayoutForTitleScreen()
     pBeatsRLabel_Paper ->setPixmap(QPixmap(":/img/images/paper.png"));
     pBeatsRLabel_Paper ->setScaledContents(true);
     pBeatsRLabel_Paper ->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    pBeatsRLabel_Paper ->setStyleSheet("background-color: rgb(0, 169, 165); border-radius: 20px; padding: 2px;");
 
     pBeatsRLabel_Beats = new QLabel("BEATS");
     pBeatsRLabel_Beats -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    pBeatsRLabel_Beats -> setStyleSheet("color: white; background-color: rgb(0, 169, 165); border-radius: 20px; font-size: 16px;");
 
     pBeatsRLabel_Rock = new QLabel("ROCK.png");
     pBeatsRLabel_Rock ->setPixmap(QPixmap(":/img/images/rock.png"));
     pBeatsRLabel_Rock ->setScaledContents(true);
     pBeatsRLabel_Rock ->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    pBeatsRLabel_Rock ->setStyleSheet("background-color: rgb(0, 169, 165); border-radius: 20px; padding: 2px;");
 
     pBrLayout = new QHBoxLayout();
     pBrLayout -> insertWidget(0, pBeatsRLabel_Paper);
