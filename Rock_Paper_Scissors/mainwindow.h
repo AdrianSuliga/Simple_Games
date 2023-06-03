@@ -23,7 +23,7 @@ private slots:
     void setLayoutForTitleScreen();
 
     void beginGame();
-    void saveEditedInput();
+    bool saveEditedInput();
     void removeLayoutForTitleScreen();
     //void setLayoutForGameScreen();
 
@@ -34,9 +34,9 @@ private:
             *sBeatsPLabel_Scissors, *sBeatsPLabel_Beats, *sBeatsPLabel_Paper, *pBeatsRLabel_Paper, *pBeatsRLabel_Beats,
             *pBeatsRLabel_Rock;
     QLineEdit *roundsEdit;
-    QSpacerItem *hQuitSpacer, *hBetweenRulesAndBeginSpacer, *vBeginSpacer;
+    QSpacerItem *hQuitSpacer, *hBetweenRulesAndBeginSpacer, *vBeginSpacer, *vBelowBeginButtonSpacer, *hLeftBeginSpacer, *hRightBeginSpacer;
     QVBoxLayout *mainLayout, *rulesLayout, *roundsAndBeginLayout;
-    QHBoxLayout *quitLayout, *mainBodyLayout, *roundsLayout, *rBsLayout, *sBpLayout, *pBrLayout;
+    QHBoxLayout *quitLayout, *mainBodyLayout, *roundsLayout, *rBsLayout, *sBpLayout, *pBrLayout, *beginButtonLayout;
 
     int numberOfRounds;
 
