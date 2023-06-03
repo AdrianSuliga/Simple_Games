@@ -11,4 +11,5 @@ Download current version of this game [here](https://github.com/AdrianSuliga/Sim
 I am working on title screen where player is informed about the rules and can choose number of rounds that he wants to play. I need to position beginButton better and learn how to add images to my program.
 
 After launching an app user sees the following interface:
+
 ![Screenshot of title screen](/Rock_Paper_Scissors/Screenshots/titleScreen.png)
