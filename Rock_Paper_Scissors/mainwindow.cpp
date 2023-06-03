@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include <thread>
 #include <QPushButton>
 #include <QMessageBox>
 
@@ -10,8 +10,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setLayoutForTitleScreen();
+    ui->centralwidget->setStyleSheet("background-color: rgb(96, 96, 96)");
+    ui->statusbar->setStyleSheet("background-color: rgb(96, 96, 96)");
 }
-
+//std::this_thread::sleep_for(std::chrono::seconds(2));
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -30,6 +32,8 @@ void MainWindow::setLayoutForTitleScreen()
     //set layout with quit button
     quitButton = new QPushButton("QUIT");
     quitButton -> setMinimumSize(80,30);
+    quitButton -> setStyleSheet("background-color: rgb(0, 81, 179); font-size: 20px; color: white;"
+                                "border-radius: 14px;");
 
     hQuitSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -49,17 +53,32 @@ void MainWindow::setLayoutForTitleScreen()
 
     roundsLayout = new QHBoxLayout();
     roundsLayout -> insertWidget(0, roundsLabel);
-    roundsLayout -> insertWidget(1, roundsEdit);
+    roundsLayout -> insertSpacing(1, 10);
+    roundsLayout -> insertWidget(2, roundsEdit);
+
+    //set layout for begin button
+    beginButton = new QPushButton("BEGIN");
+    beginButton -> setStyleSheet("background-color: rgb(0, 81, 179); font-size: 30px; color: white;"
+                                 "border-radius: 14px;");
+    beginButton -> setMinimumSize(150, 56);
+    beginButton -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    hLeftBeginSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    hRightBeginSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    beginButtonLayout = new QHBoxLayout();
+    beginButtonLayout -> insertSpacerItem(0, hLeftBeginSpacer);
+    beginButtonLayout -> insertWidget(1, beginButton);
+    beginButtonLayout -> insertSpacerItem(2, hRightBeginSpacer);
 
     //set layout with rounds editor and begin button
     vBeginSpacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-    beginButton = new QPushButton("BEGIN");
+    vBelowBeginButtonSpacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
     roundsAndBeginLayout = new QVBoxLayout();
-    roundsAndBeginLayout->insertLayout(0, roundsLayout);
-    roundsAndBeginLayout->insertSpacerItem(1, vBeginSpacer);
-    roundsAndBeginLayout->insertWidget(2, beginButton);
+    roundsAndBeginLayout -> insertLayout(0, roundsLayout);
+    roundsAndBeginLayout -> insertSpacerItem(1, vBeginSpacer);
+    roundsAndBeginLayout -> insertLayout(2, beginButtonLayout);
+    roundsAndBeginLayout -> insertSpacerItem(3, vBelowBeginButtonSpacer);
 
     //set layouts with rules
     rulesLabel = new QLabel("RULES");
@@ -68,10 +87,18 @@ void MainWindow::setLayoutForTitleScreen()
     rulesLabel -> setFrameStyle(QFrame::Panel);
     rulesLabel -> setLineWidth(1);
 
-    rBeatsSLabel_Rock = new QLabel("ROCK.png");
+    rBeatsSLabel_Rock = new QLabel();
+    rBeatsSLabel_Rock ->setPixmap(QPixmap(":/img/images/rock.png"));
+    rBeatsSLabel_Rock ->setScaledContents(true);
+    rBeatsSLabel_Rock ->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
     rBeatsSLabel_Beats = new QLabel("BEATS");
     rBeatsSLabel_Beats -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
     rBeatsSLabel_Scissors = new QLabel("SCISSORS.png");
+    rBeatsSLabel_Scissors ->setPixmap(QPixmap(":/img/images/scissors.png"));
+    rBeatsSLabel_Scissors ->setScaledContents(true);
+    rBeatsSLabel_Scissors ->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
     rBsLayout = new QHBoxLayout();
     rBsLayout -> insertWidget(0, rBeatsSLabel_Rock);
@@ -80,10 +107,18 @@ void MainWindow::setLayoutForTitleScreen()
     rBsLayout -> insertSpacing(3, 10);
     rBsLayout -> insertWidget(4, rBeatsSLabel_Scissors);
 
-    sBeatsPLabel_Scissors = new QLabel("SCISSORS.png");
+    sBeatsPLabel_Scissors = new QLabel();
+    sBeatsPLabel_Scissors ->setPixmap(QPixmap(":/img/images/scissors.png"));
+    sBeatsPLabel_Scissors ->setScaledContents(true);
+    sBeatsPLabel_Scissors ->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
     sBeatsPLabel_Beats = new QLabel("BEATS");
     sBeatsPLabel_Beats -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    sBeatsPLabel_Paper = new QLabel("PAPER.png");
+
+    sBeatsPLabel_Paper = new QLabel();
+    sBeatsPLabel_Paper ->setPixmap(QPixmap(":/img/images/paper.png"));
+    sBeatsPLabel_Paper ->setScaledContents(true);
+    sBeatsPLabel_Paper ->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
     sBpLayout = new QHBoxLayout();
     sBpLayout -> insertWidget(0, sBeatsPLabel_Scissors);
@@ -93,9 +128,17 @@ void MainWindow::setLayoutForTitleScreen()
     sBpLayout -> insertWidget(4, sBeatsPLabel_Paper);
 
     pBeatsRLabel_Paper = new QLabel("PAPER.png");
+    pBeatsRLabel_Paper ->setPixmap(QPixmap(":/img/images/paper.png"));
+    pBeatsRLabel_Paper ->setScaledContents(true);
+    pBeatsRLabel_Paper ->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
     pBeatsRLabel_Beats = new QLabel("BEATS");
     pBeatsRLabel_Beats -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
     pBeatsRLabel_Rock = new QLabel("ROCK.png");
+    pBeatsRLabel_Rock ->setPixmap(QPixmap(":/img/images/rock.png"));
+    pBeatsRLabel_Rock ->setScaledContents(true);
+    pBeatsRLabel_Rock ->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
     pBrLayout = new QHBoxLayout();
     pBrLayout -> insertWidget(0, pBeatsRLabel_Paper);
@@ -132,11 +175,18 @@ void MainWindow::setLayoutForTitleScreen()
 
 void MainWindow::beginGame()
 {
-    saveEditedInput();
-    removeLayoutForTitleScreen();
+    bool canIMoveOn = saveEditedInput();
+    if (canIMoveOn == true)
+    {
+        removeLayoutForTitleScreen();
+    }
+    else if (roundsEdit->text().toInt(nullptr, 10) > 100)
+        QMessageBox::warning(this, "Too big input", "Don't you think this input is a little too big? You don't want to spend"
+                                                    " too much time here!");
+    else
+        QMessageBox::critical(this, "Invalid input", "Input you've entered is invalid");
 }
-
-void MainWindow::saveEditedInput()
+bool MainWindow::saveEditedInput()
 {
     //save input from text edit into std::string
     std::string lineInput = roundsEdit->text().toStdString();
@@ -156,12 +206,9 @@ void MainWindow::saveEditedInput()
         isItValid = false;
 
     if (isItValid == true && roundsEdit->text().toInt(&ok, 10) <= 100)
-        numberOfRounds = roundsEdit->text().toInt(&ok, 10);
-    else if (isItValid == true && roundsEdit->text().toInt(&ok, 10) > 100)
-        QMessageBox::warning(roundsEdit, "Too big input", "Don't you think your input is... too big? You don't want to spend too much time"
-                                                          " here!");
+        return true;
     else
-        QMessageBox::critical(roundsEdit, "Invalid input", "Number of rounds you want to play is incorrect");
+        return false;
 }
 
 void MainWindow::removeLayoutForTitleScreen()
