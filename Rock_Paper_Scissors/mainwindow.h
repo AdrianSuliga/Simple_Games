@@ -23,6 +23,9 @@ private slots:
     void setLayoutForTitleScreen();
 
     void beginGame();
+    void saveEditedInput();
+    void removeLayoutForTitleScreen();
+    //void setLayoutForGameScreen();
 
 private:
     Ui::MainWindow *ui;
