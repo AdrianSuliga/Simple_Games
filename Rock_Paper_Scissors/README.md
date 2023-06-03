@@ -6,4 +6,4 @@ It is a simple game where you play rock, paper, scissors against a computer. You
 - Game ended in a draw (show total score)
 
 ## Progress
-I am working on title screen where player is informed about the rules and can choose number of rounds that he wants to play.
+I am working on title screen where player is informed about the rules and can choose number of rounds that he wants to play. I need to position beginButton better and learn how to add images to my program.
