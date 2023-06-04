@@ -21,6 +21,7 @@ public:
     ~MainWindow();
 private slots:
     void setLayoutForTitleScreen();
+    void setStylesForTitleScreen();
 
     void beginGame();
     bool saveEditedInput();
