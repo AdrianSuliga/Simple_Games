@@ -17,7 +17,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
+//TITLE SCREEN
 void MainWindow::setLayoutForTitleScreen()
 {
     //code title label
@@ -289,3 +289,15 @@ void MainWindow::removeLayoutForTitleScreen()
     delete roundsAndBeginLayout;
     delete mainBodyLayout;
 }
+
+//GAME SCREEN
+void MainWindow::setLayoutForTitleScreen()
+{
+    
+}
+void MainWindow::setStylesForGameScreen()
+{
+    
+}
+
+
