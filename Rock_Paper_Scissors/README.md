@@ -5,7 +5,7 @@ It is a simple game where you play rock, paper, scissors against a computer. You
 - You lost (show total score)
 - Game ended in a draw (show total score)
 
-Download current version of this game [here](https://github.com/AdrianSuliga/Simple_Games/releases/tag/R_S_P_1).
+Download current version of this game [here](https://github.com/AdrianSuliga/Simple_Games/releases/tag/R_S_P_2).
 
 ## Progress
 I am working on title screen where player is informed about the rules and can choose number of rounds that he wants to play. I need to position beginButton better and learn how to add images to my program.
