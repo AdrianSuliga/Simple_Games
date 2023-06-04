@@ -31,6 +31,7 @@ private slots:
 
     //GAME SCREEN FUNCTIONS
     void setLayoutForGameScreen();
+    void setStylesForGameScreen();
 
 private:
     Ui::MainWindow *ui;
