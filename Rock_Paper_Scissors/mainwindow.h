@@ -48,11 +48,12 @@ private:
     QHBoxLayout *quitLayout, *mainBodyLayout, *roundsLayout, *rBsLayout, *sBpLayout, *pBrLayout, *beginButtonLayout;
 
     //GAME SCREEN
-    QVBoxLayout *pointsMainLayout, *userPointsLayout, *compPointsLayout, *gameInterfaceLayout;
-    QHBoxLayout *iconsLayout, *gameBodyLayout;
-    QLabel *userScoreLabel, *compScoreLabel, *rockLabel, *paperLabel, *scissorsLabel, *userLabel, *compLabel, *userChoiceLabel,
-            *compChoiceLabel, *loadingLabel;
+    QVBoxLayout *pointsMainLayout, *gameInterfaceLayout, *rightSideOfWindowLayout;
+    QHBoxLayout *iconsLayout, *gameBodyLayout, *mainLayoutGS;
+    QPushButton *rockButton, *paperButton, *scissorsButton;
+    QLabel *userScoreLabel, *compScoreLabel, *userLabel, *compLabel, *userChoiceLabel,
+            *compChoiceLabel;
     QLCDNumber *userScoreLcd, *compScoreLcd;
-    QSpacerItem *vBetweenLcdSpacer, *hLeftSpacer, *hRightSpacer;
+    QSpacerItem *vBetweenLcdSpacer, *hLeftSpacer, *hRightSpacer, *vBottomSpacer, *vTopSpacer, *loadSpacer;
 };
 #endif // MAINWINDOW_H
