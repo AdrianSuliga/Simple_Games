@@ -17,7 +17,8 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-//TITLE SCREEN
+
+//TITLE SCREEN FUNCTIONS
 void MainWindow::setLayoutForTitleScreen()
 {
     //code title label
@@ -221,6 +222,8 @@ void MainWindow::beginGame()
     if (canIMoveOn == true)
     {
         removeLayoutForTitleScreen();
+        setLayoutForGameScreen();
+        setStylesForGameScreen();
     }
     else if (roundsEdit->text().toInt(nullptr, 10) > 100)
         QMessageBox::warning(this, "Too big input", "Don't you think this input is a little too big? You don't want to spend"
@@ -288,16 +291,154 @@ void MainWindow::removeLayoutForTitleScreen()
     delete roundsLayout;
     delete roundsAndBeginLayout;
     delete mainBodyLayout;
+
+    delete ui->centralwidget->layout();
 }
 
-//GAME SCREEN
-void MainWindow::setLayoutForTitleScreen()
+//GAME SCREEN FUNCTIONS
+void MainWindow::setLayoutForGameScreen()
 {
-    
+    //set layout with user's and computer's points
+    userScoreLabel = new QLabel("YOUR SCORE");
+    compScoreLabel = new QLabel("ENEMY'S SCORE");
+
+    userScoreLabel -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    userScoreLabel -> setMargin(5);
+    compScoreLabel -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    compScoreLabel -> setMargin(5);
+
+    userScoreLcd = new QLCDNumber();
+    userScoreLcd -> setMinimumSize(100, 60);
+    compScoreLcd = new QLCDNumber();
+    compScoreLcd -> setMinimumSize(100, 60);
+
+    userScoreLcd -> display(0);
+    compScoreLcd -> display(0);
+
+    vBetweenLcdSpacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+    pointsMainLayout = new QVBoxLayout();
+    pointsMainLayout -> insertWidget(0, compScoreLabel);
+    pointsMainLayout -> insertWidget(1, compScoreLcd);
+    pointsMainLayout -> insertSpacerItem(2, vBetweenLcdSpacer);
+    pointsMainLayout -> insertWidget(3, userScoreLcd);
+    pointsMainLayout -> insertWidget(4, userScoreLabel);
+
+    //set layout with icons
+    rockButton = new QPushButton(QIcon(QPixmap(":/img/images/rock.png")), "");
+    rockButton -> setMinimumSize(100, 100);
+    rockButton -> setIconSize(QSize(100,100));
+    paperButton = new QPushButton(QIcon(QPixmap(":/img/images/paper.png")), "");
+    paperButton -> setMinimumSize(100, 100);
+    paperButton -> setIconSize(QSize(100,100));
+    scissorsButton = new QPushButton(QIcon(QPixmap(":/img/images/scissors.png")), "");
+    scissorsButton -> setMinimumSize(100, 100);
+    scissorsButton -> setIconSize(QSize(100,100));
+
+    iconsLayout = new QHBoxLayout();
+    iconsLayout -> insertWidget(0, rockButton);
+    iconsLayout -> insertWidget(1, paperButton);
+    iconsLayout -> insertWidget(2, scissorsButton);
+
+    //set layout with main game screen
+    userLabel = new QLabel();
+    userLabel -> setPixmap(QPixmap(":/img/images/user.png"));
+    userLabel -> setMinimumSize(100, 100);
+    userLabel -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    compLabel = new QLabel();
+    compLabel -> setPixmap(QPixmap(":/img/images/computer.png"));
+    compLabel -> setMinimumSize(100, 100);
+    compLabel -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    userChoiceLabel = new QLabel("");
+    userChoiceLabel -> setMinimumSize(100, 100);
+    userChoiceLabel -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    compChoiceLabel = new QLabel("");
+    compChoiceLabel -> setMinimumSize(100, 100);
+    compChoiceLabel -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    loadSpacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+    vTopSpacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    vBottomSpacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+    gameInterfaceLayout = new QVBoxLayout();
+    gameInterfaceLayout -> insertWidget(0, compLabel);
+    gameInterfaceLayout -> insertSpacerItem(1, vTopSpacer);
+    gameInterfaceLayout -> insertWidget(2, compChoiceLabel);
+    gameInterfaceLayout -> insertSpacerItem(3, loadSpacer);
+    gameInterfaceLayout -> insertWidget(4, userChoiceLabel);
+    gameInterfaceLayout -> insertSpacerItem(5, vBottomSpacer);
+    gameInterfaceLayout -> insertWidget(6, userLabel);
+
+    //set main body layout
+    hLeftSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    hRightSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    mainBodyLayout = new QHBoxLayout();
+    mainBodyLayout -> insertSpacerItem(0, hLeftSpacer);
+    mainBodyLayout -> insertLayout(1, gameInterfaceLayout);
+    mainBodyLayout -> insertSpacerItem(2, hRightSpacer);
+
+    //set layout that is right from user's and comp's points
+    rightSideOfWindowLayout = new QVBoxLayout();
+    rightSideOfWindowLayout -> insertLayout(0, mainBodyLayout);
+    rightSideOfWindowLayout -> insertLayout(1, iconsLayout);
+
+    //main window layout
+    mainLayoutGS = new QHBoxLayout(ui->centralwidget);
+    mainLayoutGS ->insertLayout(0, pointsMainLayout);
+    mainLayoutGS ->insertLayout(1, rightSideOfWindowLayout);
 }
 void MainWindow::setStylesForGameScreen()
 {
-    
+    QString userAndCompScoreLabelsStyle = "font-size: 30px; color: white; background-color: rgb(0, 169, 165); border-style: solid;"
+                                          "border-radius: 14px; padding: 5px;";
+
+    userScoreLabel -> setStyleSheet(userAndCompScoreLabelsStyle);
+    compScoreLabel -> setStyleSheet(userAndCompScoreLabelsStyle);
+
+    QString LcdStyle = "font-size: 36px; color: white; background-color: rgb(0, 169, 165); border-style: solid;";
+
+    userScoreLcd -> setStyleSheet(LcdStyle);
+    compScoreLcd -> setStyleSheet(LcdStyle);
+
+    QString iconsStyle = "QPushButton { background-color: rgb(0, 169, 165);"
+                         "font-size: 30px; color: white;"
+                         "border-radius: 14px; }"
+                         "QPushButton:hover {"
+                         "background-color: rgb(0, 143, 140);"
+                         "}";
+
+    rockButton -> setStyleSheet(iconsStyle);
+    paperButton -> setStyleSheet(iconsStyle);
+    scissorsButton -> setStyleSheet(iconsStyle);
+
+    QString iconsInLabelsStyle = "background-color: rgb(0, 169, 165); font-size: 30px; color: white; border-radius: 14px;";
+
+    userLabel -> setStyleSheet(iconsInLabelsStyle);
+    compLabel -> setStyleSheet(iconsInLabelsStyle);
+    userChoiceLabel -> setStyleSheet(iconsInLabelsStyle);
+    compChoiceLabel -> setStyleSheet(iconsInLabelsStyle);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
