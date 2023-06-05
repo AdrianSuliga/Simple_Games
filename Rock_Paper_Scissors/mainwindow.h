@@ -24,14 +24,16 @@ private slots:
     //TITLE SCREEN FUNCTIONS
     void setLayoutForTitleScreen();
     void setStylesForTitleScreen();
-
-    void beginGame();
-    bool saveEditedInput();
     void removeLayoutForTitleScreen();
 
     //GAME SCREEN FUNCTIONS
     void setLayoutForGameScreen();
     void setStylesForGameScreen();
+
+    //GAME MECHANICS FUNCTIONS
+    void moveToGameScreen();
+    bool saveEditedInput();
+    void beginGame();
 
 private:
     Ui::MainWindow *ui;
@@ -54,6 +56,5 @@ private:
     QLabel *userScoreLabel, *compScoreLabel, *userLabel, *compLabel, *userChoiceLabel,
             *compChoiceLabel;
     QLCDNumber *userScoreLcd, *compScoreLcd;
-    QSpacerItem *vBetweenLcdSpacer, *hLeftSpacer, *hRightSpacer, *vBottomSpacer, *vTopSpacer, *loadSpacer;
 };
 #endif // MAINWINDOW_H
