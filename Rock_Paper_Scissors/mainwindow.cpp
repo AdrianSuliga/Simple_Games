@@ -158,7 +158,7 @@ void MainWindow::setLayoutForTitleScreen()
 
     //coding push buttons
     connect(quitButton, SIGNAL(pressed()), this, SLOT(close()));
-    connect(beginButton, SIGNAL(pressed()), this, SLOT(beginGame()));
+    connect(beginButton, SIGNAL(pressed()), this, SLOT(moveToGameScreen()));
 }
 void MainWindow::setStylesForTitleScreen()
 {
@@ -215,47 +215,6 @@ void MainWindow::setStylesForTitleScreen()
 
     roundsEdit -> setStyleSheet(lineEditStyle);
 }
-
-void MainWindow::beginGame()
-{
-    bool canIMoveOn = saveEditedInput();
-    if (canIMoveOn == true)
-    {
-        removeLayoutForTitleScreen();
-        setLayoutForGameScreen();
-        setStylesForGameScreen();
-    }
-    else if (roundsEdit->text().toInt(nullptr, 10) > 100)
-        QMessageBox::warning(this, "Too big input", "Don't you think this input is a little too big? You don't want to spend"
-                                                    " too much time here!");
-    else
-        QMessageBox::critical(this, "Invalid input", "Input you've entered is invalid");
-}
-bool MainWindow::saveEditedInput()
-{
-    //save input from text edit into std::string
-    std::string lineInput = roundsEdit->text().toStdString();
-    int length = lineInput.length();
-    bool isItValid = true, ok;
-
-    for (int i=0; i<length; i++)
-    {
-        if (lineInput[i] < 48 || lineInput[i] > 57)
-        {
-            isItValid = false;
-            break;
-        }
-    }
-
-    if (lineInput[0] == '0' || lineInput == "")
-        isItValid = false;
-
-    if (isItValid == true && roundsEdit->text().toInt(&ok, 10) <= 100)
-        return true;
-    else
-        return false;
-}
-
 void MainWindow::removeLayoutForTitleScreen()
 {
     //delete buttons
@@ -315,14 +274,12 @@ void MainWindow::setLayoutForGameScreen()
     userScoreLcd -> display(0);
     compScoreLcd -> display(0);
 
-    vBetweenLcdSpacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
     pointsMainLayout = new QVBoxLayout();
-    pointsMainLayout -> insertWidget(0, compScoreLabel);
-    pointsMainLayout -> insertWidget(1, compScoreLcd);
-    pointsMainLayout -> insertSpacerItem(2, vBetweenLcdSpacer);
-    pointsMainLayout -> insertWidget(3, userScoreLcd);
-    pointsMainLayout -> insertWidget(4, userScoreLabel);
+    pointsMainLayout -> insertWidget(0, compScoreLabel, 3);
+    pointsMainLayout -> insertWidget(1, compScoreLcd, 2);
+    pointsMainLayout -> insertStretch(2, 2);
+    pointsMainLayout -> insertWidget(3, userScoreLcd, 2);
+    pointsMainLayout -> insertWidget(4, userScoreLabel, 3);
 
     //set layout with icons
     rockButton = new QPushButton(QIcon(QPixmap(":/img/images/rock.png")), "");
@@ -336,9 +293,9 @@ void MainWindow::setLayoutForGameScreen()
     scissorsButton -> setIconSize(QSize(100,100));
 
     iconsLayout = new QHBoxLayout();
-    iconsLayout -> insertWidget(0, rockButton);
-    iconsLayout -> insertWidget(1, paperButton);
-    iconsLayout -> insertWidget(2, scissorsButton);
+    iconsLayout -> insertWidget(0, rockButton, 1);
+    iconsLayout -> insertWidget(1, paperButton, 1);
+    iconsLayout -> insertWidget(2, scissorsButton, 1);
 
     //set layout with main game screen
     userLabel = new QLabel();
@@ -355,28 +312,21 @@ void MainWindow::setLayoutForGameScreen()
     compChoiceLabel = new QLabel("");
     compChoiceLabel -> setMinimumSize(100, 100);
     compChoiceLabel -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    loadSpacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-    vTopSpacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    vBottomSpacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
     gameInterfaceLayout = new QVBoxLayout();
-    gameInterfaceLayout -> insertWidget(0, compLabel);
-    gameInterfaceLayout -> insertSpacerItem(1, vTopSpacer);
-    gameInterfaceLayout -> insertWidget(2, compChoiceLabel);
-    gameInterfaceLayout -> insertSpacerItem(3, loadSpacer);
-    gameInterfaceLayout -> insertWidget(4, userChoiceLabel);
-    gameInterfaceLayout -> insertSpacerItem(5, vBottomSpacer);
-    gameInterfaceLayout -> insertWidget(6, userLabel);
+    gameInterfaceLayout -> insertWidget(0, compLabel, 3);
+    gameInterfaceLayout -> insertStretch(1, 2);
+    gameInterfaceLayout -> insertWidget(2, compChoiceLabel, 3);
+    gameInterfaceLayout -> insertStretch(3, 2);
+    gameInterfaceLayout -> insertWidget(4, userChoiceLabel, 3);
+    gameInterfaceLayout -> insertStretch(5, 2);
+    gameInterfaceLayout -> insertWidget(6, userLabel, 3);
 
     //set main body layout
-    hLeftSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-    hRightSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
     mainBodyLayout = new QHBoxLayout();
-    mainBodyLayout -> insertSpacerItem(0, hLeftSpacer);
+    mainBodyLayout -> insertStretch(0);
     mainBodyLayout -> insertLayout(1, gameInterfaceLayout);
-    mainBodyLayout -> insertSpacerItem(2, hRightSpacer);
+    mainBodyLayout -> insertStretch(2);
 
     //set layout that is right from user's and comp's points
     rightSideOfWindowLayout = new QVBoxLayout();
@@ -403,7 +353,9 @@ void MainWindow::setStylesForGameScreen()
 
     QString iconsStyle = "QPushButton { background-color: rgb(0, 169, 165);"
                          "font-size: 30px; color: white;"
-                         "border-radius: 14px; }"
+                         "border-radius: 14px; "
+                         "padding: 2px;"
+                         "}"
                          "QPushButton:hover {"
                          "background-color: rgb(0, 143, 140);"
                          "}";
@@ -420,7 +372,56 @@ void MainWindow::setStylesForGameScreen()
     compChoiceLabel -> setStyleSheet(iconsInLabelsStyle);
 }
 
+//GAME MECHANICS FUNTIONS
+void MainWindow::moveToGameScreen()
+{
+    bool canIMoveOn = saveEditedInput();
+    if (canIMoveOn == true)
+    {
+        removeLayoutForTitleScreen();
+        setLayoutForGameScreen();
+        setStylesForGameScreen();
 
+        beginGame();
+    }
+    else if (roundsEdit->text().toInt(nullptr, 10) > 100)
+        QMessageBox::warning(this, "Too big input", "Don't you think this input is a little too big? You don't want to spend"
+                                                    " too much time here!");
+    else
+        QMessageBox::critical(this, "Invalid input", "Input you've entered is invalid");
+}
+bool MainWindow::saveEditedInput()
+{
+    //save input from text edit into std::string
+    std::string lineInput = roundsEdit->text().toStdString();
+    int length = lineInput.length();
+    bool isItValid = true, ok;
+
+    for (int i=0; i<length; i++)
+    {
+        if (lineInput[i] < 48 || lineInput[i] > 57)
+        {
+            isItValid = false;
+            break;
+        }
+    }
+
+    if (lineInput[0] == '0' || lineInput == "")
+        isItValid = false;
+
+    if (isItValid == true && roundsEdit->text().toInt(&ok, 10) <= 100)
+        return true;
+    else
+        return false;
+}
+void MainWindow::beginGame()
+{
+    int counter = 0;
+    while (counter < numberOfRounds)
+    {
+    
+    }
+}
 
 
 
