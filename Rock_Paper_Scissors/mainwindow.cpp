@@ -370,8 +370,11 @@ void MainWindow::setStylesForGameScreen()
 
     userLabel -> setStyleSheet(iconsInLabelsStyle);
     compLabel -> setStyleSheet(iconsInLabelsStyle);
-    userChoiceLabel -> setStyleSheet(iconsInLabelsStyle);
-    compChoiceLabel -> setStyleSheet(iconsInLabelsStyle);
+
+    QString iconsInChoiceLabelsStyle = "background-color: rgb(0, 169, 165); font-size: 30px; color: white; border-radius: 14px; padding: 5px;";
+
+    userChoiceLabel -> setStyleSheet(iconsInChoiceLabelsStyle);
+    compChoiceLabel -> setStyleSheet(iconsInChoiceLabelsStyle);
 }
 
 //GAME MECHANICS FUNCTIONS
@@ -386,18 +389,8 @@ void MainWindow::moveToGameScreen()
         removeLayoutForTitleScreen();
         setLayoutForGameScreen();
         setStylesForGameScreen();
-        srand(time(NULL));
 
-        connect(rockButton, SIGNAL(clicked()), this, SLOT(user_chose_rock()));
-        connect(paperButton, SIGNAL(clicked()), this, SLOT(user_chose_paper()));
-        connect(scissorsButton, SIGNAL(clicked()), this, SLOT(user_chose_scissors()));
-
-        if (counter == numberOfRounds)
-        {
-            QMessageBox::information(this, "GAME IS OVER", "The game has ended.");
-            close();
-        }
-
+        beginGame();
     }
     else if (roundsEdit->text().toInt(nullptr, 10) > 100)
         QMessageBox::warning(this, "Too big input", "Don't you think this input is a little too big? You don't want to spend"
@@ -430,28 +423,48 @@ bool MainWindow::saveEditedInput()
         return false;
 }
 
+void MainWindow::beginGame()
+{
+    srand(time(NULL));
+
+    connect(rockButton, SIGNAL(clicked()), this, SLOT(user_chose_rock()));
+    connect(paperButton, SIGNAL(clicked()), this, SLOT(user_chose_paper()));
+    connect(scissorsButton, SIGNAL(clicked()), this, SLOT(user_chose_scissors()));
+}
+
 void MainWindow::user_chose_rock()
 {
     int compChoice = rand() % 3;
     userChoiceLabel -> setPixmap(QPixmap(":/img/images/rock.png"));
+    userChoiceLabel -> setScaledContents(true);
+    userChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
     if (compChoice == 0)
     {
         compChoiceLabel -> setPixmap(QPixmap(":/img/images/rock.png"));
+        compChoiceLabel -> setScaledContents(true);
+        compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
         counter++;
         QMessageBox::information(this, "DRAW", "Nobody wins in this round");
     }
     else if (compChoice == 1)
     {
         compChoiceLabel -> setPixmap(QPixmap(":/img/images/paper.png"));
+        compChoiceLabel -> setScaledContents(true);
+        compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
         QMessageBox::information(this, "FAILURE", "You lost in this round");
+
         counter++;
         compScoreLcd -> display(compScoreLcd->value()+1);
     }
     else if (compChoice == 2)
     {
         compChoiceLabel -> setPixmap(QPixmap(":/img/images/scissors.png"));
+        compChoiceLabel -> setScaledContents(true);
+        compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
         QMessageBox::information(this, "VICTORY", "You won in this round");
+
         counter++;
         userScoreLcd -> display(userScoreLcd->value()+1);
     }
