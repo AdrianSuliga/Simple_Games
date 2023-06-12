@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <thread>
+#include <time.h>
+#include <cstdlib>
 #include <QPushButton>
 #include <QMessageBox>
 
@@ -372,17 +374,30 @@ void MainWindow::setStylesForGameScreen()
     compChoiceLabel -> setStyleSheet(iconsInLabelsStyle);
 }
 
-//GAME MECHANICS FUNTIONS
+//GAME MECHANICS FUNCTIONS
 void MainWindow::moveToGameScreen()
 {
     bool canIMoveOn = saveEditedInput();
     if (canIMoveOn == true)
     {
+        numberOfRounds = roundsEdit->text().toInt(nullptr, 10);
+        counter = 0;
+
         removeLayoutForTitleScreen();
         setLayoutForGameScreen();
         setStylesForGameScreen();
+        srand(time(NULL));
 
-        beginGame();
+        connect(rockButton, SIGNAL(clicked()), this, SLOT(user_chose_rock()));
+        connect(paperButton, SIGNAL(clicked()), this, SLOT(user_chose_paper()));
+        connect(scissorsButton, SIGNAL(clicked()), this, SLOT(user_chose_scissors()));
+
+        if (counter == numberOfRounds)
+        {
+            QMessageBox::information(this, "GAME IS OVER", "The game has ended.");
+            close();
+        }
+
     }
     else if (roundsEdit->text().toInt(nullptr, 10) > 100)
         QMessageBox::warning(this, "Too big input", "Don't you think this input is a little too big? You don't want to spend"
@@ -414,14 +429,35 @@ bool MainWindow::saveEditedInput()
     else
         return false;
 }
-void MainWindow::beginGame()
+
+void MainWindow::user_chose_rock()
 {
-    int counter = 0;
-    while (counter < numberOfRounds)
+    int compChoice = rand() % 3;
+    userChoiceLabel -> setPixmap(QPixmap(":/img/images/rock.png"));
+
+    if (compChoice == 0)
     {
-    
+        compChoiceLabel -> setPixmap(QPixmap(":/img/images/rock.png"));
+        counter++;
+        QMessageBox::information(this, "DRAW", "Nobody wins in this round");
+    }
+    else if (compChoice == 1)
+    {
+        compChoiceLabel -> setPixmap(QPixmap(":/img/images/paper.png"));
+        QMessageBox::information(this, "FAILURE", "You lost in this round");
+        counter++;
+        compScoreLcd -> display(compScoreLcd->value()+1);
+    }
+    else if (compChoice == 2)
+    {
+        compChoiceLabel -> setPixmap(QPixmap(":/img/images/scissors.png"));
+        QMessageBox::information(this, "VICTORY", "You won in this round");
+        counter++;
+        userScoreLcd -> display(userScoreLcd->value()+1);
     }
 }
+void MainWindow::user_chose_paper() {int userChoice = 1;}
+void MainWindow::user_chose_scissors() {int userChoice = 2;}
 
 
 
