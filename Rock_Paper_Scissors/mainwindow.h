@@ -33,11 +33,14 @@ private slots:
     //GAME MECHANICS FUNCTIONS
     void moveToGameScreen();
     bool saveEditedInput();
-    void beginGame();
+
+    void user_chose_paper();
+    void user_chose_rock();
+    void user_chose_scissors();
 
 private:
     Ui::MainWindow *ui;
-    int numberOfRounds;
+    int numberOfRounds, counter;
 
     //TITLE SCREEN
     QPushButton *quitButton, *beginButton;
