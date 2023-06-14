@@ -29,11 +29,13 @@ private slots:
     //GAME SCREEN FUNCTIONS
     void setLayoutForGameScreen();
     void setStylesForGameScreen();
+    void removeLayoutForGameScreen();
 
     //GAME MECHANICS FUNCTIONS
     void moveToGameScreen();
     bool saveEditedInput();
-
+    void beginGame();
+    void endGame();
     void user_chose_paper();
     void user_chose_rock();
     void user_chose_scissors();
