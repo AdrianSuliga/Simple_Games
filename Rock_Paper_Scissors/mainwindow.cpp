@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     setLayoutForTitleScreen();
     setStylesForTitleScreen();
 }
-//std::this_thread::sleep_for(std::chrono::seconds(2));
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -325,14 +325,14 @@ void MainWindow::setLayoutForGameScreen()
     gameInterfaceLayout -> insertWidget(6, userLabel, 3);
 
     //set main body layout
-    mainBodyLayout = new QHBoxLayout();
-    mainBodyLayout -> insertStretch(0);
-    mainBodyLayout -> insertLayout(1, gameInterfaceLayout);
-    mainBodyLayout -> insertStretch(2);
+    gameBodyLayout = new QHBoxLayout();
+    gameBodyLayout -> insertStretch(0);
+    gameBodyLayout -> insertLayout(1, gameInterfaceLayout);
+    gameBodyLayout -> insertStretch(2);
 
     //set layout that is right from user's and comp's points
     rightSideOfWindowLayout = new QVBoxLayout();
-    rightSideOfWindowLayout -> insertLayout(0, mainBodyLayout);
+    rightSideOfWindowLayout -> insertLayout(0, gameBodyLayout);
     rightSideOfWindowLayout -> insertLayout(1, iconsLayout);
 
     //main window layout
@@ -375,6 +375,31 @@ void MainWindow::setStylesForGameScreen()
 
     userChoiceLabel -> setStyleSheet(iconsInChoiceLabelsStyle);
     compChoiceLabel -> setStyleSheet(iconsInChoiceLabelsStyle);
+}
+void MainWindow::removeLayoutForGameScreen()
+{
+    //deleting buttons
+    delete rockButton;
+    delete paperButton;
+    delete scissorsButton;
+    //deleting labels
+    delete userScoreLabel;
+    delete compScoreLabel;
+    delete userLabel;
+    delete compLabel;
+    delete userChoiceLabel;
+    delete compChoiceLabel;
+    //deleting lcd displayers
+    delete userScoreLcd;
+    delete compScoreLcd;
+    //deleting layouts
+    delete pointsMainLayout;
+    delete iconsLayout;
+    delete gameInterfaceLayout;
+    delete gameBodyLayout;
+    delete rightSideOfWindowLayout;
+
+    delete ui->centralwidget->layout();
 }
 
 //GAME MECHANICS FUNCTIONS
@@ -444,9 +469,11 @@ void MainWindow::user_chose_rock()
         compChoiceLabel -> setPixmap(QPixmap(":/img/images/rock.png"));
         compChoiceLabel -> setScaledContents(true);
         compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        QMessageBox::information(this, "DRAW", "Nobody wins in this round");
 
         counter++;
-        QMessageBox::information(this, "DRAW", "Nobody wins in this round");
+        if (counter == numberOfRounds)
+            endGame();
     }
     else if (compChoice == 1)
     {
@@ -456,7 +483,9 @@ void MainWindow::user_chose_rock()
         QMessageBox::information(this, "FAILURE", "You lost in this round");
 
         counter++;
-        compScoreLcd -> display(compScoreLcd->value()+1);
+        compScoreLcd -> display(compScoreLcd->intValue() + 1);
+        if (counter == numberOfRounds)
+            endGame();
     }
     else if (compChoice == 2)
     {
@@ -466,29 +495,108 @@ void MainWindow::user_chose_rock()
         QMessageBox::information(this, "VICTORY", "You won in this round");
 
         counter++;
-        userScoreLcd -> display(userScoreLcd->value()+1);
+        userScoreLcd -> display(userScoreLcd->intValue() + 1);
+        if (counter == numberOfRounds)
+            endGame();
     }
 }
-void MainWindow::user_chose_paper() {int userChoice = 1;}
-void MainWindow::user_chose_scissors() {int userChoice = 2;}
+void MainWindow::user_chose_paper()
+{
+    int compChoice = rand() % 3;
+    userChoiceLabel -> setPixmap(QPixmap(":/img/images/paper.png"));
+    userChoiceLabel -> setScaledContents(true);
+    userChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
+    if (compChoice == 0)
+    {
+        compChoiceLabel -> setPixmap(QPixmap(":/img/images/rock.png"));
+        compChoiceLabel -> setScaledContents(true);
+        compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        QMessageBox::information(this, "VICTORY", "You won in this round");
 
+        counter++;
+        userScoreLcd -> display(userScoreLcd->intValue() + 1);
+        if (counter == numberOfRounds)
+            endGame();
+    }
+    else if (compChoice == 1)
+    {
+        compChoiceLabel -> setPixmap(QPixmap(":/img/images/paper.png"));
+        compChoiceLabel -> setScaledContents(true);
+        compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        QMessageBox::information(this, "DRAW", "Nobody wins in this round");
 
+        counter++;
+        if (counter == numberOfRounds)
+            endGame();
+    }
+    else if (compChoice == 2)
+    {
+        compChoiceLabel -> setPixmap(QPixmap(":/img/images/scissors.png"));
+        compChoiceLabel -> setScaledContents(true);
+        compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        QMessageBox::information(this, "FAILURE", "You lost in this round");
 
+        counter++;
+        compScoreLcd -> display(compScoreLcd->intValue() + 1);
+        if (counter == numberOfRounds)
+            endGame();
+    }
+}
+void MainWindow::user_chose_scissors()
+{
+    int compChoice = rand() % 3;
+    userChoiceLabel -> setPixmap(QPixmap(":/img/images/scissors.png"));
+    userChoiceLabel -> setScaledContents(true);
+    userChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
+    if (compChoice == 0)
+    {
+        compChoiceLabel -> setPixmap(QPixmap(":/img/images/rock.png"));
+        compChoiceLabel -> setScaledContents(true);
+        compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        QMessageBox::information(this, "FAILURE", "You lost in this round");
 
+        counter++;
+        compScoreLcd -> display(compScoreLcd->intValue() + 1);
+        if (counter == numberOfRounds)
+            endGame();
+    }
+    else if (compChoice == 1)
+    {
+        compChoiceLabel -> setPixmap(QPixmap(":/img/images/paper.png"));
+        compChoiceLabel -> setScaledContents(true);
+        compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        QMessageBox::information(this, "VICTORY", "You won in this round");
 
+        counter++;
+        userScoreLcd -> display(userScoreLcd->intValue() + 1);
+        if (counter == numberOfRounds)
+            endGame();
+    }
+    else if (compChoice == 2)
+    {
+        compChoiceLabel -> setPixmap(QPixmap(":/img/images/scissors.png"));
+        compChoiceLabel -> setScaledContents(true);
+        compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        QMessageBox::information(this, "DRAW", "Nobody wins in this round");
 
+        counter++;
+        if (counter == numberOfRounds)
+            endGame();
+    }
+}
 
+void MainWindow::endGame()
+{
+    if (userScoreLcd->value() == compScoreLcd->value())
+        QMessageBox::information(this, "DRAW", "The game is over, unfortunately nobody was able to win!");
+    else if (compScoreLcd->value() > userScoreLcd->value())
+        QMessageBox::information(this, "DEFEAT", "The game is over, you lost my dear blueberry!");
+    else if (compScoreLcd->value() < userScoreLcd->value())
+        QMessageBox::information(this, "VICTORY", "The game is over, you won! (probably you cheated like in Subway Surfers)");
 
-
-
-
-
-
-
-
-
-
-
-
+    removeLayoutForGameScreen();
+    setLayoutForTitleScreen();
+    setStylesForTitleScreen();
+}
