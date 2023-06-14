@@ -12,8 +12,8 @@ I am working on title screen where player is informed about the rules and can ch
 
 After launching an app user sees the following interface:
 
-![Screenshot of title screen](/Rock_Paper_Scissors/Screenshots/titleScreen.png)
+![Screenshot of title screen](/Rock_Paper_Scissors/Screenshots/TitleScreen.png)
 
 Having chosen number of rounds user wishes to play, the game starts and you can see this screen:
 
-![Screenshot_of_game_screen](/Rock_Paper_Scissors/Screenshots/gameScreen.png)
+![Screenshot_of_game_screen](/Rock_Paper_Scissors/Screenshots/GameScreen.png)
