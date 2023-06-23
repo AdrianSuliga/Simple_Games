@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setWindowTitle("Rock, Paper, Scissors");
     setLayoutForTitleScreen();
     setStylesForTitleScreen();
 }
@@ -302,10 +303,14 @@ void MainWindow::setLayoutForGameScreen()
     //set layout with main game screen
     userLabel = new QLabel();
     userLabel -> setPixmap(QPixmap(":/img/images/user.png"));
+    userLabel -> setScaledContents(true);
+    userLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     userLabel -> setMinimumSize(100, 100);
     userLabel -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     compLabel = new QLabel();
     compLabel -> setPixmap(QPixmap(":/img/images/computer.png"));
+    compLabel -> setScaledContents(true);
+    compLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     compLabel -> setMinimumSize(100, 100);
     compLabel -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     userChoiceLabel = new QLabel("");
@@ -469,35 +474,30 @@ void MainWindow::user_chose_rock()
         compChoiceLabel -> setPixmap(QPixmap(":/img/images/rock.png"));
         compChoiceLabel -> setScaledContents(true);
         compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-        QMessageBox::information(this, "DRAW", "Nobody wins in this round");
-
-        counter++;
-        if (counter == numberOfRounds)
-            endGame();
+        eR = new End_Round(this, 2);
+        eR -> setModal(true);
+        eR -> show();
+        connect(eR, SIGNAL(accepted()), this, SLOT(thereWasDraw()));
     }
     else if (compChoice == 1)
     {
         compChoiceLabel -> setPixmap(QPixmap(":/img/images/paper.png"));
         compChoiceLabel -> setScaledContents(true);
         compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-        QMessageBox::information(this, "FAILURE", "You lost in this round");
-
-        counter++;
-        compScoreLcd -> display(compScoreLcd->intValue() + 1);
-        if (counter == numberOfRounds)
-            endGame();
+        eR = new End_Round(this, 1);
+        eR -> setModal(true);
+        eR -> show();
+        connect(eR, SIGNAL(accepted()), this, SLOT(userLostRound()));
     }
     else if (compChoice == 2)
     {
         compChoiceLabel -> setPixmap(QPixmap(":/img/images/scissors.png"));
         compChoiceLabel -> setScaledContents(true);
         compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-        QMessageBox::information(this, "VICTORY", "You won in this round");
-
-        counter++;
-        userScoreLcd -> display(userScoreLcd->intValue() + 1);
-        if (counter == numberOfRounds)
-            endGame();
+        eR = new End_Round(this, 0);
+        eR -> setModal(true);
+        eR -> show();
+        connect(eR, SIGNAL(accepted()), this, SLOT(userWonRound()));
     }
 }
 void MainWindow::user_chose_paper()
@@ -512,35 +512,30 @@ void MainWindow::user_chose_paper()
         compChoiceLabel -> setPixmap(QPixmap(":/img/images/rock.png"));
         compChoiceLabel -> setScaledContents(true);
         compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-        QMessageBox::information(this, "VICTORY", "You won in this round");
-
-        counter++;
-        userScoreLcd -> display(userScoreLcd->intValue() + 1);
-        if (counter == numberOfRounds)
-            endGame();
+        eR = new End_Round(this, 0);
+        eR -> setModal(true);
+        eR -> show();
+        connect(eR, SIGNAL(accepted()), this, SLOT(userWonRound()));
     }
     else if (compChoice == 1)
     {
         compChoiceLabel -> setPixmap(QPixmap(":/img/images/paper.png"));
         compChoiceLabel -> setScaledContents(true);
         compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-        QMessageBox::information(this, "DRAW", "Nobody wins in this round");
-
-        counter++;
-        if (counter == numberOfRounds)
-            endGame();
+        eR = new End_Round(this, 2);
+        eR -> setModal(true);
+        eR -> show();
+        connect(eR, SIGNAL(accepted()), this, SLOT(thereWasDraw()));
     }
     else if (compChoice == 2)
     {
         compChoiceLabel -> setPixmap(QPixmap(":/img/images/scissors.png"));
         compChoiceLabel -> setScaledContents(true);
         compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-        QMessageBox::information(this, "FAILURE", "You lost in this round");
-
-        counter++;
-        compScoreLcd -> display(compScoreLcd->intValue() + 1);
-        if (counter == numberOfRounds)
-            endGame();
+        eR = new End_Round(this, 1);
+        eR -> setModal(true);
+        eR -> show();
+        connect(eR, SIGNAL(accepted()), this, SLOT(userLostRound()));
     }
 }
 void MainWindow::user_chose_scissors()
@@ -555,36 +550,52 @@ void MainWindow::user_chose_scissors()
         compChoiceLabel -> setPixmap(QPixmap(":/img/images/rock.png"));
         compChoiceLabel -> setScaledContents(true);
         compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-        QMessageBox::information(this, "FAILURE", "You lost in this round");
-
-        counter++;
-        compScoreLcd -> display(compScoreLcd->intValue() + 1);
-        if (counter == numberOfRounds)
-            endGame();
+        eR = new End_Round(this, 1);
+        eR -> setModal(true);
+        eR -> show();
+        connect(eR, SIGNAL(accepted()), this, SLOT(userLostRound()));
     }
     else if (compChoice == 1)
     {
         compChoiceLabel -> setPixmap(QPixmap(":/img/images/paper.png"));
         compChoiceLabel -> setScaledContents(true);
         compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-        QMessageBox::information(this, "VICTORY", "You won in this round");
-
-        counter++;
-        userScoreLcd -> display(userScoreLcd->intValue() + 1);
-        if (counter == numberOfRounds)
-            endGame();
+        eR = new End_Round(this, 0);
+        eR -> setModal(true);
+        eR -> show();
+        connect(eR, SIGNAL(accepted()), this, SLOT(userWonRound()));
     }
     else if (compChoice == 2)
     {
         compChoiceLabel -> setPixmap(QPixmap(":/img/images/scissors.png"));
         compChoiceLabel -> setScaledContents(true);
         compChoiceLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-        QMessageBox::information(this, "DRAW", "Nobody wins in this round");
-
-        counter++;
-        if (counter == numberOfRounds)
-            endGame();
+        eR = new End_Round(this, 2);
+        eR -> setModal(true);
+        eR -> show();
+        connect(eR, SIGNAL(accepted()), this, SLOT(thereWasDraw()));
     }
+}
+
+void MainWindow::userWonRound()
+{
+    counter++;
+    userScoreLcd -> display(userScoreLcd->intValue() + 1);
+    if (counter == numberOfRounds)
+        endGame();
+}
+void MainWindow::userLostRound()
+{
+    counter++;
+    compScoreLcd -> display(compScoreLcd->intValue() + 1);
+    if (counter == numberOfRounds)
+        endGame();
+}
+void MainWindow::thereWasDraw()
+{
+    counter++;
+    if (counter == numberOfRounds)
+        endGame();
 }
 
 void MainWindow::endGame()
@@ -592,7 +603,7 @@ void MainWindow::endGame()
     if (userScoreLcd->value() == compScoreLcd->value())
         QMessageBox::information(this, "DRAW", "The game is over, unfortunately nobody was able to win!");
     else if (compScoreLcd->value() > userScoreLcd->value())
-        QMessageBox::information(this, "DEFEAT", "The game is over, you lost my dear blueberry!");
+        QMessageBox::information(this, "DEFEAT", "The game is over, you lost, my dear blueberry!");
     else if (compScoreLcd->value() < userScoreLcd->value())
         QMessageBox::information(this, "VICTORY", "The game is over, you won! (probably you cheated like in Subway Surfers)");
 
@@ -600,3 +611,21 @@ void MainWindow::endGame()
     setLayoutForTitleScreen();
     setStylesForTitleScreen();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
