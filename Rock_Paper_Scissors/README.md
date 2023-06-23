@@ -17,3 +17,5 @@ After launching an app user sees the following interface:
 Having chosen number of rounds user wishes to play, the game starts and you can see this screen:
 
 ![Screenshot_of_game_screen](/Rock_Paper_Scissors/Screenshots/GameScreen.png)
+
+I also added customized message boxes which inform user about result of each round:
