@@ -10,6 +10,7 @@
 #include <QLayout>
 
 #include "end_round.h"
+#include "end_game.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -40,7 +41,7 @@ private slots:
     void userLostRound();
     void thereWasDraw();
     void beginGame();
-    void endGame();
+    void announceResults();
     void user_chose_paper();
     void user_chose_rock();
     void user_chose_scissors();
@@ -69,5 +70,6 @@ private:
 
     //CUSTOM MESSAGE BOXES
     End_Round *eR;
+    End_Game *eG;
 };
 #endif // MAINWINDOW_H
