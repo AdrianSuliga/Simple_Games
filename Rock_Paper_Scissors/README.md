@@ -20,6 +20,6 @@ Having chosen number of rounds user wishes to play, the game starts and you can 
 
 I also added customized message boxes which inform user about result of each round:
 
-![Screenshot_of_victory_message](/Rock_Paper_Scissors/Screenshots/VictoryScreen.png)
-![Screenshot_of_failure_message](/Rock_Paper_Scissors/Screenshots/failure.png)
 ![Screenshot_of_draw_message](/Rock_Paper_Scissors/Screenshots/DrawScreen.png)
+![Screenshot_of_failure_message](/Rock_Paper_Scissors/Screenshots/failure.png)
+![Screenshot_of_victory_message](/Rock_Paper_Scissors/Screenshots/VictoryScreen.png)
