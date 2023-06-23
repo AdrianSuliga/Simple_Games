@@ -7,8 +7,7 @@ It is a simple game where you play rock, paper, scissors against a computer. You
 
 Download current version of this game [here](https://github.com/AdrianSuliga/Simple_Games/releases/tag/R_S_P_5).
 
-## Progress
-I am working on title screen where player is informed about the rules and can choose number of rounds that he wants to play. I need to position beginButton better and learn how to add images to my program.
+## Description
 
 After launching an app user sees the following interface:
 
@@ -23,3 +22,5 @@ I also added customized message boxes which inform user about result of each rou
 ![Screenshot_of_draw_message](/Rock_Paper_Scissors/Screenshots/DrawScreen.png)
 ![Screenshot_of_failure_message](/Rock_Paper_Scissors/Screenshots/failure.png)
 ![Screenshot_of_victory_message](/Rock_Paper_Scissors/Screenshots/VictoryScreen.png)
+
+And those that inform about result of the game:
