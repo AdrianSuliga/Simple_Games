@@ -9,6 +9,8 @@
 #include <QLCDNumber>
 #include <QLayout>
 
+#include "end_round.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -34,6 +36,9 @@ private slots:
     //GAME MECHANICS FUNCTIONS
     void moveToGameScreen();
     bool saveEditedInput();
+    void userWonRound();
+    void userLostRound();
+    void thereWasDraw();
     void beginGame();
     void endGame();
     void user_chose_paper();
@@ -61,5 +66,8 @@ private:
     QLabel *userScoreLabel, *compScoreLabel, *userLabel, *compLabel, *userChoiceLabel,
             *compChoiceLabel;
     QLCDNumber *userScoreLcd, *compScoreLcd;
+
+    //CUSTOM MESSAGE BOXES
+    End_Round *eR;
 };
 #endif // MAINWINDOW_H
