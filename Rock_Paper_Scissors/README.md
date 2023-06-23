@@ -24,3 +24,7 @@ I also added customized message boxes which inform user about result of each rou
 ![Screenshot_of_victory_message](/Rock_Paper_Scissors/Screenshots/VictoryScreen.png)
 
 And those that inform about result of the game:
+
+![Screenshot_of_draw_message_that_ends_the_game](/Rock_Paper_Scissors/Screenshots/BoredomScreenshot.png)
+![Screenshot_of_failed_game](/Rock_Paper_Scissors/Screenshots/DefeatScreen.png)
+![Screenshot_of_won_game(/Rock_Paper_Scissors/Screenshots/WinScreenshot.png)
