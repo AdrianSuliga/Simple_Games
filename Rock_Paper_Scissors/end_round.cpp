@@ -61,6 +61,7 @@ void End_Round::setLayoutForVictoryRoundScreen()
     setAttribute(Qt::WA_DeleteOnClose);
     connect(dialogButton, SIGNAL(clicked()), this, SLOT(close()));
 }
+
 void End_Round::setLayoutForFailureRoundScreen()
 {
     setWindowTitle("YOU LOST THIS ROUND");
@@ -71,8 +72,8 @@ void End_Round::setLayoutForFailureRoundScreen()
     iconLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
     infoLabel = new QLabel("Unfortunately, you lost this round!");
-    infoLabel -> setWordWrap(true);
     infoLabel -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    infoLabel -> setWordWrap(true);
 
     dialogButton = new QPushButton("OK");
     dialogButton -> setMinimumSize(80, 30);
@@ -96,6 +97,7 @@ void End_Round::setLayoutForFailureRoundScreen()
     setAttribute(Qt::WA_DeleteOnClose);
     connect(dialogButton, SIGNAL(clicked()), this, SLOT(close()));
 }
+
 void End_Round::setLayoutForDrawRoundScreen()
 {
     setWindowTitle("NOBODY WON THIS ROUND");
@@ -105,9 +107,9 @@ void End_Round::setLayoutForDrawRoundScreen()
     iconLabel -> setScaledContents(true);
     iconLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-    infoLabel = new QLabel("Nobody was able to win this round!");
-    infoLabel -> setWordWrap(true);
+    infoLabel = new QLabel("Nobody was able to won this round!");
     infoLabel -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    infoLabel -> setWordWrap(true);
 
     dialogButton = new QPushButton("OK");
     dialogButton -> setMinimumSize(80, 30);
@@ -140,7 +142,7 @@ void End_Round::setStylesForEndRoundScreen()
     iconLabel -> setStyleSheet(iconStyle);
 
     QString dialogButtonStyle = "QPushButton { background-color: rgb(0, 169, 165);"
-                                "font-size: 16px; color: white;"
+                                "font-size: 12px; color: white;"
                                 "border-radius: 14px;"
                                 "font-weight: bold;}"
                                 "QPushButton:hover {"
