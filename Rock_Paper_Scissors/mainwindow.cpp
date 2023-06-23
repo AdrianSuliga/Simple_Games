@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <thread>
+#include <chrono>
 #include <time.h>
 #include <cstdlib>
 #include <QPushButton>
@@ -582,36 +583,40 @@ void MainWindow::userWonRound()
     counter++;
     userScoreLcd -> display(userScoreLcd->intValue() + 1);
     if (counter == numberOfRounds)
-        endGame();
+        announceResults();
 }
 void MainWindow::userLostRound()
 {
     counter++;
     compScoreLcd -> display(compScoreLcd->intValue() + 1);
     if (counter == numberOfRounds)
-        endGame();
+        announceResults();
 }
 void MainWindow::thereWasDraw()
 {
     counter++;
     if (counter == numberOfRounds)
-        endGame();
+        announceResults();
 }
 
-void MainWindow::endGame()
+void MainWindow::announceResults()
 {
+    int result = -1;
     if (userScoreLcd->value() == compScoreLcd->value())
-        QMessageBox::information(this, "DRAW", "The game is over, unfortunately nobody was able to win!");
+        result = 2;
     else if (compScoreLcd->value() > userScoreLcd->value())
-        QMessageBox::information(this, "DEFEAT", "The game is over, you lost, my dear blueberry!");
+        result = 1;
     else if (compScoreLcd->value() < userScoreLcd->value())
-        QMessageBox::information(this, "VICTORY", "The game is over, you won! (probably you cheated like in Subway Surfers)");
+        result = 0;
 
-    removeLayoutForGameScreen();
-    setLayoutForTitleScreen();
-    setStylesForTitleScreen();
+    eG = new End_Game(this, result);
+    eG -> setModal(true);
+    eG -> show();
+
+    connect(eG, SIGNAL(accepted()), this, SLOT(removeLayoutForGameScreen()));
+    connect(eG, SIGNAL(accepted()), this, SLOT(setLayoutForTitleScreen()));
+    connect(eG, SIGNAL(accepted()), this, SLOT(setStylesForTitleScreen()));
 }
-
 
 
 
