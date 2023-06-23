@@ -5,5 +5,8 @@
         <file>images/scissors.png</file>
         <file>images/user.png</file>
         <file>images/computer.png</file>
+        <file>images/medal_VR.png</file>
+        <file>images/skull_LR.png</file>
+        <file>images/draw_DR.png</file>
     </qresource>
 </RCC>
