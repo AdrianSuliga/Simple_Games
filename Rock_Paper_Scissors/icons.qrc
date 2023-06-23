@@ -8,5 +8,8 @@
         <file>images/medal_VR.png</file>
         <file>images/skull_LR.png</file>
         <file>images/draw_DR.png</file>
+        <file>images/boredom.png</file>
+        <file>images/defeat.png</file>
+        <file>images/trophy.png</file>
     </qresource>
 </RCC>
