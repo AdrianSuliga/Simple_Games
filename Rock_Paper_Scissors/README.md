@@ -27,4 +27,4 @@ And those that inform about result of the game:
 
 ![Screenshot_of_draw_message_that_ends_the_game](/Rock_Paper_Scissors/Screenshots/BoredomScreenshot.png)
 ![Screenshot_of_failed_game](/Rock_Paper_Scissors/Screenshots/DefeatScreen.png)
-![Screenshot_of_won_game(/Rock_Paper_Scissors/Screenshots/WinScreenshot.png)
+![Screenshot_of_won_game](/Rock_Paper_Scissors/Screenshots/WinScreenshot.png)
