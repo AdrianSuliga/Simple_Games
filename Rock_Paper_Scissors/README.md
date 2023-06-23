@@ -5,7 +5,7 @@ It is a simple game where you play rock, paper, scissors against a computer. You
 - You lost (show total score)
 - Game ended in a draw (show total score)
 
-Download current version of this game [here](https://github.com/AdrianSuliga/Simple_Games/releases/tag/R_S_P_5).
+Download current version of this game [here](https://github.com/AdrianSuliga/Simple_Games/releases/tag/R_S_P_6).
 
 ## Description
 
