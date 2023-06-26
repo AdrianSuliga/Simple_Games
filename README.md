@@ -13,7 +13,7 @@ Download current version of Guessing Game [here](https://github.com/AdrianSuliga
 
 **Rock, Paper, Scissors** (completed)
 
-Download current version of Rock, Paper, Scissors [here](https://github.com/AdrianSuliga/Simple_Games/releases/tag/R_S_P_6).
+Download current version of Rock, Paper, Scissors [here](https://github.com/AdrianSuliga/Simple_Games/releases/tag/R_S_P_7).
 
 All icons used in this project are from [icons8](https://icons8.com).
 
