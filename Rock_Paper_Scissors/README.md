@@ -13,7 +13,7 @@ All icons used in this game come from [icons8](https://icons8.com).
 
 After launching an app user sees the following interface:
 
-![Screenshot of title screen]()
+![Screenshot of title screen](/Rock_Paper_Scissors/Screenshots/title_screen.png)
 
 Having chosen number of rounds user wishes to play, the game starts and you can see this screen:
 
