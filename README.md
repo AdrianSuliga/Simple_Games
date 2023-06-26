@@ -19,4 +19,4 @@ All icons used in this project are from [icons8](https://icons8.com).
 
 ---
 
-**Simple calculator** (yet to be started)
+**Amethyst Clicker** (work in progress)
