@@ -34,11 +34,15 @@ void MainWindow::setLayoutForTitleScreen()
     quitButton = new QPushButton("QUIT");
     quitButton -> setMinimumSize(80,30);
 
+    aboutButton = new QPushButton("ABOUT");
+    aboutButton -> setMinimumSize(80, 30);
+
     hQuitSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
     quitLayout = new QHBoxLayout();
     quitLayout ->insertSpacerItem(0, hQuitSpacer);
-    quitLayout->insertWidget(1, quitButton);
+    quitLayout -> insertWidget(1, aboutButton);
+    quitLayout->insertWidget(2, quitButton);
 
     //set layout with rounds editor
     roundsLabel = new QLabel("ROUNDS YOU WANT TO PLAY: ");
@@ -162,6 +166,7 @@ void MainWindow::setLayoutForTitleScreen()
 
     //coding push buttons
     connect(quitButton, SIGNAL(pressed()), this, SLOT(close()));
+    connect(aboutButton, SIGNAL(clicked()), this, SLOT(showAboutSection()));
     connect(beginButton, SIGNAL(pressed()), this, SLOT(moveToGameScreen()));
 }
 void MainWindow::setStylesForTitleScreen()
@@ -171,7 +176,7 @@ void MainWindow::setStylesForTitleScreen()
     ui->statusbar->setStyleSheet("background-color: rgb(11, 83, 81);");
 
     //set buttons style
-    QString quitButtonStyle = "QPushButton { background-color: rgb(0, 169, 165);"
+    QString quitAndAboutButtonStyle = "QPushButton { background-color: rgb(0, 169, 165);"
                               "font-size: 20px; color: white;"
                               "border-radius: 14px;}"
                               "QPushButton:hover {"
@@ -184,7 +189,8 @@ void MainWindow::setStylesForTitleScreen()
                               "background-color: rgb(0, 143, 140);"
                               "}";
 
-    quitButton -> setStyleSheet(quitButtonStyle);
+    quitButton -> setStyleSheet(quitAndAboutButtonStyle);
+    aboutButton -> setStyleSheet(quitAndAboutButtonStyle);
     beginButton -> setStyleSheet(beginButtonStyle);
 
     //set labels styles
@@ -224,6 +230,7 @@ void MainWindow::removeLayoutForTitleScreen()
     //delete buttons
     delete quitButton;
     delete beginButton;
+    delete aboutButton;
     //delete labels
     delete titleLabel;
     delete rulesLabel;
@@ -256,6 +263,13 @@ void MainWindow::removeLayoutForTitleScreen()
     delete mainBodyLayout;
 
     delete ui->centralwidget->layout();
+}
+
+void MainWindow::showAboutSection()
+{
+    aS = new About_Section(this);
+    aS -> setModal(true);
+    aS -> show();
 }
 
 //GAME SCREEN FUNCTIONS
