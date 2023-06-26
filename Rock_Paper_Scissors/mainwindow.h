@@ -11,6 +11,7 @@
 
 #include "end_round.h"
 #include "end_game.h"
+#include "about_section.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,6 +29,7 @@ private slots:
     void setLayoutForTitleScreen();
     void setStylesForTitleScreen();
     void removeLayoutForTitleScreen();
+    void showAboutSection();
 
     //GAME SCREEN FUNCTIONS
     void setLayoutForGameScreen();
@@ -51,7 +53,7 @@ private:
     int numberOfRounds, counter;
 
     //TITLE SCREEN
-    QPushButton *quitButton, *beginButton;
+    QPushButton *quitButton, *beginButton, *aboutButton;
     QLabel *titleLabel, *rulesLabel, *roundsLabel, *rBeatsSLabel_Rock, *rBeatsSLabel_Beats, *rBeatsSLabel_Scissors,
             *sBeatsPLabel_Scissors, *sBeatsPLabel_Beats, *sBeatsPLabel_Paper, *pBeatsRLabel_Paper, *pBeatsRLabel_Beats,
             *pBeatsRLabel_Rock;
@@ -59,6 +61,7 @@ private:
     QSpacerItem *hQuitSpacer, *hBetweenRulesAndBeginSpacer, *vBeginSpacer, *vBelowBeginButtonSpacer, *hLeftBeginSpacer, *hRightBeginSpacer;
     QVBoxLayout *mainLayout, *rulesLayout, *roundsAndBeginLayout;
     QHBoxLayout *quitLayout, *mainBodyLayout, *roundsLayout, *rBsLayout, *sBpLayout, *pBrLayout, *beginButtonLayout;
+    About_Section *aS;
 
     //GAME SCREEN
     QVBoxLayout *pointsMainLayout, *gameInterfaceLayout, *rightSideOfWindowLayout;
