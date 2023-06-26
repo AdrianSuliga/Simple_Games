@@ -7,6 +7,8 @@ It is a simple game where you play rock, paper, scissors against a computer. You
 
 Download current version of this game [here](https://github.com/AdrianSuliga/Simple_Games/releases/tag/R_S_P_6).
 
+All icons used in this game come from [icons8](https://icons8.com).
+
 ## Description
 
 After launching an app user sees the following interface:
