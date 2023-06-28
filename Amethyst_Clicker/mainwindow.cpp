@@ -1,15 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QFontDatabase>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setLayoutTitleScreen();
-    setStyleTitleScreen();
-
-    ui->statusbar->hide();
 
     points = 0.0;
     multiplier = 1.0;
@@ -18,6 +16,14 @@ MainWindow::MainWindow(QWidget *parent)
     children = 0;
     drills = 0;
     dynamite = 0;
+    cbAbility = checkContinueButton();
+
+    setLayoutTitleScreen();
+    setStyleTitleScreen(cbAbility);
+
+    ui->statusbar->hide();
+    setMinimumSize(400, 400);
+    setMaximumSize(1024, 1024);
 }
 
 MainWindow::~MainWindow()
@@ -29,23 +35,32 @@ void MainWindow::setLayoutTitleScreen()
 {
     //title label
     titleLabel = new QLabel("AMETHYST CLICKER");
+    int id_newfont = QFontDatabase::addApplicationFont(":/images/resources/Other/Bohemian Typewriter.ttf");
+    QString family_newfont = QFontDatabase::applicationFontFamilies(id_newfont).at(0);
+    QFont Bohemian(family_newfont);
+    titleLabel -> setFont(Bohemian);
     titleLabel -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
     //buttons
     continueButton = new QPushButton("CONTINUE");
     continueButton -> setMinimumSize(80, 30);
+    continueButton -> setFont(Bohemian);
 
     newgameButton = new QPushButton("NEW GAME");
     newgameButton -> setMinimumSize(80, 30);
+    newgameButton -> setFont(Bohemian);
 
     tutorialButton = new QPushButton("TUTORIAL");
     tutorialButton -> setMinimumSize(80, 30);
+    tutorialButton -> setFont(Bohemian);
 
     aboutButton = new QPushButton("ABOUT");
     aboutButton -> setMinimumSize(80, 30);
+    aboutButton -> setFont(Bohemian);
 
     quitButton = new QPushButton("QUIT");
     quitButton -> setMinimumSize(80, 30);
+    quitButton -> setFont(Bohemian);
 
     //spacers
     lcSpacer = new QSpacerItem(40,10,QSizePolicy::Expanding,QSizePolicy::Minimum);
@@ -97,7 +112,29 @@ void MainWindow::setLayoutTitleScreen()
     mainLayout -> insertStretch(8, 1);
 }
 
-void MainWindow::setStyleTitleScreen()
+void MainWindow::setStyleTitleScreen(bool cbAbility)
+{
+    //background
+    ui->centralwidget->setStyleSheet("#centralwidget {border-image: url(:/images/resources/Other/background.png) 0 0 0 0 stretch stretch;}");
+    //title label
+
+    //buttons
+    if (cbAbility == false)
+    {
+
+    }
+    else
+    {
+
+    }
+}
+
+void MainWindow::removeStyleTitleScreen()
 {
 
+}
+
+bool MainWindow::checkContinueButton()
+{
+    return false;
 }
