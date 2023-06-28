@@ -20,13 +20,16 @@ public:
     ~MainWindow();
 private slots:
     void setLayoutTitleScreen();
-    void setStyleTitleScreen();
+    void setStyleTitleScreen(bool cbAbility);
+    void removeStyleTitleScreen();
+    bool checkContinueButton();
 
 private:
     Ui::MainWindow *ui;
     //GAME VARIABLES
     double points, multiplier;
     int hammers, pickaxes, children, drills, dynamite;
+    bool cbAbility;
     //TITLE SCREEN
     QPushButton *continueButton, *newgameButton, *tutorialButton, *aboutButton, *quitButton;
     QLabel *titleLabel;
