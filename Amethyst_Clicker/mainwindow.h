@@ -21,7 +21,7 @@ public:
 private slots:
     void setLayoutTitleScreen();
     void setStyleTitleScreen(bool cbAbility);
-    void removeStyleTitleScreen();
+    void removeLayoutTitleScreen();
     bool checkContinueButton();
 
 private:
@@ -30,12 +30,18 @@ private:
     double points, multiplier;
     int hammers, pickaxes, children, drills, dynamite;
     bool cbAbility;
+    //TITLE BAR
+    QLabel *iconLabelTB, *titleLabelTB;
+    QSpacerItem *spacerTB;
+    QPushButton *minimiseButtonTB, *maximiseButtonTB, *exitButtonTB;
+    QWidget *TB;
+    QHBoxLayout *mainLayoutTB;
     //TITLE SCREEN
-    QPushButton *continueButton, *newgameButton, *tutorialButton, *aboutButton, *quitButton;
-    QLabel *titleLabel;
+    QPushButton *continueButtonTS, *newgameButtonTS, *tutorialButtonTS, *aboutButtonTS, *quitButtonTS;
+    QLabel *titleLabelTS;
     QSpacerItem *lcSpacer, *rcSpacer, *lnSpacer, *rnSpacer, *ltSpacer, *rtSpacer, *laSpacer, *raSpacer, *lqSpacer, *rqSpacer;
-    QVBoxLayout *mainLayout;
-    QHBoxLayout *continueLayout, *newgameLayout, *tutorialLayout, *aboutLayout, *quitLayout;
+    QVBoxLayout *mainLayoutTS;
+    QHBoxLayout *continueLayoutTS, *newgameLayoutTS, *tutorialLayoutTS, *aboutLayoutTS, *quitLayoutTS;
     //CHOOSE SAVE SCREEN
 
 };
