@@ -14,5 +14,6 @@
         <file>resources/ShopItems/hammer.png</file>
         <file>resources/ShopItems/pickaxe.png</file>
         <file>resources/Other/Bohemian Typewriter.ttf</file>
+        <file>resources/Other/Icon.png</file>
     </qresource>
 </RCC>
