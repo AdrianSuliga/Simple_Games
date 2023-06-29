@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    setWindowIcon(QIcon(QPixmap(":/images/resources/Other/Icon.png")));
 
     points = 0.0;
     multiplier = 1.0;
@@ -37,18 +38,22 @@ MainWindow::~MainWindow()
 void MainWindow::setLayoutTitleScreen()
 {
     //TITLE BAR
-    iconLabelTB = new QLabel("ICON.png");
+    iconLabelTB = new QLabel();
+    iconLabelTB -> setPixmap(QPixmap(":/images/resources/Other/Icon.png"));
+    iconLabelTB -> setScaledContents(true);
+    iconLabelTB -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
     titleLabelTB = new QLabel("FOOL'S GOLD");
+    titleLabelTB -> setAlignment(Qt::AlignCenter);
 
     spacerTB = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
     minimiseButtonTB = new QPushButton("-");
-    minimiseButtonTB -> setMinimumSize(40, 40);
+    minimiseButtonTB -> setFixedSize(30, 30);
     maximiseButtonTB = new QPushButton("O");
-    maximiseButtonTB -> setMinimumSize(40, 40);
+    maximiseButtonTB -> setFixedSize(30, 30);
     exitButtonTB = new QPushButton("X");
-    exitButtonTB -> setMinimumSize(40, 40);
+    exitButtonTB -> setFixedSize(30, 30);
 
     mainLayoutTB = new QHBoxLayout();
     mainLayoutTB -> insertWidget(0, iconLabelTB);
@@ -57,9 +62,11 @@ void MainWindow::setLayoutTitleScreen()
     mainLayoutTB -> insertWidget(3, minimiseButtonTB);
     mainLayoutTB -> insertWidget(4, maximiseButtonTB);
     mainLayoutTB -> insertWidget(5, exitButtonTB);
+    mainLayoutTB -> setContentsMargins(11, 0, 0, 0);
 
     TB = new QWidget();
     TB -> setLayout(mainLayoutTB);
+    TB -> setFixedHeight(30);
     //TITLE SCREEN
     //title label
     titleLabelTS = new QLabel("FOOL'S GOLD");
@@ -71,23 +78,25 @@ void MainWindow::setLayoutTitleScreen()
 
     //buttons
     continueButtonTS = new QPushButton("CONTINUE");
-    continueButtonTS -> setMinimumSize(80, 30);
+    continueButtonTS -> setMinimumSize(100, 40);
     continueButtonTS -> setFont(Bohemian);
+    if (cbAbility == false)
+        continueButtonTS -> setEnabled(false);
 
     newgameButtonTS = new QPushButton("NEW GAME");
-    newgameButtonTS -> setMinimumSize(80, 30);
+    newgameButtonTS -> setMinimumSize(100, 40);
     newgameButtonTS -> setFont(Bohemian);
 
     tutorialButtonTS = new QPushButton("TUTORIAL");
-    tutorialButtonTS -> setMinimumSize(80, 30);
+    tutorialButtonTS -> setMinimumSize(100, 40);
     tutorialButtonTS -> setFont(Bohemian);
 
     aboutButtonTS = new QPushButton("ABOUT");
-    aboutButtonTS -> setMinimumSize(80, 30);
+    aboutButtonTS -> setMinimumSize(100, 40);
     aboutButtonTS -> setFont(Bohemian);
 
     quitButtonTS = new QPushButton("QUIT");
-    quitButtonTS -> setMinimumSize(80, 30);
+    quitButtonTS -> setMinimumSize(100, 40);
     quitButtonTS -> setFont(Bohemian);
 
     //spacers
@@ -139,8 +148,13 @@ void MainWindow::setLayoutTitleScreen()
     mainLayoutTS -> insertLayout(7, aboutLayoutTS, 2);
     mainLayoutTS -> insertLayout(8, quitLayoutTS, 2);
     mainLayoutTS -> insertStretch(9, 1);
+    mainLayoutTS -> setContentsMargins(0, 0, 0, 0);
 
     connect(quitButtonTS, SIGNAL(clicked()), this, SLOT(close()));
+
+    connect(minimiseButtonTB, SIGNAL(clicked()), this, SLOT(showMinimized()));
+    connect(maximiseButtonTB, SIGNAL(clicked()), this, SLOT());
+    connect(exitButtonTB, SIGNAL(clicked()), this, SLOT(close()));
 }
 
 void MainWindow::setStyleTitleScreen(bool cbAbility)
@@ -149,17 +163,62 @@ void MainWindow::setStyleTitleScreen(bool cbAbility)
     ui->centralwidget->setStyleSheet("#centralwidget {"
                                      "border-image: url(:/images/resources/Other/background.png) 0 0 0 0 stretch stretch;"
                                      "}");
+    TB -> setStyleSheet("background-color: rgba(84,94,106,255);");
+    //TITLE SCREEN
     //title label
-
+    QString titleLabelTSStyle = "background-color: rgba(40,60,69,255);"
+                                "color: rgba(254,220,105,255);"
+                                "border-radius: 20px;"
+                                "margin-left: 80px;"
+                                "margin-right: 80px;"
+                                "margin-top: 20px;"
+                                "font-size: 54px;";
+    titleLabelTS -> setStyleSheet(titleLabelTSStyle);
     //buttons
+    QString disabledButtons = "QPushButton {"
+                              "background-color: rgba(84,94,106,255);"
+                              "color: #B8BF33;"
+                              "font-size: 16px;"
+                              "}";
+    QString enabledButtons = "QPushButton {"
+                             "background-color: rgba(40,60,69,255);"
+                             "color: rgba(254,220,105,255);"
+                             "font-size: 16px;"
+                             "}"
+                             "QPushButton:hover {"
+                             "background-color: rgba(11,29,41,255);"
+                             "}";
     if (cbAbility == false)
-    {
-
-    }
+        continueButtonTS -> setStyleSheet(disabledButtons);
     else
-    {
+        continueButtonTS -> setStyleSheet(enabledButtons);
 
-    }
+    newgameButtonTS -> setStyleSheet(enabledButtons);
+    tutorialButtonTS -> setStyleSheet(enabledButtons);
+    aboutButtonTS -> setStyleSheet(enabledButtons);
+    quitButtonTS -> setStyleSheet(enabledButtons);
+
+    QString buttonTBStyle = "QPushButton {"
+                            "color: white;"
+                            "background-color: rgb(84,94,106);"
+                            "}"
+                            "QPushButton:hover {"
+                            "background-color: rgb(110, 120, 135);"
+                            "}";
+
+    minimiseButtonTB -> setStyleSheet(buttonTBStyle);
+    maximiseButtonTB -> setStyleSheet(buttonTBStyle);
+    exitButtonTB -> setStyleSheet("QPushButton {"
+                                  "color: white;"
+                                  "background-color: rgb(84,94,106);"
+                                  "}"
+                                  "QPushButton:hover {"
+                                  "background-color: red;"
+                                  "}");
+
+    QString titleLabelTBStyle = "color: white;";
+    titleLabelTB -> setStyleSheet(titleLabelTBStyle);
+    iconLabelTB -> setStyleSheet("background-color: blue;");
 }
 
 void MainWindow::removeLayoutTitleScreen()
