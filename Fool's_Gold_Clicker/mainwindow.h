@@ -24,8 +24,10 @@ private slots:
     void setLayoutTitleScreen();
     void setStyleTitleScreen();
     void removeLayoutTitleScreen();
+
     void showMaximisedWindow();
     void checkContinueButton();
+    bool didYouUseThisSave(QString path);
 
 private:
     Ui::MainWindow *ui;
