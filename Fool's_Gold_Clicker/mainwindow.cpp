@@ -1,9 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include <QFile>
 #include <QFontDatabase>
 #include <QSizeGrip>
-#include <QRadialGradient>
+#include <QMessageBox>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -159,7 +160,7 @@ void MainWindow::setLayoutTitleScreen()
 
     mainLayoutTS = new QVBoxLayout(ui->centralwidget);
     mainLayoutTS -> insertWidget(0, TB);
-    mainLayoutTS -> insertWidget(1, titleWidgetTS, 3);
+    mainLayoutTS -> insertWidget(1, titleWidgetTS, 2);
     mainLayoutTS -> insertStretch(2, 1);
     mainLayoutTS -> insertLayout(3, continueLayoutTS, 2);
     mainLayoutTS -> insertLayout(4, newgameLayoutTS, 2);
@@ -191,14 +192,14 @@ void MainWindow::setStyleTitleScreen()
                                 "border-radius: 20px;"
                                 "margin-left: 80px;"
                                 "margin-right: 80px;"
-                                "margin-top: 20px;"
-                                "font-size: 54px;"
+                                "margin-top: 40px;"
+                                "font-size: 60px;"
                                 "}";
     QString titleWidgetStyle = "QWidget {"
                                "border-image: url(:/images/resources/Other/TitleScreenBackground.png) 0 0 0 0 stretch stretch;"
                                "margin-left: 80px;"
                                "margin-right: 80px;"
-                               "margin-top: 20px;"
+                               "margin-top: 40px;"
                                "border-radius: 20px;"
                                "}";
     titleLabelTS -> setStyleSheet(titleLabelTSStyle);
@@ -267,7 +268,61 @@ void MainWindow::removeLayoutTitleScreen()
 
 void MainWindow::showMaximisedWindow() {setGeometry(0, 0, 820, 820);}
 
+
 void MainWindow::checkContinueButton()
 {
-    continueButtonTS -> setEnabled(false);
+    if ((didYouUseThisSave(":/saves/saves/Save_1.txt") == true) || (didYouUseThisSave(":/saves/saves/Save_2.txt") == true)
+       || (didYouUseThisSave(":/saves/saves/Save_3.txt") == true) || (didYouUseThisSave(":/saves/saves/Save_4.txt") == true))
+        continueButtonTS -> setEnabled(true);
+    else
+        continueButtonTS -> setEnabled(false);
+}
+bool MainWindow::didYouUseThisSave(QString path)
+{
+    QFile file(path);
+    int nr = 0;
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        QMessageBox::critical(this, "UNABLE TO OPEN FILE", "Could not open save file");
+    else
+    {
+        QTextStream line(&file);
+        while(!file.atEnd())
+        {
+            switch(nr)
+            {
+            case 0:
+            {
+                double saved_multi = line.readLine().toDouble(nullptr);
+                if (saved_multi > 1.0001)
+                    return true;
+                break;
+            }
+            case 1:
+            {
+                double saved_points = line.readLine().toDouble(nullptr);
+                if ((saved_points > 0.0001) || (saved_points < 0.0001))
+                    return true;
+                break;
+            }
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            {
+                int saved_bought_items = line.readLine().toInt(nullptr, 10);
+                if (saved_bought_items != 0)
+                    return true;
+                break;
+            }
+            default:
+                QMessageBox::critical(this, "TOO MANY LINES", "Tried to read too many lines");
+                break;
+            }
+            nr++;
+        }
+    }
+    file.close();
+
+    return false;
 }
