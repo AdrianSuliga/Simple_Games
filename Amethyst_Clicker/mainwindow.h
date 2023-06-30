@@ -20,9 +20,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
+    //TITLE SCREEN
     void setLayoutTitleScreen();
     void setStyleTitleScreen();
     void removeLayoutTitleScreen();
+    void showMaximisedWindow();
     void checkContinueButton();
 
 private:
