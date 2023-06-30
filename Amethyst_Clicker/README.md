@@ -1,2 +1,2 @@
-# Amethyst Clicker
+# Fool's Gold Clicker
 ---
