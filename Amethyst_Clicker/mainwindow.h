@@ -6,6 +6,7 @@
 #include <QPushButton>
 #include <QSpacerItem>
 #include <QBoxLayout>
+#include <QSizeGrip>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,16 +21,15 @@ public:
     ~MainWindow();
 private slots:
     void setLayoutTitleScreen();
-    void setStyleTitleScreen(bool cbAbility);
+    void setStyleTitleScreen();
     void removeLayoutTitleScreen();
-    bool checkContinueButton();
+    void checkContinueButton();
 
 private:
     Ui::MainWindow *ui;
     //GAME VARIABLES
     double points, multiplier;
     int hammers, pickaxes, children, drills, dynamite;
-    bool cbAbility;
     //TITLE BAR
     QLabel *iconLabelTB, *titleLabelTB;
     QSpacerItem *spacerTB;
@@ -41,7 +41,9 @@ private:
     QLabel *titleLabelTS;
     QSpacerItem *lcSpacer, *rcSpacer, *lnSpacer, *rnSpacer, *ltSpacer, *rtSpacer, *laSpacer, *raSpacer, *lqSpacer, *rqSpacer;
     QVBoxLayout *mainLayoutTS;
-    QHBoxLayout *continueLayoutTS, *newgameLayoutTS, *tutorialLayoutTS, *aboutLayoutTS, *quitLayoutTS;
+    QHBoxLayout *continueLayoutTS, *newgameLayoutTS, *tutorialLayoutTS, *aboutLayoutTS, *quitLayoutTS, *bGLayout;
+    QSizeGrip *brGrip, *blGrip;
+    QWidget *bottomGrip;
     //CHOOSE SAVE SCREEN
 
 };
