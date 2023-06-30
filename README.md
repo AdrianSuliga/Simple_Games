@@ -19,4 +19,4 @@ All icons used in this project are from [icons8](https://icons8.com).
 
 ---
 
-**Amethyst Clicker** (work in progress)
+**Fool's Gold Clicker** (work in progress)
