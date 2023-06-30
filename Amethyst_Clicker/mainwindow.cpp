@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     setWindowIcon(QIcon(QPixmap(":/images/resources/Other/Icon.png")));
+    setWindowTitle("FOOL'S GOLD");
 
     points = 0.0;
     multiplier = 1.0;
@@ -25,8 +26,8 @@ MainWindow::MainWindow(QWidget *parent)
     checkContinueButton();
     setStyleTitleScreen();
 
-    setMinimumSize(400, 400);
-    setMaximumSize(1024, 1024);
+    setMinimumSize(400, 430);
+    setMaximumSize(820, 820);
 }
 
 MainWindow::~MainWindow()
@@ -64,6 +65,7 @@ void MainWindow::setLayoutTitleScreen()
     mainLayoutTB -> insertWidget(5, maximiseButtonTB);
     mainLayoutTB -> insertWidget(6, exitButtonTB);
     mainLayoutTB -> setContentsMargins(0, 0, 0, 0);
+    mainLayoutTB -> setSpacing(2);
 
     TB = new QWidget();
     TB -> setLayout(mainLayoutTB);
@@ -76,6 +78,7 @@ void MainWindow::setLayoutTitleScreen()
     QFont Bohemian(family_newfont);
     titleLabelTS -> setFont(Bohemian);
     titleLabelTS -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    titleLabelTS -> setWordWrap(true);
 
     //buttons
     continueButtonTS = new QPushButton("CONTINUE");
@@ -164,7 +167,7 @@ void MainWindow::setLayoutTitleScreen()
     connect(quitButtonTS, SIGNAL(clicked()), this, SLOT(close()));
 
     connect(minimiseButtonTB, SIGNAL(clicked()), this, SLOT(showMinimized()));
-    connect(maximiseButtonTB, SIGNAL(clicked()), this, SLOT());
+    connect(maximiseButtonTB, SIGNAL(clicked()), this, SLOT(showMaximisedWindow()));
     connect(exitButtonTB, SIGNAL(clicked()), this, SLOT(close()));
 }
 void MainWindow::setStyleTitleScreen()
@@ -176,28 +179,39 @@ void MainWindow::setStyleTitleScreen()
     TB -> setStyleSheet("background-color: rgb(84,94,106);");
 
     //title label
-    QString titleLabelTSStyle = "background-color: rgba(40,60,69,255);"
-                                "color: rgba(254,220,105,255);"
+    QString titleLabelTSStyle = "QLabel {"
+                                "background-color: rgb(40,60,69);"
+                                "color: rgb(254,220,105);"
                                 "border-radius: 20px;"
+                                "border: 6px solid rgb(11,29,41);"
                                 "margin-left: 80px;"
                                 "margin-right: 80px;"
                                 "margin-top: 20px;"
-                                "font-size: 54px;";
+                                "font-size: 54px;"
+                                "}";
     titleLabelTS -> setStyleSheet(titleLabelTSStyle);
 
     //buttons
     QString disabledButtons = "QPushButton {"
-                              "background-color: rgba(84,94,106,255);"
+                              "background-color: rgb(84,94,106);"
                               "color: #B8BF33;"
                               "font-size: 16px;"
+                              "border-style: solid;"
+                              "border-radius: 4px;"
+                              "border-color: rgb(40,60,69);"
+                              "border-width: 2px;"
                               "}";
     QString enabledButtons = "QPushButton {"
-                             "background-color: rgba(40,60,69,255);"
+                             "background-color: rgb(40,60,69);"
                              "color: rgba(254,220,105,255);"
                              "font-size: 16px;"
+                             "border-style:solid;"
+                             "border-radius: 4px;"
+                             "border-color: rgb(11,29,41);"
+                             "border-width: 2px;"
                              "}"
                              "QPushButton:hover {"
-                             "background-color: rgba(11,29,41,255);"
+                             "background-color: rgb(11,29,41);"
                              "}";
     if (continueButtonTS->isEnabled() == false)
         continueButtonTS -> setStyleSheet(disabledButtons);
@@ -212,6 +226,7 @@ void MainWindow::setStyleTitleScreen()
     QString buttonTBStyle = "QPushButton {"
                             "color: white;"
                             "background-color: rgb(84,94,106);"
+                            "border-style: solid;"
                             "}"
                             "QPushButton:hover {"
                             "background-color: rgb(110, 120, 135);"
@@ -222,6 +237,7 @@ void MainWindow::setStyleTitleScreen()
     exitButtonTB -> setStyleSheet("QPushButton {"
                                   "color: white;"
                                   "background-color: rgb(84,94,106);"
+                                  "border-style: solid;"
                                   "}"
                                   "QPushButton:hover {"
                                   "background-color: red;"
@@ -235,6 +251,8 @@ void MainWindow::removeLayoutTitleScreen()
 {
 
 }
+
+void MainWindow::showMaximisedWindow() {setGeometry(0, 0, 820, 820);}
 
 void MainWindow::checkContinueButton()
 {
