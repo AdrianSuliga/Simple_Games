@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>resources/Ores/amethyst_ore.png</file>
+        <file>resources/Other/background.png</file>
+        <file>resources/Ores/diamond_ore.png</file>
+        <file>resources/Ores/gold_ore.png</file>
+        <file>resources/Ores/jade_ore.png</file>
+        <file>resources/Ores/onyx_ore.png</file>
+        <file>resources/Ores/ruby_ore.png</file>
+        <file>resources/Ores/selenite_ore.png</file>
+        <file>resources/ShopItems/child.png</file>
+        <file>resources/ShopItems/drill.png</file>
+        <file>resources/ShopItems/dynamite.png</file>
+        <file>resources/ShopItems/hammer.png</file>
+        <file>resources/ShopItems/pickaxe.png</file>
+        <file>resources/Other/Bohemian Typewriter.ttf</file>
+        <file>resources/Other/Icon.png</file>
+        <file>resources/Other/TitleScreenBackground.png</file>
+    </qresource>
+</RCC>
