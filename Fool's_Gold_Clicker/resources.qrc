@@ -16,5 +16,12 @@
         <file>resources/Other/Bohemian Typewriter.ttf</file>
         <file>resources/Other/Icon.png</file>
         <file>resources/Other/TitleScreenBackground.png</file>
+        <file>resources/Other/YellowLine.png</file>
+    </qresource>
+    <qresource prefix="/saves">
+        <file>saves/Save_1.txt</file>
+        <file>saves/Save_2.txt</file>
+        <file>saves/Save_3.txt</file>
+        <file>saves/Save_4.txt</file>
     </qresource>
 </RCC>
