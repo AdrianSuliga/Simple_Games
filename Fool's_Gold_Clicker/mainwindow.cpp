@@ -5,6 +5,7 @@
 #include <QSizeGrip>
 #include <QMessageBox>
 #include <QDebug>
+#include "clickablewidget.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -219,7 +220,7 @@ void MainWindow::setStyleTitleScreen()
                               "}";
     QString enabledButtons = "QPushButton {"
                              "background-color: rgb(40,60,69);"
-                             "color: rgba(254,220,105,255);"
+                             "color: rgb(254,220,105);"
                              "font-size: 16px;"
                              "border-style:solid;"
                              "border-radius: 4px;"
@@ -390,6 +391,7 @@ void MainWindow::setLayoutSaveScreen()
     save1Layout -> insertWidget(2, content1Label, 8);
 
     save1Widget = new QWidget();
+    save1Widget -> setMinimumHeight(240);
     save1Widget -> setLayout(save1Layout);
 
     save2Label = new QLabel("SAVE 2");
@@ -410,6 +412,7 @@ void MainWindow::setLayoutSaveScreen()
     save2Layout -> insertWidget(2, content2Label, 8);
 
     save2Widget = new QWidget();
+    save2Widget -> setMinimumHeight(240);
     save2Widget -> setLayout(save2Layout);
 
     save3Label = new QLabel("SAVE 3");
@@ -430,6 +433,7 @@ void MainWindow::setLayoutSaveScreen()
     save3Layout -> insertWidget(2, content3Label, 8);
 
     save3Widget = new QWidget();
+    save3Widget -> setMinimumHeight(240);
     save3Widget -> setLayout(save3Layout);
 
     save4Label = new QLabel("SAVE 4");
@@ -450,6 +454,7 @@ void MainWindow::setLayoutSaveScreen()
     save4Layout -> insertWidget(2, content4Label, 8);
 
     save4Widget = new QWidget();
+    save4Widget -> setMinimumHeight(240);
     save4Widget -> setLayout(save4Layout);
 
     //LAYOUT
@@ -458,10 +463,11 @@ void MainWindow::setLayoutSaveScreen()
     saveMainBodyLayout -> insertWidget(1, save2Widget, 1);
     saveMainBodyLayout -> insertWidget(2, save3Widget, 1);
     saveMainBodyLayout -> insertWidget(3, save4Widget, 1);
+    saveMainBodyLayout -> setContentsMargins(10, 0, 10, 0);
 
     mainLayout -> insertStretch(1, 1);
     mainLayout -> insertWidget(2, titleWidgetSS, 2);
-    mainLayout -> insertStretch(3, 1);
+    mainLayout -> insertStretch(3, 3);
     mainLayout -> insertLayout(4, saveMainBodyLayout, 4);
     mainLayout -> insertStretch(5, 1);
 }
@@ -479,8 +485,19 @@ void MainWindow::setStyleSaveScreen()
     titleWidgetSS -> setStyleSheet(titleWidgetStyle);
     titleLabelSS -> setStyleSheet(titleLabelStyle);
     infoTitleSS -> setStyleSheet(infoLabelStyle);
-    
-    
+
+    QString saveWidgetStyle = "QWidget {"
+                             "border-image: url(:/images/resources/Other/TitleScreenBackground.png) 0 0 0 0 stretch stretch;"
+                             "border-radius: 16px;"
+                             "}"
+                             "QLabel {"
+                             "color: rgb(254, 220, 105); font-size: 24px;"
+                             "}";
+
+    save1Widget -> setStyleSheet(saveWidgetStyle);
+    save2Widget -> setStyleSheet(saveWidgetStyle);
+    save3Widget -> setStyleSheet(saveWidgetStyle);
+    save4Widget -> setStyleSheet(saveWidgetStyle);
 }
 
 void MainWindow::removeLayoutSaveScreen()
