@@ -20,20 +20,26 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
-    //TITLE SCREEN
+    //FUNCTIONS CREATING TITLE SCREEN
     void setLayoutTitleScreen();
     void setStyleTitleScreen();
     void removeLayoutTitleScreen();
-
+    //TITLE SCREEN FUNCIONALITIES FUNCTIONS
     void showMaximisedWindow();
     void checkContinueButton();
     bool didYouUseThisSave(QString path);
+    void transitionToSaveScreen();
+    //FUNCTIONS CREATING SAVE SCREEN
+    void setLayoutSaveScreen();
+    void setStyleSaveScreen();
+    void removeLayoutSaveScreen();
 
 private:
     Ui::MainWindow *ui;
     //GAME VARIABLES
     double points, multiplier;
     int hammers, pickaxes, children, drills, dynamite;
+    QFont Bohemian;
     //TITLE BAR
     QLabel *iconLabelTB, *titleLabelTB;
     QSpacerItem *spacerTB;
@@ -44,11 +50,16 @@ private:
     QPushButton *continueButtonTS, *newgameButtonTS, *tutorialButtonTS, *aboutButtonTS, *quitButtonTS;
     QLabel *titleLabelTS;
     QSpacerItem *lcSpacer, *rcSpacer, *lnSpacer, *rnSpacer, *ltSpacer, *rtSpacer, *laSpacer, *raSpacer, *lqSpacer, *rqSpacer;
-    QVBoxLayout *mainLayoutTS, *titleLayoutTS;
+    QVBoxLayout *mainLayout, *titleLayoutTS;
     QHBoxLayout *continueLayoutTS, *newgameLayoutTS, *tutorialLayoutTS, *aboutLayoutTS, *quitLayoutTS, *bGLayout;
     QSizeGrip *brGripTS, *blGripTS;
     QWidget *bottomGripTS, *titleWidgetTS;
-    //CHOOSE SAVE SCREEN
-
+    //SAVE SCREEN
+    QLabel *titleLabelSS, *lineTitleSS, *infoTitleSS, *save1Label, *save2Label, *save3Label, *save4Label,
+            *line1Label, *line2Label, *line3Label, *line4Label, *content1Label, *content2Label, *content3Label,
+            *content4Label;
+    QWidget *save1Widget, *save2Widget, *save3Widget, *save4Widget, *titleWidgetSS;
+    QVBoxLayout *titleLayoutSS, *save1Layout, *save2Layout, *save3Layout, *save4Layout;
+    QHBoxLayout *saveMainBodyLayout;
 };
 #endif // MAINWINDOW_H
