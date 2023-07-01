@@ -16,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowIcon(QIcon(QPixmap(":/images/resources/Other/Icon.png")));
     setWindowTitle("FOOL'S GOLD");
 
+    int id_newfont = QFontDatabase::addApplicationFont(":/images/resources/Other/Bohemian Typewriter.ttf");
+    QString family_newfont = QFontDatabase::applicationFontFamilies(id_newfont).at(0);
+    QFont Bohemian(family_newfont);
+
     points = 0.0;
     multiplier = 1.0;
     hammers = 0;
@@ -28,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     checkContinueButton();
     setStyleTitleScreen();
 
-    setMinimumSize(400, 430);
+    setMinimumSize(400, 460);
     setMaximumSize(820, 820);
 }
 
@@ -75,9 +79,6 @@ void MainWindow::setLayoutTitleScreen()
     //TITLE SCREEN
     //title label
     titleLabelTS = new QLabel("FOOL'S GOLD");
-    int id_newfont = QFontDatabase::addApplicationFont(":/images/resources/Other/Bohemian Typewriter.ttf");
-    QString family_newfont = QFontDatabase::applicationFontFamilies(id_newfont).at(0);
-    QFont Bohemian(family_newfont);
     titleLabelTS -> setFont(Bohemian);
     titleLabelTS -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     titleLabelTS -> setWordWrap(true);
@@ -158,21 +159,22 @@ void MainWindow::setLayoutTitleScreen()
     bGLayout -> setContentsMargins(QMargins());
     bottomGripTS -> setLayout(bGLayout);
 
-    mainLayoutTS = new QVBoxLayout(ui->centralwidget);
-    mainLayoutTS -> insertWidget(0, TB);
-    mainLayoutTS -> insertWidget(1, titleWidgetTS, 2);
-    mainLayoutTS -> insertStretch(2, 1);
-    mainLayoutTS -> insertLayout(3, continueLayoutTS, 2);
-    mainLayoutTS -> insertLayout(4, newgameLayoutTS, 2);
-    mainLayoutTS -> insertLayout(5, tutorialLayoutTS, 2);
-    mainLayoutTS -> insertStretch(6, 1);
-    mainLayoutTS -> insertLayout(7, aboutLayoutTS, 2);
-    mainLayoutTS -> insertLayout(8, quitLayoutTS, 2);
-    mainLayoutTS -> insertStretch(9, 1);
-    mainLayoutTS -> insertWidget(10, bottomGripTS, 0);
-    mainLayoutTS -> setContentsMargins(0, 0, 0, 0);
+    mainLayout = new QVBoxLayout(ui->centralwidget);
+    mainLayout -> insertWidget(0, TB);
+    mainLayout -> insertWidget(1, titleWidgetTS, 2);
+    mainLayout -> insertStretch(2, 1);
+    mainLayout -> insertLayout(3, continueLayoutTS, 2);
+    mainLayout -> insertLayout(4, newgameLayoutTS, 2);
+    mainLayout -> insertLayout(5, tutorialLayoutTS, 2);
+    mainLayout -> insertStretch(6, 1);
+    mainLayout -> insertLayout(7, aboutLayoutTS, 2);
+    mainLayout -> insertLayout(8, quitLayoutTS, 2);
+    mainLayout -> insertStretch(9, 1);
+    mainLayout -> insertWidget(10, bottomGripTS, 0);
+    mainLayout -> setContentsMargins(0, 0, 0, 0);
 
     connect(quitButtonTS, SIGNAL(clicked()), this, SLOT(close()));
+    connect(newgameButtonTS, SIGNAL(clicked()), this, SLOT(transitionToSaveScreen()));
 
     connect(minimiseButtonTB, SIGNAL(clicked()), this, SLOT(showMinimized()));
     connect(maximiseButtonTB, SIGNAL(clicked()), this, SLOT(showMaximisedWindow()));
@@ -260,14 +262,24 @@ void MainWindow::setStyleTitleScreen()
     QString titleLabelTBStyle = "color: white;";
     titleLabelTB -> setStyleSheet(titleLabelTBStyle);
 }
-
 void MainWindow::removeLayoutTitleScreen()
 {
+    delete continueButtonTS;
+    delete newgameButtonTS;
+    delete tutorialButtonTS;
+    delete aboutButtonTS;
+    delete quitButtonTS;
 
+    delete titleWidgetTS;
+
+    delete continueLayoutTS;
+    delete newgameLayoutTS;
+    delete tutorialLayoutTS;
+    delete aboutLayoutTS;
+    delete quitLayoutTS;
 }
 
 void MainWindow::showMaximisedWindow() {setGeometry(0, 0, 820, 820);}
-
 
 void MainWindow::checkContinueButton()
 {
@@ -325,4 +337,153 @@ bool MainWindow::didYouUseThisSave(QString path)
     file.close();
 
     return false;
+}
+
+void MainWindow::transitionToSaveScreen()
+{
+    removeLayoutTitleScreen();
+    setLayoutSaveScreen();
+    setStyleSaveScreen();
+}
+
+void MainWindow::setLayoutSaveScreen()
+{
+    //TITLE
+    titleLabelSS = new QLabel("SAVE FILES");
+    titleLabelSS -> setAlignment(Qt::AlignCenter);
+    titleLabelSS -> setFont(Bohemian);
+
+    lineTitleSS = new QLabel("LINE.png");
+    lineTitleSS -> setMinimumHeight(20);
+    lineTitleSS -> setPixmap(QPixmap(":/images/resources/Other/YellowLine.png"));
+    lineTitleSS -> setScaledContents(true);
+    lineTitleSS -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
+    infoTitleSS = new QLabel("Choose slot to play");
+    infoTitleSS -> setFont(Bohemian);
+    infoTitleSS -> setAlignment(Qt::AlignCenter);
+
+    titleLayoutSS = new QVBoxLayout();
+    titleLayoutSS -> insertWidget(0, titleLabelSS, 4);
+    titleLayoutSS -> insertWidget(1, lineTitleSS, 3);
+    titleLayoutSS -> insertWidget(2, infoTitleSS, 3);
+
+    titleWidgetSS = new QWidget();
+    titleWidgetSS -> setLayout(titleLayoutSS);
+
+    //SAVES
+    save1Label = new QLabel("SAVE 1");
+    save1Label -> setAlignment(Qt::AlignCenter);
+    save1Label -> setFont(Bohemian);
+
+    line1Label = new QLabel("LINE.png");
+    line1Label -> setPixmap(QPixmap(":/images/resources/Other/YellowLine.png"));
+    line1Label -> setScaledContents(true);
+    line1Label -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
+    content1Label = new QLabel();
+    content1Label -> setText(tr("CONTENT 1"));
+
+    save1Layout = new QVBoxLayout();
+    save1Layout -> insertWidget(0, save1Label, 2);
+    save1Layout -> insertWidget(1, line1Label, 1);
+    save1Layout -> insertWidget(2, content1Label, 8);
+
+    save1Widget = new QWidget();
+    save1Widget -> setLayout(save1Layout);
+
+    save2Label = new QLabel("SAVE 2");
+    save2Label -> setAlignment(Qt::AlignCenter);
+    save2Label -> setFont(Bohemian);
+
+    line2Label = new QLabel("LINE.png");
+    line2Label -> setPixmap(QPixmap(":/images/resources/Other/YellowLine.png"));
+    line2Label -> setScaledContents(true);
+    line2Label -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
+    content2Label = new QLabel();
+    content2Label -> setText(tr("CONTENT 2"));
+
+    save2Layout = new QVBoxLayout();
+    save2Layout -> insertWidget(0, save2Label, 2);
+    save2Layout -> insertWidget(1, line2Label, 1);
+    save2Layout -> insertWidget(2, content2Label, 8);
+
+    save2Widget = new QWidget();
+    save2Widget -> setLayout(save2Layout);
+
+    save3Label = new QLabel("SAVE 3");
+    save3Label -> setAlignment(Qt::AlignCenter);
+    save3Label -> setFont(Bohemian);
+
+    line3Label = new QLabel("LINE.png");
+    line3Label -> setPixmap(QPixmap(":/images/resources/Other/YellowLine.png"));
+    line3Label -> setScaledContents(true);
+    line3Label -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
+    content3Label = new QLabel();
+    content3Label -> setText(tr("CONTENT 3"));
+
+    save3Layout = new QVBoxLayout();
+    save3Layout -> insertWidget(0, save3Label, 2);
+    save3Layout -> insertWidget(1, line3Label, 1);
+    save3Layout -> insertWidget(2, content3Label, 8);
+
+    save3Widget = new QWidget();
+    save3Widget -> setLayout(save3Layout);
+
+    save4Label = new QLabel("SAVE 4");
+    save4Label -> setAlignment(Qt::AlignCenter);
+    save4Label -> setFont(Bohemian);
+
+    line4Label = new QLabel("LINE.png");
+    line4Label -> setPixmap(QPixmap(":/images/resources/Other/YellowLine.png"));
+    line4Label -> setScaledContents(true);
+    line4Label -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
+    content4Label = new QLabel();
+    content4Label -> setText(tr("CONTENT 4"));
+
+    save4Layout = new QVBoxLayout();
+    save4Layout -> insertWidget(0, save4Label, 2);
+    save4Layout -> insertWidget(1, line4Label, 1);
+    save4Layout -> insertWidget(2, content4Label, 8);
+
+    save4Widget = new QWidget();
+    save4Widget -> setLayout(save4Layout);
+
+    //LAYOUT
+    saveMainBodyLayout = new QHBoxLayout();
+    saveMainBodyLayout -> insertWidget(0, save1Widget, 1);
+    saveMainBodyLayout -> insertWidget(1, save2Widget, 1);
+    saveMainBodyLayout -> insertWidget(2, save3Widget, 1);
+    saveMainBodyLayout -> insertWidget(3, save4Widget, 1);
+
+    mainLayout -> insertStretch(1, 1);
+    mainLayout -> insertWidget(2, titleWidgetSS, 2);
+    mainLayout -> insertStretch(3, 1);
+    mainLayout -> insertLayout(4, saveMainBodyLayout, 4);
+    mainLayout -> insertStretch(5, 1);
+}
+void MainWindow::setStyleSaveScreen()
+{
+    QString titleWidgetStyle = "QWidget {"
+                               "border-image: url(:/images/resources/Other/TitleScreenBackground.png) 0 0 0 0 stretch stretch;"
+                               "margin-left: 80px;"
+                               "margin-right: 80px;"
+                               "border-radius: 20px;"
+                               "}";
+    QString titleLabelStyle =  "color: rgb(254,220,105); font-size: 44px;";
+    QString infoLabelStyle = "color: rgb(254, 220, 105); font-size: 24px;";
+
+    titleWidgetSS -> setStyleSheet(titleWidgetStyle);
+    titleLabelSS -> setStyleSheet(titleLabelStyle);
+    infoTitleSS -> setStyleSheet(infoLabelStyle);
+    
+    
+}
+
+void MainWindow::removeLayoutSaveScreen()
+{
+
 }
