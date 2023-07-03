@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QFile>
+#include <QTextStream>
 #include <QFontDatabase>
 #include <QSizeGrip>
 #include <QMessageBox>
@@ -369,7 +370,7 @@ void MainWindow::setLayoutSaveScreen()
     titleLayoutSS -> insertWidget(1, lineTitleSS, 3);
     titleLayoutSS -> insertWidget(2, infoTitleSS, 3);
 
-    titleWidgetSS = new QWidget();
+    titleWidgetSS = new ClickableWidget();
     titleWidgetSS -> setLayout(titleLayoutSS);
 
     //SAVES
@@ -382,15 +383,15 @@ void MainWindow::setLayoutSaveScreen()
     line1Label -> setScaledContents(true);
     line1Label -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-    content1Label = new QLabel();
-    content1Label -> setText(tr("CONTENT 1"));
+    content1Label = new QLabel("Content_1");
+    loadContentFromSaveFiles(content1Label, ":/saves/saves/Save_1.txt");
 
     save1Layout = new QVBoxLayout();
     save1Layout -> insertWidget(0, save1Label, 2);
     save1Layout -> insertWidget(1, line1Label, 1);
-    save1Layout -> insertWidget(2, content1Label, 8);
+    save1Layout -> insertWidget(2, content1Label, 4);
 
-    save1Widget = new QWidget();
+    save1Widget = new ClickableWidget();
     save1Widget -> setMinimumHeight(240);
     save1Widget -> setLayout(save1Layout);
 
@@ -403,15 +404,15 @@ void MainWindow::setLayoutSaveScreen()
     line2Label -> setScaledContents(true);
     line2Label -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-    content2Label = new QLabel();
-    content2Label -> setText(tr("CONTENT 2"));
+    content2Label = new QLabel("Content_2");
+    loadContentFromSaveFiles(content2Label, ":/saves/saves/Save_2.txt");
 
     save2Layout = new QVBoxLayout();
     save2Layout -> insertWidget(0, save2Label, 2);
     save2Layout -> insertWidget(1, line2Label, 1);
-    save2Layout -> insertWidget(2, content2Label, 8);
+    save2Layout -> insertWidget(2, content2Label, 4);
 
-    save2Widget = new QWidget();
+    save2Widget = new ClickableWidget();
     save2Widget -> setMinimumHeight(240);
     save2Widget -> setLayout(save2Layout);
 
@@ -424,15 +425,15 @@ void MainWindow::setLayoutSaveScreen()
     line3Label -> setScaledContents(true);
     line3Label -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-    content3Label = new QLabel();
-    content3Label -> setText(tr("CONTENT 3"));
+    content3Label = new QLabel("Content_3");
+    loadContentFromSaveFiles(content3Label, ":/saves/saves/Save_3.txt");
 
     save3Layout = new QVBoxLayout();
     save3Layout -> insertWidget(0, save3Label, 2);
     save3Layout -> insertWidget(1, line3Label, 1);
-    save3Layout -> insertWidget(2, content3Label, 8);
+    save3Layout -> insertWidget(2, content3Label, 4);
 
-    save3Widget = new QWidget();
+    save3Widget = new ClickableWidget();
     save3Widget -> setMinimumHeight(240);
     save3Widget -> setLayout(save3Layout);
 
@@ -445,15 +446,15 @@ void MainWindow::setLayoutSaveScreen()
     line4Label -> setScaledContents(true);
     line4Label -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-    content4Label = new QLabel();
-    content4Label -> setText(tr("CONTENT 4"));
+    content4Label = new QLabel("Content_4");
+    loadContentFromSaveFiles(content4Label, ":/saves/saves/Save_4.txt");
 
     save4Layout = new QVBoxLayout();
     save4Layout -> insertWidget(0, save4Label, 2);
     save4Layout -> insertWidget(1, line4Label, 1);
-    save4Layout -> insertWidget(2, content4Label, 8);
+    save4Layout -> insertWidget(2, content4Label, 4);
 
-    save4Widget = new QWidget();
+    save4Widget = new ClickableWidget();
     save4Widget -> setMinimumHeight(240);
     save4Widget -> setLayout(save4Layout);
 
@@ -473,22 +474,27 @@ void MainWindow::setLayoutSaveScreen()
 }
 void MainWindow::setStyleSaveScreen()
 {
-    QString titleWidgetStyle = "QWidget {"
+    QString titleWidgetStyle = "ClickableWidget {"
                                "border-image: url(:/images/resources/Other/TitleScreenBackground.png) 0 0 0 0 stretch stretch;"
                                "margin-left: 80px;"
                                "margin-right: 80px;"
                                "border-radius: 20px;"
                                "}";
     QString titleLabelStyle =  "color: rgb(254,220,105); font-size: 44px;";
+    QString lineLabelStyle = "margin-left: 80px; margin-right: 80px;";
     QString infoLabelStyle = "color: rgb(254, 220, 105); font-size: 24px;";
 
     titleWidgetSS -> setStyleSheet(titleWidgetStyle);
     titleLabelSS -> setStyleSheet(titleLabelStyle);
+    lineTitleSS -> setStyleSheet(lineLabelStyle);
     infoTitleSS -> setStyleSheet(infoLabelStyle);
 
-    QString saveWidgetStyle = "QWidget {"
+    QString saveWidgetStyle = "ClickableWidget {"
                              "border-image: url(:/images/resources/Other/TitleScreenBackground.png) 0 0 0 0 stretch stretch;"
                              "border-radius: 16px;"
+                             "}"
+                             "ClickableWidget:hover {"
+                             "border-image: url(:/images/resources/Other/HoverBackground.png) 0 0 0 0 stretch stretch;"
                              "}"
                              "QLabel {"
                              "color: rgb(254, 220, 105); font-size: 24px;"
@@ -503,4 +509,53 @@ void MainWindow::setStyleSaveScreen()
 void MainWindow::removeLayoutSaveScreen()
 {
 
+}
+
+void MainWindow::loadContentFromSaveFiles(QLabel *label, QString path)
+{
+    QString points, multi, hammers, pickaxes, children, drills, dynamite;
+    int nr = 0;
+
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly))
+        QMessageBox::critical(this, "UNABLE TO OPEN FILE", "File not found.");
+    else
+    {
+        QTextStream in(&file);
+        while(!file.atEnd())
+        {
+            switch(nr)
+            {
+            case 0:
+                multi = in.readLine();
+                break;
+            case 1:
+                points = in.readLine();
+                break;
+            case 2:
+                hammers = in.readLine();
+                break;
+            case 3:
+                pickaxes = in.readLine();
+                break;
+            case 4:
+                children = in.readLine();
+                break;
+            case 5:
+                drills = in.readLine();
+                break;
+            case 6: dynamite = in.readLine();
+                break;
+            default:
+                QMessageBox::critical(this, "ERROR", "Tried to read too many lines!");
+                break;
+            }
+            nr++;
+        }
+    }
+    file.close();
+
+    QString saveContent = points + " $\nMultiplier: x" + multi + '\n' + hammers + '\n' + pickaxes + '\n' +
+            children + '\n' + drills + '\n' + dynamite;
+    label -> setText(saveContent);
 }
