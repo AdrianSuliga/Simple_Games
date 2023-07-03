@@ -35,6 +35,7 @@ private slots:
     void setLayoutSaveScreen();
     void setStyleSaveScreen();
     void removeLayoutSaveScreen();
+    void loadContentFromSaveFiles(QLabel *label, QString path);
 
 private:
     Ui::MainWindow *ui;
@@ -60,7 +61,7 @@ private:
     QLabel *titleLabelSS, *lineTitleSS, *infoTitleSS, *save1Label, *save2Label, *save3Label, *save4Label,
             *line1Label, *line2Label, *line3Label, *line4Label, *content1Label, *content2Label, *content3Label,
             *content4Label;
-    QWidget *save1Widget, *save2Widget, *save3Widget, *save4Widget, *titleWidgetSS;
+    ClickableWidget *save1Widget, *save2Widget, *save3Widget, *save4Widget, *titleWidgetSS;
     QVBoxLayout *titleLayoutSS, *save1Layout, *save2Layout, *save3Layout, *save4Layout;
     QHBoxLayout *saveMainBodyLayout;
 };
