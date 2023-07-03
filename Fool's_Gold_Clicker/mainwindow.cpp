@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     checkContinueButton();
     setStyleTitleScreen();
 
-    setMinimumSize(400, 460);
+    setMinimumSize(400, 500);
     setMaximumSize(820, 820);
 }
 
@@ -294,35 +294,33 @@ void MainWindow::checkContinueButton()
 bool MainWindow::didYouUseThisSave(QString path)
 {
     QFile file(path);
-    int nr = 0;
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        QMessageBox::critical(this, "UNABLE TO OPEN FILE", "Could not open save file");
-    else
+    int nr = 1;
+    if (file.open(QIODevice::ReadOnly))
     {
         QTextStream line(&file);
-        while(!file.atEnd())
+        while(!line.atEnd())
         {
             switch(nr)
             {
-            case 0:
+            case 1:
             {
                 double saved_multi = line.readLine().toDouble(nullptr);
                 if (saved_multi > 1.0001)
                     return true;
                 break;
             }
-            case 1:
+            case 2:
             {
                 double saved_points = line.readLine().toDouble(nullptr);
-                if ((saved_points > 0.0001) || (saved_points < 0.0001))
+                if (saved_points > 0.0001)
                     return true;
                 break;
             }
-            case 2:
             case 3:
             case 4:
             case 5:
             case 6:
+            case 7:
             {
                 int saved_bought_items = line.readLine().toInt(nullptr, 10);
                 if (saved_bought_items != 0)
@@ -335,8 +333,10 @@ bool MainWindow::didYouUseThisSave(QString path)
             }
             nr++;
         }
+        file.close();
     }
-    file.close();
+    else
+        QMessageBox::critical(this, "FILE NOT FOUND", "File not found!");
 
     return false;
 }
@@ -389,10 +389,10 @@ void MainWindow::setLayoutSaveScreen()
     save1Layout = new QVBoxLayout();
     save1Layout -> insertWidget(0, save1Label, 2);
     save1Layout -> insertWidget(1, line1Label, 1);
-    save1Layout -> insertWidget(2, content1Label, 4);
+    save1Layout -> insertWidget(2, content1Label, 6);
 
     save1Widget = new ClickableWidget();
-    save1Widget -> setMinimumHeight(240);
+    save1Widget -> setMinimumHeight(280);
     save1Widget -> setLayout(save1Layout);
 
     save2Label = new QLabel("SAVE 2");
@@ -410,10 +410,10 @@ void MainWindow::setLayoutSaveScreen()
     save2Layout = new QVBoxLayout();
     save2Layout -> insertWidget(0, save2Label, 2);
     save2Layout -> insertWidget(1, line2Label, 1);
-    save2Layout -> insertWidget(2, content2Label, 4);
+    save2Layout -> insertWidget(2, content2Label, 6);
 
     save2Widget = new ClickableWidget();
-    save2Widget -> setMinimumHeight(240);
+    save2Widget -> setMinimumHeight(280);
     save2Widget -> setLayout(save2Layout);
 
     save3Label = new QLabel("SAVE 3");
@@ -431,10 +431,10 @@ void MainWindow::setLayoutSaveScreen()
     save3Layout = new QVBoxLayout();
     save3Layout -> insertWidget(0, save3Label, 2);
     save3Layout -> insertWidget(1, line3Label, 1);
-    save3Layout -> insertWidget(2, content3Label, 4);
+    save3Layout -> insertWidget(2, content3Label, 6);
 
     save3Widget = new ClickableWidget();
-    save3Widget -> setMinimumHeight(240);
+    save3Widget -> setMinimumHeight(280);
     save3Widget -> setLayout(save3Layout);
 
     save4Label = new QLabel("SAVE 4");
@@ -452,10 +452,10 @@ void MainWindow::setLayoutSaveScreen()
     save4Layout = new QVBoxLayout();
     save4Layout -> insertWidget(0, save4Label, 2);
     save4Layout -> insertWidget(1, line4Label, 1);
-    save4Layout -> insertWidget(2, content4Label, 4);
+    save4Layout -> insertWidget(2, content4Label, 6);
 
     save4Widget = new ClickableWidget();
-    save4Widget -> setMinimumHeight(240);
+    save4Widget -> setMinimumHeight(280);
     save4Widget -> setLayout(save4Layout);
 
     //LAYOUT
@@ -470,7 +470,7 @@ void MainWindow::setLayoutSaveScreen()
     mainLayout -> insertWidget(2, titleWidgetSS, 2);
     mainLayout -> insertStretch(3, 3);
     mainLayout -> insertLayout(4, saveMainBodyLayout, 4);
-    mainLayout -> insertStretch(5, 1);
+    mainLayout -> insertStretch(5, 2);
 }
 void MainWindow::setStyleSaveScreen()
 {
@@ -504,6 +504,11 @@ void MainWindow::setStyleSaveScreen()
     save2Widget -> setStyleSheet(saveWidgetStyle);
     save3Widget -> setStyleSheet(saveWidgetStyle);
     save4Widget -> setStyleSheet(saveWidgetStyle);
+
+    content1Label -> setStyleSheet("font-size: 18px;");
+    content2Label -> setStyleSheet("font-size: 18px;");
+    content3Label -> setStyleSheet("font-size: 18px;");
+    content4Label -> setStyleSheet("font-size: 18px;");
 }
 
 void MainWindow::removeLayoutSaveScreen()
@@ -513,49 +518,46 @@ void MainWindow::removeLayoutSaveScreen()
 
 void MainWindow::loadContentFromSaveFiles(QLabel *label, QString path)
 {
-    QString points, multi, hammers, pickaxes, children, drills, dynamite;
-    int nr = 0;
+    QString pts, multi, hamm, pick, ch, dr, dyn;
+    int nr = 1;
 
     QFile file(path);
-    if (!file.open(QIODevice::ReadOnly))
-        QMessageBox::critical(this, "UNABLE TO OPEN FILE", "File not found.");
-    else
+
+    if (file.open(QIODevice::ReadOnly))
     {
-        QTextStream in(&file);
-        while(!file.atEnd())
+        QTextStream line(&file);
+        while (!line.atEnd())
         {
             switch(nr)
             {
-            case 0:
-                multi = in.readLine();
-                break;
             case 1:
-                points = in.readLine();
+                multi = line.readLine();
                 break;
             case 2:
-                hammers = in.readLine();
+                pts = line.readLine();
                 break;
             case 3:
-                pickaxes = in.readLine();
+                hamm = line.readLine();
                 break;
             case 4:
-                children = in.readLine();
+                pick = line.readLine();
                 break;
             case 5:
-                drills = in.readLine();
+                ch = line.readLine();
                 break;
-            case 6: dynamite = in.readLine();
+            case 6:
+                dr = line.readLine();
                 break;
-            default:
-                QMessageBox::critical(this, "ERROR", "Tried to read too many lines!");
+            case 7:
+                dyn = line.readLine();
                 break;
             }
             nr++;
         }
+        file.close();
     }
-    file.close();
-
-    QString saveContent = points + " $\nMultiplier: x" + multi + '\n' + hammers + '\n' + pickaxes + '\n' +
-            children + '\n' + drills + '\n' + dynamite;
-    label -> setText(saveContent);
+    else
+        QMessageBox::critical(this, "FILE NOT FOUND", "File not found!");
+    label -> setText(pts + " $\n x " + multi + '\n' + hamm + " hammers\n" +
+                     pick + " pickaxes\n" + ch + " children\n" + dr + " drills\n" + dyn + " dynamite");
 }
