@@ -370,93 +370,21 @@ void MainWindow::setLayoutSaveScreen()
     titleLayoutSS -> insertWidget(1, lineTitleSS, 3);
     titleLayoutSS -> insertWidget(2, infoTitleSS, 3);
 
-    titleWidgetSS = new ClickableWidget();
+    titleWidgetSS = new QWidget();
     titleWidgetSS -> setLayout(titleLayoutSS);
 
     //SAVES
-    save1Label = new QLabel("SAVE 1");
-    save1Label -> setAlignment(Qt::AlignCenter);
-    save1Label -> setFont(Bohemian);
-
-    line1Label = new QLabel("LINE.png");
-    line1Label -> setPixmap(QPixmap(":/images/resources/Other/YellowLine.png"));
-    line1Label -> setScaledContents(true);
-    line1Label -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-    content1Label = new QLabel("Content_1");
-    loadContentFromSaveFiles(content1Label, ":/saves/saves/Save_1.txt");
-
-    save1Layout = new QVBoxLayout();
-    save1Layout -> insertWidget(0, save1Label, 2);
-    save1Layout -> insertWidget(1, line1Label, 1);
-    save1Layout -> insertWidget(2, content1Label, 6);
-
-    save1Widget = new ClickableWidget();
+    save1Widget = new ClickableWidget(nullptr, ":/saves/saves/Save_1.txt", 1);
     save1Widget -> setMinimumHeight(280);
-    save1Widget -> setLayout(save1Layout);
 
-    save2Label = new QLabel("SAVE 2");
-    save2Label -> setAlignment(Qt::AlignCenter);
-    save2Label -> setFont(Bohemian);
-
-    line2Label = new QLabel("LINE.png");
-    line2Label -> setPixmap(QPixmap(":/images/resources/Other/YellowLine.png"));
-    line2Label -> setScaledContents(true);
-    line2Label -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-    content2Label = new QLabel("Content_2");
-    loadContentFromSaveFiles(content2Label, ":/saves/saves/Save_2.txt");
-
-    save2Layout = new QVBoxLayout();
-    save2Layout -> insertWidget(0, save2Label, 2);
-    save2Layout -> insertWidget(1, line2Label, 1);
-    save2Layout -> insertWidget(2, content2Label, 6);
-
-    save2Widget = new ClickableWidget();
+    save2Widget = new ClickableWidget(nullptr, ":/saves/saves/Save_2.txt", 2);
     save2Widget -> setMinimumHeight(280);
-    save2Widget -> setLayout(save2Layout);
 
-    save3Label = new QLabel("SAVE 3");
-    save3Label -> setAlignment(Qt::AlignCenter);
-    save3Label -> setFont(Bohemian);
-
-    line3Label = new QLabel("LINE.png");
-    line3Label -> setPixmap(QPixmap(":/images/resources/Other/YellowLine.png"));
-    line3Label -> setScaledContents(true);
-    line3Label -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-    content3Label = new QLabel("Content_3");
-    loadContentFromSaveFiles(content3Label, ":/saves/saves/Save_3.txt");
-
-    save3Layout = new QVBoxLayout();
-    save3Layout -> insertWidget(0, save3Label, 2);
-    save3Layout -> insertWidget(1, line3Label, 1);
-    save3Layout -> insertWidget(2, content3Label, 6);
-
-    save3Widget = new ClickableWidget();
+    save3Widget = new ClickableWidget(nullptr, ":/saves/saves/Save_3.txt", 3);
     save3Widget -> setMinimumHeight(280);
-    save3Widget -> setLayout(save3Layout);
 
-    save4Label = new QLabel("SAVE 4");
-    save4Label -> setAlignment(Qt::AlignCenter);
-    save4Label -> setFont(Bohemian);
-
-    line4Label = new QLabel("LINE.png");
-    line4Label -> setPixmap(QPixmap(":/images/resources/Other/YellowLine.png"));
-    line4Label -> setScaledContents(true);
-    line4Label -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-    content4Label = new QLabel("Content_4");
-    loadContentFromSaveFiles(content4Label, ":/saves/saves/Save_4.txt");
-
-    save4Layout = new QVBoxLayout();
-    save4Layout -> insertWidget(0, save4Label, 2);
-    save4Layout -> insertWidget(1, line4Label, 1);
-    save4Layout -> insertWidget(2, content4Label, 6);
-
-    save4Widget = new ClickableWidget();
+    save4Widget = new ClickableWidget(nullptr, ":/saves/saves/Save_4.txt", 4);
     save4Widget -> setMinimumHeight(280);
-    save4Widget -> setLayout(save4Layout);
 
     //LAYOUT
     saveMainBodyLayout = new QHBoxLayout();
@@ -474,12 +402,10 @@ void MainWindow::setLayoutSaveScreen()
 }
 void MainWindow::setStyleSaveScreen()
 {
-    QString titleWidgetStyle = "ClickableWidget {"
-                               "border-image: url(:/images/resources/Other/TitleScreenBackground.png) 0 0 0 0 stretch stretch;"
+    QString titleWidgetStyle = "border-image: url(:/images/resources/Other/TitleScreenBackground.png) 0 0 0 0 stretch stretch;"
                                "margin-left: 80px;"
                                "margin-right: 80px;"
-                               "border-radius: 20px;"
-                               "}";
+                               "border-radius: 20px;";
     QString titleLabelStyle =  "color: rgb(254,220,105); font-size: 44px;";
     QString lineLabelStyle = "margin-left: 80px; margin-right: 80px;";
     QString infoLabelStyle = "color: rgb(254, 220, 105); font-size: 24px;";
@@ -488,76 +414,9 @@ void MainWindow::setStyleSaveScreen()
     titleLabelSS -> setStyleSheet(titleLabelStyle);
     lineTitleSS -> setStyleSheet(lineLabelStyle);
     infoTitleSS -> setStyleSheet(infoLabelStyle);
-
-    QString saveWidgetStyle = "ClickableWidget {"
-                             "border-image: url(:/images/resources/Other/TitleScreenBackground.png) 0 0 0 0 stretch stretch;"
-                             "border-radius: 16px;"
-                             "}"
-                             "ClickableWidget:hover {"
-                             "border-image: url(:/images/resources/Other/HoverBackground.png) 0 0 0 0 stretch stretch;"
-                             "}"
-                             "QLabel {"
-                             "color: rgb(254, 220, 105); font-size: 24px;"
-                             "}";
-
-    save1Widget -> setStyleSheet(saveWidgetStyle);
-    save2Widget -> setStyleSheet(saveWidgetStyle);
-    save3Widget -> setStyleSheet(saveWidgetStyle);
-    save4Widget -> setStyleSheet(saveWidgetStyle);
-
-    content1Label -> setStyleSheet("font-size: 18px;");
-    content2Label -> setStyleSheet("font-size: 18px;");
-    content3Label -> setStyleSheet("font-size: 18px;");
-    content4Label -> setStyleSheet("font-size: 18px;");
 }
 
 void MainWindow::removeLayoutSaveScreen()
 {
 
-}
-
-void MainWindow::loadContentFromSaveFiles(QLabel *label, QString path)
-{
-    QString pts, multi, hamm, pick, ch, dr, dyn;
-    int nr = 1;
-
-    QFile file(path);
-
-    if (file.open(QIODevice::ReadOnly))
-    {
-        QTextStream line(&file);
-        while (!line.atEnd())
-        {
-            switch(nr)
-            {
-            case 1:
-                multi = line.readLine();
-                break;
-            case 2:
-                pts = line.readLine();
-                break;
-            case 3:
-                hamm = line.readLine();
-                break;
-            case 4:
-                pick = line.readLine();
-                break;
-            case 5:
-                ch = line.readLine();
-                break;
-            case 6:
-                dr = line.readLine();
-                break;
-            case 7:
-                dyn = line.readLine();
-                break;
-            }
-            nr++;
-        }
-        file.close();
-    }
-    else
-        QMessageBox::critical(this, "FILE NOT FOUND", "File not found!");
-    label -> setText(pts + " $\n x " + multi + '\n' + hamm + " hammers\n" +
-                     pick + " pickaxes\n" + ch + " children\n" + dr + " drills\n" + dyn + " dynamite");
 }
