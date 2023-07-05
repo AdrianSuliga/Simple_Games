@@ -399,6 +399,9 @@ void MainWindow::setLayoutSaveScreen()
     mainLayout -> insertStretch(3, 3);
     mainLayout -> insertLayout(4, saveMainBodyLayout, 4);
     mainLayout -> insertStretch(5, 2);
+
+    //CONNECT
+    connect(save1Widget, SIGNAL(clicked()), this, SLOT(transitionToGameScreen(1)));
 }
 void MainWindow::setStyleSaveScreen()
 {
@@ -415,8 +418,99 @@ void MainWindow::setStyleSaveScreen()
     lineTitleSS -> setStyleSheet(lineLabelStyle);
     infoTitleSS -> setStyleSheet(infoLabelStyle);
 }
-
 void MainWindow::removeLayoutSaveScreen()
+{
+    delete titleLabelSS;
+    delete lineTitleSS;
+    delete infoTitleSS;
+
+    delete titleLayoutSS;
+    delete titleWidgetSS;
+
+    delete save1Widget;
+    delete save2Widget;
+    delete save3Widget;
+    delete save4Widget;
+
+    delete saveMainBodyLayout;
+}
+
+void MainWindow::loadContentFromSaveFile(QString path)
+{
+    int counter = 1;
+    QFile saveFile(path);
+    if (saveFile.open(QIODevice::ReadOnly))
+    {
+        QTextStream textLine(&saveFile);
+        while (!textLine.atEnd())
+        {
+            switch(counter)
+            {
+            case 1:
+                multiplier = textLine.readLine().toDouble(nullptr);
+                break;
+            case 2:
+                points = textLine.readLine().toDouble(nullptr);
+                break;
+            case 3:
+                hammers = textLine.readLine().toInt(nullptr, 10);
+                break;
+            case 4:
+                pickaxes = textLine.readLine().toInt(nullptr, 10);
+                break;
+            case 5:
+                children = textLine.readLine().toInt(nullptr, 10);
+                break;
+            case 6:
+                drills = textLine.readLine().toInt(nullptr, 10);
+                break;
+            case 7:
+                dynamite = textLine.readLine().toInt(nullptr, 10);
+                break;
+            default:
+                QMessageBox::critical(this, "ERROR", "Tried to read too many lines.");
+                return;
+                break;
+            }
+            counter++;
+        }
+        saveFile.close();
+    }
+    else
+        QMessageBox::critical(this, "ERROR", "File not found!");
+}
+
+void MainWindow::transitionToGameScreen(int saveNr)
+{
+    removeLayoutSaveScreen();
+    switch (saveNr)
+    {
+    case 1:
+        loadContentFromSaveFile(":/saves/saves/Save_1.txt");
+        break;
+    case 2:
+        loadContentFromSaveFile(":/saves/saves/Save_2.txt");
+        break;
+    case 3:
+        loadContentFromSaveFile(":/saves/saves/Save_3.txt");
+        break;
+    case 4:
+        loadContentFromSaveFile(":/saves/saves/Save_4.txt");
+        break;
+    }
+    setLayoutGameScreen();
+    setStyleGameScreen();
+}
+
+void MainWindow::setLayoutGameScreen()
+{
+
+}
+void MainWindow::setStyleGameScreen()
+{
+
+}
+void MainWindow::removeLayoutGameScreen()
 {
 
 }
