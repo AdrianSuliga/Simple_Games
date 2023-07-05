@@ -9,4 +9,4 @@ After launching an app user sees title screen where he can choose to either star
 
 Having started the game, player has to choose save file to load.
 
-![Screenshot_of_Save_Screen]()
+![Screenshot_of_Save_Screen](Fool's_Gold_Clicker/Screenshots/SaveScreen.png)
