@@ -1,68 +1,214 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#include "clickablewidget.h"
+#include "qstyleoption.h"
+#include <QFontDatabase>
+#include <QPainter>
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
 
-#include <QMainWindow>
-#include <QLabel>
-#include <QPushButton>
-#include <QSpacerItem>
-#include <QBoxLayout>
-#include <QSizeGrip>
-
-#include <clickablewidget.h>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-
-class MainWindow : public QMainWindow
+ClickableWidget::ClickableWidget(QWidget* parent, QString path, int nr)
+    : QWidget(parent)
 {
-    Q_OBJECT
+    int id_newfont = QFontDatabase::addApplicationFont(":/images/resources/Other/Bohemian Typewriter.ttf");
+    QString family_newfont = QFontDatabase::applicationFontFamilies(id_newfont).at(0);
+    QFont Bohemian(family_newfont);
 
-public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
-private slots:
-    //FUNCTIONS CREATING TITLE SCREEN
-    void setLayoutTitleScreen();
-    void setStyleTitleScreen();
-    void removeLayoutTitleScreen();
-    //TITLE SCREEN FUNCIONALITIES FUNCTIONS
-    void showMaximisedWindow();
-    void checkContinueButton();
-    bool didYouUseThisSave(QString path);
-    void transitionToSaveScreen();
-    //FUNCTIONS CREATING SAVE SCREEN
-    void setLayoutSaveScreen();
-    void setStyleSaveScreen();
-    void removeLayoutSaveScreen();
-    void loadContentFromSaveFiles(QLabel *label, QString path);
+    points = "";
+    multi = "";
+    ham = "";
+    pick = "";
+    ch = "";
+    dr = "";
+    dm = "";
 
-private:
-    Ui::MainWindow *ui;
-    //GAME VARIABLES
-    double points, multiplier;
-    int hammers, pickaxes, children, drills, dynamite;
-    QFont Bohemian;
-    //TITLE BAR
-    QLabel *iconLabelTB, *titleLabelTB;
-    QSpacerItem *spacerTB;
-    QPushButton *minimiseButtonTB, *maximiseButtonTB, *exitButtonTB;
-    QWidget *TB;
-    QHBoxLayout *mainLayoutTB;
-    //TITLE SCREEN
-    QPushButton *continueButtonTS, *newgameButtonTS, *tutorialButtonTS, *aboutButtonTS, *quitButtonTS;
-    QLabel *titleLabelTS;
-    QSpacerItem *lcSpacer, *rcSpacer, *lnSpacer, *rnSpacer, *ltSpacer, *rtSpacer, *laSpacer, *raSpacer, *lqSpacer, *rqSpacer;
-    QVBoxLayout *mainLayout, *titleLayoutTS;
-    QHBoxLayout *continueLayoutTS, *newgameLayoutTS, *tutorialLayoutTS, *aboutLayoutTS, *quitLayoutTS, *bGLayout;
-    QSizeGrip *brGripTS, *blGripTS;
-    QWidget *bottomGripTS, *titleWidgetTS;
-    //SAVE SCREEN
-    QLabel *titleLabelSS, *lineTitleSS, *infoTitleSS, *save1Label, *save2Label, *save3Label, *save4Label,
-            *line1Label, *line2Label, *line3Label, *line4Label, *content1Label, *content2Label, *content3Label,
-            *content4Label;
-    ClickableWidget *save1Widget, *save2Widget, *save3Widget, *save4Widget, *titleWidgetSS;
-    QVBoxLayout *titleLayoutSS, *save1Layout, *save2Layout, *save3Layout, *save4Layout;
-    QHBoxLayout *saveMainBodyLayout;
-};
-#endif // MAINWINDOW_H
+    loadContentFromFile(path);
+    setLayoutClickableWidget(nr, Bohemian);
+    setStyleClickableWidget();
+}
+
+ClickableWidget::~ClickableWidget() {}
+
+void ClickableWidget::mousePressEvent(QMouseEvent *event) {emit clicked();}
+
+void ClickableWidget::paintEvent(QPaintEvent *event)
+{
+    QStyleOption opt;
+    opt.initFrom(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void ClickableWidget::setLayoutClickableWidget(int nr, QFont Bohemian)
+{
+    //TITLE
+    titleLabel = new QLabel("");
+    switch(nr)
+    {
+    case 1:
+        titleLabel -> setText("SAVE 1");
+        break;
+    case 2:
+        titleLabel -> setText("SAVE 2");
+        break;
+    case 3:
+        titleLabel -> setText("SAVE 3");
+        break;
+    case 4:
+        titleLabel -> setText("SAVE 4");
+        break;
+    }
+    titleLabel -> setAlignment(Qt::AlignCenter);
+    titleLabel -> setFont(Bohemian);
+
+    //YELLOW LINE
+    lineLabel = new QLabel("LINE.png");
+    lineLabel -> setPixmap(QPixmap(":/images/resources/Other/YellowLine.png"));
+    lineLabel -> setMinimumHeight(20);
+    lineLabel -> setScaledContents(true);
+    lineLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
+    //CONTENT
+    int iconMinSize = 25;
+    pointsLabel = new QLabel(points + " $");
+    pointsLabel -> setMinimumHeight(30);
+
+    multiLabel = new QLabel("x " + multi);
+    multiLabel -> setMinimumHeight(30);
+
+    pickaxesLabel = new QLabel(pick);
+    pickaxesIcon = new QLabel("PICKAXE.png");
+    pickaxesIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/pickaxe.png"));
+    pickaxesIcon -> setScaledContents(true);
+    pickaxesIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    pickaxesIcon -> setMinimumSize(iconMinSize, iconMinSize);
+    pickaxesSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    pickaxesLayout = new QHBoxLayout();
+    pickaxesLayout -> insertWidget(0, pickaxesLabel);
+    pickaxesLayout -> insertWidget(1, pickaxesIcon);
+    pickaxesLayout -> insertSpacerItem(2, pickaxesSpacer);
+
+    hammersLabel = new QLabel(ham);
+    hammersIcon = new QLabel("HAMMER.png");
+    hammersIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/hammer.png"));
+    hammersIcon -> setScaledContents(true);
+    hammersIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    hammersIcon -> setMinimumSize(iconMinSize, iconMinSize);
+    hammersSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    hammersLayout = new QHBoxLayout();
+    hammersLayout -> insertWidget(0, hammersLabel);
+    hammersLayout -> insertWidget(1, hammersIcon);
+    hammersLayout -> insertSpacerItem(2, hammersSpacer);
+
+    childrenLabel = new QLabel(ch);
+    childrenIcon = new QLabel("CHILD.png");
+    childrenIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/child.png"));
+    childrenIcon -> setScaledContents(true);
+    childrenIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    childrenIcon -> setMinimumSize(iconMinSize, iconMinSize);
+    childrenSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    childrenLayout = new QHBoxLayout();
+    childrenLayout -> insertWidget(0, childrenLabel);
+    childrenLayout -> insertWidget(1, childrenIcon);
+    childrenLayout -> insertSpacerItem(2, childrenSpacer);
+
+    drillLabel = new QLabel(dr);
+    drillIcon = new QLabel("DRILL.png");
+    drillIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/drill.png"));
+    drillIcon -> setScaledContents(true);
+    drillIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    drillIcon -> setMinimumSize(iconMinSize, iconMinSize);
+    drillSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    drillsLayout = new QHBoxLayout();
+    drillsLayout -> insertWidget(0, drillLabel);
+    drillsLayout -> insertWidget(1, drillIcon);
+    drillsLayout -> insertSpacerItem(2, drillSpacer);
+
+    dynamiteLabel = new QLabel(dm);
+    dynamiteIcon = new QLabel("DYNAMITE.png");
+    dynamiteIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/dynamite.png"));
+    dynamiteIcon -> setScaledContents(true);
+    dynamiteIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    dynamiteIcon -> setMinimumSize(iconMinSize, iconMinSize);
+    dynamiteSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    dynamiteLayout = new QHBoxLayout();
+    dynamiteLayout -> insertWidget(0, dynamiteLabel);
+    dynamiteLayout -> insertWidget(1, dynamiteIcon);
+    dynamiteLayout -> insertSpacerItem(2, dynamiteSpacer);
+
+    mainLayout = new QVBoxLayout();
+    mainLayout -> insertWidget(0, titleLabel, 2);
+    mainLayout -> insertWidget(1, lineLabel, 1);
+    mainLayout -> insertWidget(2, pointsLabel, 1);
+    mainLayout -> insertWidget(3, multiLabel, 1);
+    mainLayout -> insertLayout(4, hammersLayout, 1);
+    mainLayout -> insertLayout(5, pickaxesLayout, 1);
+    mainLayout -> insertLayout(6, childrenLayout, 1);
+    mainLayout -> insertLayout(7, drillsLayout, 1);
+    mainLayout -> insertLayout(8, dynamiteLayout, 1);
+    mainLayout -> insertSpacing(9, 5);
+    mainLayout -> setSpacing(10);
+    this->setLayout(mainLayout);
+}
+
+void ClickableWidget::setStyleClickableWidget()
+{
+    QString saveWidgetStyle = "ClickableWidget {"
+                              "border-image: url(:/images/resources/Other/TitleScreenBackground.png) 0 0 0 0 stretch stretch;"
+                              "border-radius: 20px;"
+                              "}"
+                              "ClickableWidget:hover {"
+                              "border-image: url(:/images/resources/Other/HoverBackground.png) 0 0 0 0 stretch stretch;"
+                              "}"
+                              "QLabel {"
+                              "font-size: 25px;"
+                              "color: rgb(254, 220, 105);"
+                              "}";
+    this->setStyleSheet(saveWidgetStyle);
+}
+
+void ClickableWidget::loadContentFromFile(QString path)
+{
+    int nr = 1;
+
+    QFile file(path);
+    if (file.open(QIODevice::ReadOnly))
+    {
+        QTextStream line(&file);
+        while (!line.atEnd())
+        {
+            switch(nr)
+            {
+            case 1:
+                multi = line.readLine();
+                break;
+            case 2:
+                points = line.readLine();
+                break;
+            case 3:
+                ham = line.readLine();
+                break;
+            case 4:
+                pick = line.readLine();
+                break;
+            case 5:
+                ch = line.readLine();
+                break;
+            case 6:
+                dr = line.readLine();
+                break;
+            case 7:
+                dm = line.readLine();
+                break;
+            }
+            nr++;
+        }
+        file.close();
+    }
+    else
+        return;
+}
