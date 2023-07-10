@@ -42,11 +42,14 @@ private slots:
     void setLayoutGameScreen();
     void setStyleGameScreen();
     void removeLayoutGameScreen();
+    //GAME SCREEN FUNCTIONALITIES FUNCTIONS
+    short drawOreType();
 
 private:
     Ui::MainWindow *ui;
     //GAME VARIABLES
     double points, multiplier;
+    short oreType;
     int hammers, pickaxes, children, drills, dynamite;
     QFont Bohemian;
     //TITLE BAR
@@ -70,5 +73,14 @@ private:
     QVBoxLayout *titleLayoutSS;
     QHBoxLayout *saveMainBodyLayout;
     //GAME SCREEN
+    QLabel *scoreLabel, *multiplierLabel, *shopLabel, *oreLabel, *inventoryLabel, *numPick, *numHamm, *numChild, *numDrill, *numDyn,
+            *pickIcon, *hammIcon, *childIcon, *drillIcon, *dynIcon, *hammPriceLabel, *pickPriceLabel, *childPriceLabel,
+            *drillPriceLabel, *dynPriceLabel;
+    QVBoxLayout *miningLayout, *inventoryLayout, *invBodyLayout, *shopLayout, *column1Layout, *column2Layout;
+    QHBoxLayout *gameMainBodyLayout, *ownedPickaxesLayout, *ownedHammersLayout, *ownedChildrenLayout, *ownedDrillsLayout,
+                *ownedDynamiteLayout, *shopColumnsLayout;
+    QSpacerItem *shop1Spacer, *shop2Spacer, *shop3Spacer, *shop4Spacer, *shop5Spacer;
+    QWidget *inventoryWidget, *shopWidget, *shopHammerWidget, *shopPickaxeWidget, *shopChildWidget, *shopDrillWidget,
+            *shopDynamiteWidget;
 };
 #endif // MAINWINDOW_H
