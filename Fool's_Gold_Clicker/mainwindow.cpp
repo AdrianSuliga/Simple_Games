@@ -5,7 +5,7 @@
 #include <QFontDatabase>
 #include <QSizeGrip>
 #include <QMessageBox>
-#include <QDebug>
+#include <cstdlib>
 #include "clickablewidget.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     children = 0;
     drills = 0;
     dynamite = 0;
+    oreType = -1;
 
     setLayoutTitleScreen();
     checkContinueButton();
@@ -401,7 +402,10 @@ void MainWindow::setLayoutSaveScreen()
     mainLayout -> insertStretch(5, 2);
 
     //CONNECT
-    connect(save1Widget, SIGNAL(clicked()), this, SLOT(transitionToGameScreen(1)));
+    connect(save1Widget, &ClickableWidget::clicked, this, [this]() { transitionToGameScreen(1); });
+    connect(save2Widget, &ClickableWidget::clicked, this, [this]() { transitionToGameScreen(2); });
+    connect(save3Widget, &ClickableWidget::clicked, this, [this]() { transitionToGameScreen(3); });
+    connect(save4Widget, &ClickableWidget::clicked, this, [this]() { transitionToGameScreen(4); });
 }
 void MainWindow::setStyleSaveScreen()
 {
@@ -504,6 +508,142 @@ void MainWindow::transitionToGameScreen(int saveNr)
 
 void MainWindow::setLayoutGameScreen()
 {
+    //ORE MINING LAYOUT
+    scoreLabel = new QLabel(QString::number(points) + " $");
+    scoreLabel -> setAlignment(Qt::AlignCenter);
+
+    multiplierLabel = new QLabel("x " + QString::number(multiplier));
+    multiplierLabel -> setAlignment(Qt::AlignCenter);
+
+    // COMMON: (0) SELENITE, (1) ONYX, (2) AMETHYST - 10 $ - 20 % - ALL 60 %
+    // UNCOMMON: (3) DIAMONDS, (4) GOLD - 50 $ - 15 % - ALL 30 %
+    // RARE: (5) RUBY, (6) JADE - 100 $ - 5 % - ALL 10 %
+
+    oreType = drawOreType();
+
+    oreLabel = new QLabel("ORE.png");
+    switch (oreType)
+    {
+    case 0:
+        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/selenite_ore.png"));
+        break;
+    case 1:
+        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/onyx_ore.png"));
+        break;
+    case 2:
+        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/amethyst_ore.png"));
+        break;
+    case 3:
+        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/diamond_ore.png"));
+        break;
+    case 4:
+        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/gold_ore.png"));
+        break;
+    case 5:
+        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/ruby_ore.png"));
+        break;
+    case 6:
+        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/jade_ore.png"));
+        break;
+    default:
+        QMessageBox::critical(this, "ALERT", "UNABLE TO LOAD ORE ICON!");
+        return;
+    }
+    oreLabel -> setScaledContents(true);
+    oreLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
+    miningLayout = new QVBoxLayout();
+    miningLayout -> insertWidget(0, scoreLabel, 2);
+    miningLayout -> insertWidget(1, multiplierLabel, 1);
+    miningLayout -> insertStretch(2, 1);
+    miningLayout -> insertWidget(3, oreLabel, 4);
+    miningLayout -> insertStretch(4, 1);
+
+    //INVENTORY LAYOUT
+    inventoryLabel = new QLabel("INVENTORY");
+    inventoryLabel -> setAlignment(Qt::AlignCenter);
+
+    inventoryWidget = new QWidget();
+
+    numHamm = new QLabel(QString::number(hammers, 10));
+    numHamm -> setAlignment(Qt::AlignCenter);
+
+    hammIcon = new QLabel();
+    hammIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/hammer.png"));
+    hammIcon -> setScaledContents(true);
+    hammIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
+    ownedHammersLayout = new QHBoxLayout();
+    ownedHammersLayout -> insertWidget(0, numHamm, 1);
+    ownedHammersLayout -> insertWidget(1, hammIcon, 1);
+
+    numPick = new QLabel(QString::number(pickaxes, 10));
+    numPick -> setAlignment(Qt::AlignCenter);
+
+    pickIcon = new QLabel();
+    pickIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/pickaxe.png"));
+    pickIcon -> setScaledContents(true);
+    pickIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
+    ownedPickaxesLayout = new QHBoxLayout();
+    ownedPickaxesLayout -> insertWidget(0, numPick, 1);
+    ownedPickaxesLayout -> insertWidget(1, pickIcon, 1);
+
+    numChild = new QLabel(QString::number(children, 10));
+    numChild -> setAlignment(Qt::AlignCenter);
+
+    childIcon = new QLabel();
+    childIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/child.png"));
+    childIcon -> setScaledContents(true);
+    childIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
+    ownedChildrenLayout = new QHBoxLayout();
+    ownedChildrenLayout -> insertWidget(0, numChild, 1);
+    ownedChildrenLayout -> insertWidget(1, childIcon, 1);
+
+    numDrill = new QLabel(QString::number(drills, 10));
+    numDrill -> setAlignment(Qt::AlignCenter);
+
+    drillIcon = new QLabel();
+    drillIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/drill.png"));
+    drillIcon -> setScaledContents(true);
+    drillIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
+    ownedDrillsLayout = new QHBoxLayout();
+    ownedDrillsLayout -> insertWidget(0, numDrill, 1);
+    ownedDrillsLayout -> insertWidget(1, drillIcon, 1);
+
+    numDyn = new QLabel(QString::number(dynamite, 10));
+    numDyn -> setAlignment(Qt::AlignCenter);
+
+    dynIcon = new QLabel();
+    dynIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/dynamite.png"));
+    dynIcon -> setScaledContents(true);
+    dynIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
+    ownedDynamiteLayout = new QHBoxLayout();
+    ownedDynamiteLayout -> insertWidget(0, numDyn, 1);
+    ownedDynamiteLayout -> insertWidget(1, dynIcon, 1);
+
+    invBodyLayout = new QVBoxLayout();
+    invBodyLayout -> insertLayout(0, ownedHammersLayout, 1);
+    invBodyLayout -> insertLayout(1, ownedPickaxesLayout, 1);
+    invBodyLayout -> insertLayout(2, ownedChildrenLayout, 1);
+    invBodyLayout -> insertLayout(3, ownedDrillsLayout, 1);
+    invBodyLayout -> insertLayout(4, ownedDynamiteLayout, 1);
+
+    inventoryWidget -> setLayout(invBodyLayout);
+
+    inventoryLayout = new QVBoxLayout();
+    inventoryLayout -> insertWidget(0, inventoryLabel, 1);
+    inventoryLayout -> insertWidget(1, inventoryWidget, 7);
+
+    //SHOP LAYOUT
+    shopLabel = new QLabel("SHOP");
+    shopLabel -> setAlignment(Qt::AlignCenter);
+
+    shopWidget = new QWidget();
+
 
 }
 void MainWindow::setStyleGameScreen()
@@ -513,4 +653,26 @@ void MainWindow::setStyleGameScreen()
 void MainWindow::removeLayoutGameScreen()
 {
 
+}
+
+short MainWindow::drawOreType()
+{
+    srand(time(nullptr));
+    short x = rand() % 100 + 1;
+    if (x > 0 && x <= 20)
+        return 0;
+    else if (x > 20 && x <= 40)
+        return 1;
+    else if (x > 40 && x <= 60)
+        return 2;
+    else if (x > 60 && x <= 75)
+        return 3;
+    else if (x > 75 && x <= 90)
+        return 4;
+    else if (x > 90 && x <= 95)
+        return 5;
+    else if (x > 95 && x <= 100)
+        return 6;
+    else
+        return -1;
 }
