@@ -1,335 +1,235 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "clickablewidget.h"
+#include "qstyleoption.h"
+#include <QFontDatabase>
+#include <QPainter>
 #include <QFile>
 #include <QTextStream>
-#include <QFontDatabase>
-#include <QSizeGrip>
-#include <QMessageBox>
-#include <cstdlib>
-#include "clickablewidget.h"
+#include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+ClickableWidget::ClickableWidget(QWidget* parent, QString path, int nr)
+    : QWidget(parent)
 {
-    ui->setupUi(this);
-
-    setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-    setWindowIcon(QIcon(QPixmap(":/images/resources/Other/Icon.png")));
-    setWindowTitle("FOOL'S GOLD");
-
     int id_newfont = QFontDatabase::addApplicationFont(":/images/resources/Other/Bohemian Typewriter.ttf");
     QString family_newfont = QFontDatabase::applicationFontFamilies(id_newfont).at(0);
     QFont Bohemian(family_newfont);
 
-    points = 0.0;
-    multiplier = 1.0;
-    hammers = 0;
-    pickaxes = 0;
-    children = 0;
-    drills = 0;
-    dynamite = 0;
-    oreType = -1;
+    points = "";
+    multi = "";
+    ham = "";
+    pick = "";
+    ch = "";
+    dr = "";
+    dm = "";
 
-    setLayoutTitleScreen();
-    checkContinueButton();
-    setStyleTitleScreen();
-
-    setMinimumSize(400, 500);
-    setMaximumSize(820, 820);
+    loadContentFromFile(path);
+    setLayoutClickableWidget(nr, Bohemian);
+    setStyleClickableWidget();
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
+ClickableWidget::~ClickableWidget() {
+    delete titleLabel;
+    delete lineLabel;
+    delete pointsLabel;
+    delete multiLabel;
+
+    delete hammersLabel;
+    delete hammersIcon;
+    delete hammersLayout;
+
+    delete pickaxesLabel;
+    delete pickaxesIcon;
+    delete pickaxesLayout;
+
+    delete childrenLabel;
+    delete childrenIcon;
+    delete childrenLayout;
+
+    delete drillLabel;
+    delete drillIcon;
+    delete drillsLayout;
+
+    delete dynamiteLabel;
+    delete dynamiteIcon;
+    delete dynamiteLayout;
+
+    delete this->layout();
 }
 
-void MainWindow::setLayoutTitleScreen()
+void ClickableWidget::mousePressEvent(QMouseEvent *event) {emit clicked();}
+
+void ClickableWidget::paintEvent(QPaintEvent *event)
 {
-    //TITLE BAR
-    iconLabelTB = new QLabel("ICON.png");
-    iconLabelTB -> setPixmap(QPixmap(":/images/resources/Other/Icon.png"));
-    iconLabelTB -> setScaledContents(true);
-    iconLabelTB -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    iconLabelTB -> setMinimumSize(30, 30);
-
-    titleLabelTB = new QLabel("FOOL'S GOLD");
-    titleLabelTB -> setAlignment(Qt::AlignCenter);
-
-    spacerTB = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-    minimiseButtonTB = new QPushButton("-");
-    minimiseButtonTB -> setFixedSize(30, 30);
-    maximiseButtonTB = new QPushButton("O");
-    maximiseButtonTB -> setFixedSize(30, 30);
-    exitButtonTB = new QPushButton("X");
-    exitButtonTB -> setFixedSize(30, 30);
-
-    mainLayoutTB = new QHBoxLayout();
-    mainLayoutTB -> insertWidget(0, iconLabelTB);
-    mainLayoutTB -> insertSpacing(1, 30);
-    mainLayoutTB -> insertWidget(2, titleLabelTB);
-    mainLayoutTB -> insertSpacerItem(3, spacerTB);
-    mainLayoutTB -> insertWidget(4, minimiseButtonTB);
-    mainLayoutTB -> insertWidget(5, maximiseButtonTB);
-    mainLayoutTB -> insertWidget(6, exitButtonTB);
-    mainLayoutTB -> setContentsMargins(0, 0, 0, 0);
-    mainLayoutTB -> setSpacing(2);
-
-    TB = new QWidget();
-    TB -> setLayout(mainLayoutTB);
-    TB -> setFixedHeight(30);
-    //TITLE SCREEN
-    //title label
-    titleLabelTS = new QLabel("FOOL'S GOLD");
-    titleLabelTS -> setFont(Bohemian);
-    titleLabelTS -> setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    titleLabelTS -> setWordWrap(true);
-
-    titleLayoutTS = new QVBoxLayout();
-    titleLayoutTS -> insertWidget(0, titleLabelTS);
-
-    titleWidgetTS = new QWidget();
-    titleWidgetTS -> setLayout(titleLayoutTS);
-
-    //buttons
-    continueButtonTS = new QPushButton("CONTINUE");
-    continueButtonTS -> setMinimumSize(100, 40);
-    continueButtonTS -> setFont(Bohemian);
-
-    newgameButtonTS = new QPushButton("NEW GAME");
-    newgameButtonTS -> setMinimumSize(100, 40);
-    newgameButtonTS -> setFont(Bohemian);
-
-    tutorialButtonTS = new QPushButton("TUTORIAL");
-    tutorialButtonTS -> setMinimumSize(100, 40);
-    tutorialButtonTS -> setFont(Bohemian);
-
-    aboutButtonTS = new QPushButton("ABOUT");
-    aboutButtonTS -> setMinimumSize(100, 40);
-    aboutButtonTS -> setFont(Bohemian);
-
-    quitButtonTS = new QPushButton("QUIT");
-    quitButtonTS -> setMinimumSize(100, 40);
-    quitButtonTS -> setFont(Bohemian);
-
-    //spacers
-    lcSpacer = new QSpacerItem(40,10,QSizePolicy::Expanding,QSizePolicy::Minimum);
-    rcSpacer = new QSpacerItem(40,10,QSizePolicy::Expanding,QSizePolicy::Minimum);
-    lnSpacer = new QSpacerItem(40,10,QSizePolicy::Expanding,QSizePolicy::Minimum);
-    rnSpacer = new QSpacerItem(40,10,QSizePolicy::Expanding,QSizePolicy::Minimum);
-    ltSpacer = new QSpacerItem(40,10,QSizePolicy::Expanding,QSizePolicy::Minimum);
-    rtSpacer = new QSpacerItem(40,10,QSizePolicy::Expanding,QSizePolicy::Minimum);
-    laSpacer = new QSpacerItem(40,10,QSizePolicy::Expanding,QSizePolicy::Minimum);
-    raSpacer = new QSpacerItem(40,10,QSizePolicy::Expanding,QSizePolicy::Minimum);
-    lqSpacer = new QSpacerItem(40,10,QSizePolicy::Expanding,QSizePolicy::Minimum);
-    rqSpacer = new QSpacerItem(40,10,QSizePolicy::Expanding,QSizePolicy::Minimum);
-
-    //layouts
-    continueLayoutTS = new QHBoxLayout();
-    continueLayoutTS -> insertSpacerItem(0, lcSpacer);
-    continueLayoutTS -> insertWidget(1, continueButtonTS);
-    continueLayoutTS -> insertSpacerItem(2, rcSpacer);
-
-    newgameLayoutTS = new QHBoxLayout();
-    newgameLayoutTS -> insertSpacerItem(0, lnSpacer);
-    newgameLayoutTS -> insertWidget(1, newgameButtonTS);
-    newgameLayoutTS -> insertSpacerItem(2, rnSpacer);
-
-    tutorialLayoutTS = new QHBoxLayout();
-    tutorialLayoutTS -> insertSpacerItem(0, ltSpacer);
-    tutorialLayoutTS -> insertWidget(1, tutorialButtonTS);
-    tutorialLayoutTS -> insertSpacerItem(2, rtSpacer);
-
-    aboutLayoutTS = new QHBoxLayout();
-    aboutLayoutTS -> insertSpacerItem(0, laSpacer);
-    aboutLayoutTS -> insertWidget(1, aboutButtonTS);
-    aboutLayoutTS -> insertSpacerItem(2, raSpacer);
-
-    quitLayoutTS = new QHBoxLayout();
-    quitLayoutTS -> insertSpacerItem(0, lqSpacer);
-    quitLayoutTS -> insertWidget(1, quitButtonTS);
-    quitLayoutTS -> insertSpacerItem(2, rqSpacer);
-
-    //grips
-    brGripTS = new QSizeGrip(this);
-    blGripTS = new QSizeGrip(this);
-
-    bottomGripTS = new QWidget();
-    bGLayout = new QHBoxLayout();
-    bGLayout -> insertWidget(0, blGripTS, 0, Qt::AlignBottom | Qt::AlignLeft);
-    bGLayout -> insertWidget(1, brGripTS, 0, Qt::AlignBottom | Qt::AlignRight);
-    bGLayout -> setContentsMargins(QMargins());
-    bottomGripTS -> setLayout(bGLayout);
-
-    mainLayout = new QVBoxLayout(ui->centralwidget);
-    mainLayout -> insertWidget(0, TB);
-    mainLayout -> insertWidget(1, titleWidgetTS, 2);
-    mainLayout -> insertStretch(2, 1);
-    mainLayout -> insertLayout(3, continueLayoutTS, 2);
-    mainLayout -> insertLayout(4, newgameLayoutTS, 2);
-    mainLayout -> insertLayout(5, tutorialLayoutTS, 2);
-    mainLayout -> insertStretch(6, 1);
-    mainLayout -> insertLayout(7, aboutLayoutTS, 2);
-    mainLayout -> insertLayout(8, quitLayoutTS, 2);
-    mainLayout -> insertStretch(9, 1);
-    mainLayout -> insertWidget(10, bottomGripTS, 0);
-    mainLayout -> setContentsMargins(0, 0, 0, 0);
-
-    connect(quitButtonTS, SIGNAL(clicked()), this, SLOT(close()));
-    connect(newgameButtonTS, SIGNAL(clicked()), this, SLOT(transitionToSaveScreen()));
-
-    connect(minimiseButtonTB, SIGNAL(clicked()), this, SLOT(showMinimized()));
-    connect(maximiseButtonTB, SIGNAL(clicked()), this, SLOT(showMaximisedWindow()));
-    connect(exitButtonTB, SIGNAL(clicked()), this, SLOT(close()));
+    QStyleOption opt;
+    opt.initFrom(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
-void MainWindow::setStyleTitleScreen()
+
+void ClickableWidget::setLayoutClickableWidget(int nr, QFont Bohemian)
 {
-    //background
-    ui->centralwidget->setStyleSheet("#centralwidget {"
-                                     "border-image: url(:/images/resources/Other/background.png) 0 0 0 0 stretch stretch;"
-                                     "}");
-    TB -> setStyleSheet("background-color: rgb(84,94,106);");
+    //TITLE
+    titleLabel = new QLabel("");
+    switch(nr)
+    {
+    case 1:
+        titleLabel -> setText("SAVE 1");
+        break;
+    case 2:
+        titleLabel -> setText("SAVE 2");
+        break;
+    case 3:
+        titleLabel -> setText("SAVE 3");
+        break;
+    case 4:
+        titleLabel -> setText("SAVE 4");
+        break;
+    }
+    titleLabel -> setAlignment(Qt::AlignCenter);
+    titleLabel -> setFont(Bohemian);
 
-    //title label
-    QString titleLabelTSStyle = "QLabel {"
-                                "color: rgb(254,220,105);"
-                                "border-radius: 20px;"
-                                "margin-left: 80px;"
-                                "margin-right: 80px;"
-                                "margin-top: 40px;"
-                                "font-size: 60px;"
-                                "}";
-    QString titleWidgetStyle = "QWidget {"
-                               "border-image: url(:/images/resources/Other/TitleScreenBackground.png) 0 0 0 0 stretch stretch;"
-                               "margin-left: 80px;"
-                               "margin-right: 80px;"
-                               "margin-top: 40px;"
-                               "border-radius: 20px;"
-                               "}";
-    titleLabelTS -> setStyleSheet(titleLabelTSStyle);
-    titleWidgetTS -> setStyleSheet(titleWidgetStyle);
+    //YELLOW LINE
+    lineLabel = new QLabel("LINE.png");
+    lineLabel -> setPixmap(QPixmap(":/images/resources/Other/YellowLine.png"));
+    lineLabel -> setMinimumHeight(20);
+    lineLabel -> setScaledContents(true);
+    lineLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-    //buttons
-    QString disabledButtons = "QPushButton {"
-                              "background-color: rgb(84,94,106);"
-                              "color: #B8BF33;"
-                              "font-size: 16px;"
-                              "border-style: solid;"
-                              "border-radius: 4px;"
-                              "border-color: rgb(40,60,69);"
-                              "border-width: 2px;"
+    //CONTENT
+    int iconMinSize = 25;
+    pointsLabel = new QLabel(points + " $");
+    pointsLabel -> setMinimumHeight(30);
+
+    multiLabel = new QLabel("x " + multi);
+    multiLabel -> setMinimumHeight(30);
+
+    pickaxesLabel = new QLabel(pick);
+    pickaxesIcon = new QLabel("PICKAXE.png");
+    pickaxesIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/pickaxe.png"));
+    pickaxesIcon -> setScaledContents(true);
+    pickaxesIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    pickaxesIcon -> setMinimumSize(iconMinSize, iconMinSize);
+    pickaxesSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    pickaxesLayout = new QHBoxLayout();
+    pickaxesLayout -> insertWidget(0, pickaxesLabel);
+    pickaxesLayout -> insertWidget(1, pickaxesIcon);
+    pickaxesLayout -> insertSpacerItem(2, pickaxesSpacer);
+
+    hammersLabel = new QLabel(ham);
+    hammersIcon = new QLabel("HAMMER.png");
+    hammersIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/hammer.png"));
+    hammersIcon -> setScaledContents(true);
+    hammersIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    hammersIcon -> setMinimumSize(iconMinSize, iconMinSize);
+    hammersSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    hammersLayout = new QHBoxLayout();
+    hammersLayout -> insertWidget(0, hammersLabel);
+    hammersLayout -> insertWidget(1, hammersIcon);
+    hammersLayout -> insertSpacerItem(2, hammersSpacer);
+
+    childrenLabel = new QLabel(ch);
+    childrenIcon = new QLabel("CHILD.png");
+    childrenIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/child.png"));
+    childrenIcon -> setScaledContents(true);
+    childrenIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    childrenIcon -> setMinimumSize(iconMinSize, iconMinSize);
+    childrenSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    childrenLayout = new QHBoxLayout();
+    childrenLayout -> insertWidget(0, childrenLabel);
+    childrenLayout -> insertWidget(1, childrenIcon);
+    childrenLayout -> insertSpacerItem(2, childrenSpacer);
+
+    drillLabel = new QLabel(dr);
+    drillIcon = new QLabel("DRILL.png");
+    drillIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/drill.png"));
+    drillIcon -> setScaledContents(true);
+    drillIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    drillIcon -> setMinimumSize(iconMinSize, iconMinSize);
+    drillSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    drillsLayout = new QHBoxLayout();
+    drillsLayout -> insertWidget(0, drillLabel);
+    drillsLayout -> insertWidget(1, drillIcon);
+    drillsLayout -> insertSpacerItem(2, drillSpacer);
+
+    dynamiteLabel = new QLabel(dm);
+    dynamiteIcon = new QLabel("DYNAMITE.png");
+    dynamiteIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/dynamite.png"));
+    dynamiteIcon -> setScaledContents(true);
+    dynamiteIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    dynamiteIcon -> setMinimumSize(iconMinSize, iconMinSize);
+    dynamiteSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    dynamiteLayout = new QHBoxLayout();
+    dynamiteLayout -> insertWidget(0, dynamiteLabel);
+    dynamiteLayout -> insertWidget(1, dynamiteIcon);
+    dynamiteLayout -> insertSpacerItem(2, dynamiteSpacer);
+
+    mainLayout = new QVBoxLayout();
+    mainLayout -> insertWidget(0, titleLabel, 2);
+    mainLayout -> insertWidget(1, lineLabel, 1);
+    mainLayout -> insertWidget(2, pointsLabel, 1);
+    mainLayout -> insertWidget(3, multiLabel, 1);
+    mainLayout -> insertLayout(4, hammersLayout, 1);
+    mainLayout -> insertLayout(5, pickaxesLayout, 1);
+    mainLayout -> insertLayout(6, childrenLayout, 1);
+    mainLayout -> insertLayout(7, drillsLayout, 1);
+    mainLayout -> insertLayout(8, dynamiteLayout, 1);
+    mainLayout -> insertSpacing(9, 5);
+    mainLayout -> setSpacing(10);
+    this->setLayout(mainLayout);
+}
+
+void ClickableWidget::setStyleClickableWidget()
+{
+    QString saveWidgetStyle = "ClickableWidget {"
+                              "border-image: url(:/images/resources/Other/TitleScreenBackground.png) 0 0 0 0 stretch stretch;"
+                              "border-radius: 20px;"
+                              "}"
+                              "ClickableWidget:hover {"
+                              "border-image: url(:/images/resources/Other/HoverBackground.png) 0 0 0 0 stretch stretch;"
+                              "}"
+                              "QLabel {"
+                              "font-size: 25px;"
+                              "color: rgb(254, 220, 105);"
                               "}";
-    QString enabledButtons = "QPushButton {"
-                             "background-color: rgb(40,60,69);"
-                             "color: rgb(254,220,105);"
-                             "font-size: 16px;"
-                             "border-style:solid;"
-                             "border-radius: 4px;"
-                             "border-color: rgb(11,29,41);"
-                             "border-width: 2px;"
-                             "}"
-                             "QPushButton:hover {"
-                             "background-color: rgb(11,29,41);"
-                             "}";
-    if (continueButtonTS->isEnabled() == false)
-        continueButtonTS -> setStyleSheet(disabledButtons);
-    else
-        continueButtonTS -> setStyleSheet(enabledButtons);
-
-    newgameButtonTS -> setStyleSheet(enabledButtons);
-    tutorialButtonTS -> setStyleSheet(enabledButtons);
-    aboutButtonTS -> setStyleSheet(enabledButtons);
-    quitButtonTS -> setStyleSheet(enabledButtons);
-
-    QString buttonTBStyle = "QPushButton {"
-                            "color: white;"
-                            "background-color: rgb(84,94,106);"
-                            "border-style: solid;"
-                            "}"
-                            "QPushButton:hover {"
-                            "background-color: rgb(110, 120, 135);"
-                            "}";
-
-    minimiseButtonTB -> setStyleSheet(buttonTBStyle);
-    maximiseButtonTB -> setStyleSheet(buttonTBStyle);
-    exitButtonTB -> setStyleSheet("QPushButton {"
-                                  "color: white;"
-                                  "background-color: rgb(84,94,106);"
-                                  "border-style: solid;"
-                                  "}"
-                                  "QPushButton:hover {"
-                                  "background-color: red;"
-                                  "}");
-
-    QString titleLabelTBStyle = "color: white;";
-    titleLabelTB -> setStyleSheet(titleLabelTBStyle);
-}
-void MainWindow::removeLayoutTitleScreen()
-{
-    delete continueButtonTS;
-    delete newgameButtonTS;
-    delete tutorialButtonTS;
-    delete aboutButtonTS;
-    delete quitButtonTS;
-
-    delete titleWidgetTS;
-
-    delete continueLayoutTS;
-    delete newgameLayoutTS;
-    delete tutorialLayoutTS;
-    delete aboutLayoutTS;
-    delete quitLayoutTS;
+    this->setStyleSheet(saveWidgetStyle);
 }
 
-void MainWindow::showMaximisedWindow() {setGeometry(0, 0, 820, 820);}
-
-void MainWindow::checkContinueButton()
+void ClickableWidget::loadContentFromFile(QString path)
 {
-    if ((didYouUseThisSave(":/saves/saves/Save_1.txt") == true) || (didYouUseThisSave(":/saves/saves/Save_2.txt") == true)
-       || (didYouUseThisSave(":/saves/saves/Save_3.txt") == true) || (didYouUseThisSave(":/saves/saves/Save_4.txt") == true))
-        continueButtonTS -> setEnabled(true);
-    else
-        continueButtonTS -> setEnabled(false);
-}
-bool MainWindow::didYouUseThisSave(QString path)
-{
-    QFile file(path);
     int nr = 1;
+
+    QFile file(path);
     if (file.open(QIODevice::ReadOnly))
     {
         QTextStream line(&file);
-        while(!line.atEnd())
+        while (!line.atEnd())
         {
             switch(nr)
             {
             case 1:
-            {
-                double saved_multi = line.readLine().toDouble(nullptr);
-                if (saved_multi > 1.0001)
-                    return true;
+                multi = line.readLine();
                 break;
-            }
             case 2:
-            {
-                double saved_points = line.readLine().toDouble(nullptr);
-                if (saved_points > 0.0001)
-                    return true;
+                points = line.readLine();
                 break;
-            }
             case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            {
-                int saved_bought_items = line.readLine().toInt(nullptr, 10);
-                if (saved_bought_items != 0)
-                    return true;
+                ham = line.readLine();
                 break;
-            }
-            default:
-                QMessageBox::critical(this, "TOO MANY LINES", "Tried to read too many lines");
+            case 4:
+                pick = line.readLine();
+                break;
+            case 5:
+                ch = line.readLine();
+                break;
+            case 6:
+                dr = line.readLine();
+                break;
+            case 7:
+                dm = line.readLine();
                 break;
             }
             nr++;
@@ -337,342 +237,5 @@ bool MainWindow::didYouUseThisSave(QString path)
         file.close();
     }
     else
-        QMessageBox::critical(this, "FILE NOT FOUND", "File not found!");
-
-    return false;
-}
-
-void MainWindow::transitionToSaveScreen()
-{
-    removeLayoutTitleScreen();
-    setLayoutSaveScreen();
-    setStyleSaveScreen();
-}
-
-void MainWindow::setLayoutSaveScreen()
-{
-    //TITLE
-    titleLabelSS = new QLabel("SAVE FILES");
-    titleLabelSS -> setAlignment(Qt::AlignCenter);
-    titleLabelSS -> setFont(Bohemian);
-
-    lineTitleSS = new QLabel("LINE.png");
-    lineTitleSS -> setMinimumHeight(20);
-    lineTitleSS -> setPixmap(QPixmap(":/images/resources/Other/YellowLine.png"));
-    lineTitleSS -> setScaledContents(true);
-    lineTitleSS -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-    infoTitleSS = new QLabel("Choose slot to play");
-    infoTitleSS -> setFont(Bohemian);
-    infoTitleSS -> setAlignment(Qt::AlignCenter);
-
-    titleLayoutSS = new QVBoxLayout();
-    titleLayoutSS -> insertWidget(0, titleLabelSS, 4);
-    titleLayoutSS -> insertWidget(1, lineTitleSS, 3);
-    titleLayoutSS -> insertWidget(2, infoTitleSS, 3);
-
-    titleWidgetSS = new QWidget();
-    titleWidgetSS -> setLayout(titleLayoutSS);
-
-    //SAVES
-    save1Widget = new ClickableWidget(nullptr, ":/saves/saves/Save_1.txt", 1);
-    save1Widget -> setMinimumHeight(280);
-
-    save2Widget = new ClickableWidget(nullptr, ":/saves/saves/Save_2.txt", 2);
-    save2Widget -> setMinimumHeight(280);
-
-    save3Widget = new ClickableWidget(nullptr, ":/saves/saves/Save_3.txt", 3);
-    save3Widget -> setMinimumHeight(280);
-
-    save4Widget = new ClickableWidget(nullptr, ":/saves/saves/Save_4.txt", 4);
-    save4Widget -> setMinimumHeight(280);
-
-    //LAYOUT
-    saveMainBodyLayout = new QHBoxLayout();
-    saveMainBodyLayout -> insertWidget(0, save1Widget, 1);
-    saveMainBodyLayout -> insertWidget(1, save2Widget, 1);
-    saveMainBodyLayout -> insertWidget(2, save3Widget, 1);
-    saveMainBodyLayout -> insertWidget(3, save4Widget, 1);
-    saveMainBodyLayout -> setContentsMargins(10, 0, 10, 0);
-
-    mainLayout -> insertStretch(1, 1);
-    mainLayout -> insertWidget(2, titleWidgetSS, 2);
-    mainLayout -> insertStretch(3, 3);
-    mainLayout -> insertLayout(4, saveMainBodyLayout, 4);
-    mainLayout -> insertStretch(5, 2);
-
-    //CONNECT
-    connect(save1Widget, &ClickableWidget::clicked, this, [this]() { transitionToGameScreen(1); });
-    connect(save2Widget, &ClickableWidget::clicked, this, [this]() { transitionToGameScreen(2); });
-    connect(save3Widget, &ClickableWidget::clicked, this, [this]() { transitionToGameScreen(3); });
-    connect(save4Widget, &ClickableWidget::clicked, this, [this]() { transitionToGameScreen(4); });
-}
-void MainWindow::setStyleSaveScreen()
-{
-    QString titleWidgetStyle = "border-image: url(:/images/resources/Other/TitleScreenBackground.png) 0 0 0 0 stretch stretch;"
-                               "margin-left: 80px;"
-                               "margin-right: 80px;"
-                               "border-radius: 20px;";
-    QString titleLabelStyle =  "color: rgb(254,220,105); font-size: 44px;";
-    QString lineLabelStyle = "margin-left: 80px; margin-right: 80px;";
-    QString infoLabelStyle = "color: rgb(254, 220, 105); font-size: 24px;";
-
-    titleWidgetSS -> setStyleSheet(titleWidgetStyle);
-    titleLabelSS -> setStyleSheet(titleLabelStyle);
-    lineTitleSS -> setStyleSheet(lineLabelStyle);
-    infoTitleSS -> setStyleSheet(infoLabelStyle);
-}
-void MainWindow::removeLayoutSaveScreen()
-{
-    delete titleLabelSS;
-    delete lineTitleSS;
-    delete infoTitleSS;
-
-    delete titleLayoutSS;
-    delete titleWidgetSS;
-
-    delete save1Widget;
-    delete save2Widget;
-    delete save3Widget;
-    delete save4Widget;
-
-    delete saveMainBodyLayout;
-}
-
-void MainWindow::loadContentFromSaveFile(QString path)
-{
-    int counter = 1;
-    QFile saveFile(path);
-    if (saveFile.open(QIODevice::ReadOnly))
-    {
-        QTextStream textLine(&saveFile);
-        while (!textLine.atEnd())
-        {
-            switch(counter)
-            {
-            case 1:
-                multiplier = textLine.readLine().toDouble(nullptr);
-                break;
-            case 2:
-                points = textLine.readLine().toDouble(nullptr);
-                break;
-            case 3:
-                hammers = textLine.readLine().toInt(nullptr, 10);
-                break;
-            case 4:
-                pickaxes = textLine.readLine().toInt(nullptr, 10);
-                break;
-            case 5:
-                children = textLine.readLine().toInt(nullptr, 10);
-                break;
-            case 6:
-                drills = textLine.readLine().toInt(nullptr, 10);
-                break;
-            case 7:
-                dynamite = textLine.readLine().toInt(nullptr, 10);
-                break;
-            default:
-                QMessageBox::critical(this, "ERROR", "Tried to read too many lines.");
-                return;
-                break;
-            }
-            counter++;
-        }
-        saveFile.close();
-    }
-    else
-        QMessageBox::critical(this, "ERROR", "File not found!");
-}
-
-void MainWindow::transitionToGameScreen(int saveNr)
-{
-    removeLayoutSaveScreen();
-    switch (saveNr)
-    {
-    case 1:
-        loadContentFromSaveFile(":/saves/saves/Save_1.txt");
-        break;
-    case 2:
-        loadContentFromSaveFile(":/saves/saves/Save_2.txt");
-        break;
-    case 3:
-        loadContentFromSaveFile(":/saves/saves/Save_3.txt");
-        break;
-    case 4:
-        loadContentFromSaveFile(":/saves/saves/Save_4.txt");
-        break;
-    }
-    setLayoutGameScreen();
-    setStyleGameScreen();
-}
-
-void MainWindow::setLayoutGameScreen()
-{
-    //ORE MINING LAYOUT
-    scoreLabel = new QLabel(QString::number(points) + " $");
-    scoreLabel -> setAlignment(Qt::AlignCenter);
-
-    multiplierLabel = new QLabel("x " + QString::number(multiplier));
-    multiplierLabel -> setAlignment(Qt::AlignCenter);
-
-    // COMMON: (0) SELENITE, (1) ONYX, (2) AMETHYST - 10 $ - 20 % - ALL 60 %
-    // UNCOMMON: (3) DIAMONDS, (4) GOLD - 50 $ - 15 % - ALL 30 %
-    // RARE: (5) RUBY, (6) JADE - 100 $ - 5 % - ALL 10 %
-
-    oreType = drawOreType();
-
-    oreLabel = new QLabel("ORE.png");
-    switch (oreType)
-    {
-    case 0:
-        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/selenite_ore.png"));
-        break;
-    case 1:
-        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/onyx_ore.png"));
-        break;
-    case 2:
-        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/amethyst_ore.png"));
-        break;
-    case 3:
-        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/diamond_ore.png"));
-        break;
-    case 4:
-        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/gold_ore.png"));
-        break;
-    case 5:
-        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/ruby_ore.png"));
-        break;
-    case 6:
-        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/jade_ore.png"));
-        break;
-    default:
-        QMessageBox::critical(this, "ALERT", "UNABLE TO LOAD ORE ICON!");
         return;
-    }
-    oreLabel -> setScaledContents(true);
-    oreLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-    miningLayout = new QVBoxLayout();
-    miningLayout -> insertWidget(0, scoreLabel, 2);
-    miningLayout -> insertWidget(1, multiplierLabel, 1);
-    miningLayout -> insertStretch(2, 1);
-    miningLayout -> insertWidget(3, oreLabel, 4);
-    miningLayout -> insertStretch(4, 1);
-
-    //INVENTORY LAYOUT
-    inventoryLabel = new QLabel("INVENTORY");
-    inventoryLabel -> setAlignment(Qt::AlignCenter);
-
-    inventoryWidget = new QWidget();
-
-    numHamm = new QLabel(QString::number(hammers, 10));
-    numHamm -> setAlignment(Qt::AlignCenter);
-
-    hammIcon = new QLabel();
-    hammIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/hammer.png"));
-    hammIcon -> setScaledContents(true);
-    hammIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-    ownedHammersLayout = new QHBoxLayout();
-    ownedHammersLayout -> insertWidget(0, numHamm, 1);
-    ownedHammersLayout -> insertWidget(1, hammIcon, 1);
-
-    numPick = new QLabel(QString::number(pickaxes, 10));
-    numPick -> setAlignment(Qt::AlignCenter);
-
-    pickIcon = new QLabel();
-    pickIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/pickaxe.png"));
-    pickIcon -> setScaledContents(true);
-    pickIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-    ownedPickaxesLayout = new QHBoxLayout();
-    ownedPickaxesLayout -> insertWidget(0, numPick, 1);
-    ownedPickaxesLayout -> insertWidget(1, pickIcon, 1);
-
-    numChild = new QLabel(QString::number(children, 10));
-    numChild -> setAlignment(Qt::AlignCenter);
-
-    childIcon = new QLabel();
-    childIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/child.png"));
-    childIcon -> setScaledContents(true);
-    childIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-    ownedChildrenLayout = new QHBoxLayout();
-    ownedChildrenLayout -> insertWidget(0, numChild, 1);
-    ownedChildrenLayout -> insertWidget(1, childIcon, 1);
-
-    numDrill = new QLabel(QString::number(drills, 10));
-    numDrill -> setAlignment(Qt::AlignCenter);
-
-    drillIcon = new QLabel();
-    drillIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/drill.png"));
-    drillIcon -> setScaledContents(true);
-    drillIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-    ownedDrillsLayout = new QHBoxLayout();
-    ownedDrillsLayout -> insertWidget(0, numDrill, 1);
-    ownedDrillsLayout -> insertWidget(1, drillIcon, 1);
-
-    numDyn = new QLabel(QString::number(dynamite, 10));
-    numDyn -> setAlignment(Qt::AlignCenter);
-
-    dynIcon = new QLabel();
-    dynIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/dynamite.png"));
-    dynIcon -> setScaledContents(true);
-    dynIcon -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-    ownedDynamiteLayout = new QHBoxLayout();
-    ownedDynamiteLayout -> insertWidget(0, numDyn, 1);
-    ownedDynamiteLayout -> insertWidget(1, dynIcon, 1);
-
-    invBodyLayout = new QVBoxLayout();
-    invBodyLayout -> insertLayout(0, ownedHammersLayout, 1);
-    invBodyLayout -> insertLayout(1, ownedPickaxesLayout, 1);
-    invBodyLayout -> insertLayout(2, ownedChildrenLayout, 1);
-    invBodyLayout -> insertLayout(3, ownedDrillsLayout, 1);
-    invBodyLayout -> insertLayout(4, ownedDynamiteLayout, 1);
-
-    inventoryWidget -> setLayout(invBodyLayout);
-
-    inventoryLayout = new QVBoxLayout();
-    inventoryLayout -> insertWidget(0, inventoryLabel, 1);
-    inventoryLayout -> insertWidget(1, inventoryWidget, 7);
-
-    //SHOP LAYOUT
-    shopLabel = new QLabel("SHOP");
-    shopLabel -> setAlignment(Qt::AlignCenter);
-
-    shopWidget = new QWidget();
-
-
-}
-void MainWindow::setStyleGameScreen()
-{
-
-}
-void MainWindow::removeLayoutGameScreen()
-{
-
-}
-
-short MainWindow::drawOreType()
-{
-    srand(time(nullptr));
-    short x = rand() % 100 + 1;
-    if (x > 0 && x <= 20)
-        return 0;
-    else if (x > 20 && x <= 40)
-        return 1;
-    else if (x > 40 && x <= 60)
-        return 2;
-    else if (x > 60 && x <= 75)
-        return 3;
-    else if (x > 75 && x <= 90)
-        return 4;
-    else if (x > 90 && x <= 95)
-        return 5;
-    else if (x > 95 && x <= 100)
-        return 6;
-    else
-        return -1;
 }
