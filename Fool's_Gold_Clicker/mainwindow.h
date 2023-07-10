@@ -9,6 +9,7 @@
 #include <QSizeGrip>
 
 #include <clickablewidget.h>
+#include <shopitem.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -74,13 +75,12 @@ private:
     QHBoxLayout *saveMainBodyLayout;
     //GAME SCREEN
     QLabel *scoreLabel, *multiplierLabel, *shopLabel, *oreLabel, *inventoryLabel, *numPick, *numHamm, *numChild, *numDrill, *numDyn,
-            *pickIcon, *hammIcon, *childIcon, *drillIcon, *dynIcon, *hammPriceLabel, *pickPriceLabel, *childPriceLabel,
-            *drillPriceLabel, *dynPriceLabel;
+            *pickIcon, *hammIcon, *childIcon, *drillIcon, *dynIcon;
     QVBoxLayout *miningLayout, *inventoryLayout, *invBodyLayout, *shopLayout, *column1Layout, *column2Layout;
     QHBoxLayout *gameMainBodyLayout, *ownedPickaxesLayout, *ownedHammersLayout, *ownedChildrenLayout, *ownedDrillsLayout,
                 *ownedDynamiteLayout, *shopColumnsLayout;
     QSpacerItem *shop1Spacer, *shop2Spacer, *shop3Spacer, *shop4Spacer, *shop5Spacer;
-    QWidget *inventoryWidget, *shopWidget, *shopHammerWidget, *shopPickaxeWidget, *shopChildWidget, *shopDrillWidget,
-            *shopDynamiteWidget;
+    QWidget *inventoryWidget, *shopWidget;
+    ShopItem *shopHammerWidget, *shopPickaxeWidget, *shopChildWidget, *shopDrillWidget, *shopDynamiteWidget;
 };
 #endif // MAINWINDOW_H
