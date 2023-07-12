@@ -10,6 +10,7 @@
 
 #include <clickablewidget.h>
 #include <shopitem.h>
+#include <clickablelabel.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,6 +23,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    int hammers, pickaxes, children, drills, dynamite;
 private slots:
     //FUNCTIONS CREATING TITLE SCREEN
     void setLayoutTitleScreen();
@@ -45,13 +47,20 @@ private slots:
     void removeLayoutGameScreen();
     //GAME SCREEN FUNCTIONALITIES FUNCTIONS
     short drawOreType();
+    void userClickedOre();
+    void userWantsToBuyHammer();
+    void userWantsToBuyPickaxe();
+    void userWantsToBuyChild();
+    void userWantsToBuyDrill();
+    void userWantsToBuyDynamite();
+    void goodEnding();
+    void badEnding();
 
 private:
     Ui::MainWindow *ui;
     //GAME VARIABLES
     double points, multiplier;
     short oreType;
-    int hammers, pickaxes, children, drills, dynamite;
     QFont Bohemian;
 
     QVBoxLayout *mainLayout;
@@ -77,8 +86,9 @@ private:
     QVBoxLayout *titleLayoutSS, *mainLayoutSS;
     QHBoxLayout *saveMainBodyLayout;
     //GAME SCREEN
-    QLabel *scoreLabel, *multiplierLabel, *shopLabel, *oreLabel, *inventoryLabel, *numPick, *numHamm, *numChild, *numDrill, *numDyn,
+    QLabel *scoreLabel, *multiplierLabel, *shopLabel,*inventoryLabel, *numPick, *numHamm, *numChild, *numDrill, *numDyn,
             *pickIcon, *hammIcon, *childIcon, *drillIcon, *dynIcon;
+    ClickableLabel *oreLabel;
     QVBoxLayout *miningLayout, *inventoryLayout, *invBodyLayout, *shopLayout, *column1Layout, *column2Layout;
     QHBoxLayout *gameMainBodyLayout, *ownedPickaxesLayout, *ownedHammersLayout, *ownedChildrenLayout, *ownedDrillsLayout,
                 *ownedDynamiteLayout, *shopColumnsLayout;
