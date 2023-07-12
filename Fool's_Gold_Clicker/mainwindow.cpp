@@ -162,26 +162,31 @@ void MainWindow::setLayoutTitleScreen()
     bGLayout -> setContentsMargins(QMargins());
     bottomGripTS -> setLayout(bGLayout);
 
+    //main layout
+    mainLayoutTS = new QVBoxLayout();
+    mainLayoutTS -> insertWidget(0, titleWidgetTS, 2);
+    mainLayoutTS -> insertStretch(1, 1);
+    mainLayoutTS -> insertLayout(2, continueLayoutTS, 2);
+    mainLayoutTS -> insertLayout(3, newgameLayoutTS, 2);
+    mainLayoutTS -> insertLayout(4, tutorialLayoutTS, 2);
+    mainLayoutTS -> insertStretch(5, 1);
+    mainLayoutTS -> insertLayout(6, aboutLayoutTS, 2);
+    mainLayoutTS -> insertLayout(7, quitLayoutTS, 2);
+    mainLayoutTS -> insertStretch(8, 1);
+
     mainLayout = new QVBoxLayout(ui->centralwidget);
     mainLayout -> insertWidget(0, TB);
-    mainLayout -> insertWidget(1, titleWidgetTS, 2);
-    mainLayout -> insertStretch(2, 1);
-    mainLayout -> insertLayout(3, continueLayoutTS, 2);
-    mainLayout -> insertLayout(4, newgameLayoutTS, 2);
-    mainLayout -> insertLayout(5, tutorialLayoutTS, 2);
-    mainLayout -> insertStretch(6, 1);
-    mainLayout -> insertLayout(7, aboutLayoutTS, 2);
-    mainLayout -> insertLayout(8, quitLayoutTS, 2);
-    mainLayout -> insertStretch(9, 1);
-    mainLayout -> insertWidget(10, bottomGripTS, 0);
+    mainLayout -> insertLayout(1, mainLayoutTS);
+    mainLayout -> insertWidget(2, bottomGripTS);
     mainLayout -> setContentsMargins(0, 0, 0, 0);
 
-    connect(quitButtonTS, SIGNAL(clicked()), this, SLOT(close()));
-    connect(newgameButtonTS, SIGNAL(clicked()), this, SLOT(transitionToSaveScreen()));
+    //functionalities
+    connect(quitButtonTS, &QPushButton::clicked, this, &MainWindow::close);
+    connect(newgameButtonTS, &QPushButton::clicked, this, &MainWindow::transitionToSaveScreen);
 
-    connect(minimiseButtonTB, SIGNAL(clicked()), this, SLOT(showMinimized()));
-    connect(maximiseButtonTB, SIGNAL(clicked()), this, SLOT(showMaximisedWindow()));
-    connect(exitButtonTB, SIGNAL(clicked()), this, SLOT(close()));
+    connect(minimiseButtonTB, &QPushButton::clicked, this, &MainWindow::showMinimized);
+    connect(maximiseButtonTB, &QPushButton::clicked, this, &MainWindow::showMaximisedWindow);
+    connect(exitButtonTB, &QPushButton::clicked, this, &MainWindow::close);
 }
 void MainWindow::setStyleTitleScreen()
 {
@@ -224,7 +229,7 @@ void MainWindow::setStyleTitleScreen()
                              "background-color: rgb(40,60,69);"
                              "color: rgb(254,220,105);"
                              "font-size: 16px;"
-                             "border-style:solid;"
+                             "border-style: solid;"
                              "border-radius: 4px;"
                              "border-color: rgb(11,29,41);"
                              "border-width: 2px;"
@@ -280,6 +285,8 @@ void MainWindow::removeLayoutTitleScreen()
     delete tutorialLayoutTS;
     delete aboutLayoutTS;
     delete quitLayoutTS;
+
+    delete mainLayoutTS;
 }
 
 void MainWindow::showMaximisedWindow() {setGeometry(0, 0, 820, 820);}
@@ -395,11 +402,14 @@ void MainWindow::setLayoutSaveScreen()
     saveMainBodyLayout -> insertWidget(3, save4Widget, 1);
     saveMainBodyLayout -> setContentsMargins(10, 0, 10, 0);
 
-    mainLayout -> insertStretch(1, 1);
-    mainLayout -> insertWidget(2, titleWidgetSS, 2);
-    mainLayout -> insertStretch(3, 3);
-    mainLayout -> insertLayout(4, saveMainBodyLayout, 4);
-    mainLayout -> insertStretch(5, 2);
+    mainLayoutSS = new QVBoxLayout();
+    mainLayoutSS -> insertStretch(0, 1);
+    mainLayoutSS -> insertWidget(1, titleWidgetSS, 2);
+    mainLayoutSS -> insertStretch(2, 3);
+    mainLayoutSS -> insertLayout(3, saveMainBodyLayout, 4);
+    mainLayoutSS -> insertStretch(4, 2);
+
+    mainLayout -> insertLayout(1, mainLayoutSS);
 
     //CONNECT
     connect(save1Widget, &ClickableWidget::clicked, this, [this]() { transitionToGameScreen(1); });
@@ -437,6 +447,7 @@ void MainWindow::removeLayoutSaveScreen()
     delete save4Widget;
 
     delete saveMainBodyLayout;
+    delete mainLayoutSS;
 }
 
 void MainWindow::loadContentFromSaveFile(QString path)
@@ -635,8 +646,11 @@ void MainWindow::setLayoutGameScreen()
     inventoryWidget -> setLayout(invBodyLayout);
 
     inventoryLayout = new QVBoxLayout();
-    inventoryLayout -> insertWidget(0, inventoryLabel, 1);
-    inventoryLayout -> insertWidget(1, inventoryWidget, 7);
+    inventoryLayout -> insertStretch(0, 1);
+    inventoryLayout -> insertWidget(1, inventoryLabel, 2);
+    inventoryLayout -> insertStretch(2, 1);
+    inventoryLayout -> insertWidget(3, inventoryWidget, 5);
+    inventoryLayout -> insertStretch(4, 1);
 
     //SHOP LAYOUT
     shopLabel = new QLabel("SHOP");
@@ -644,11 +658,115 @@ void MainWindow::setLayoutGameScreen()
 
     shopWidget = new QWidget();
 
+    shopHammerWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/hammer.png", 0);
+    shopPickaxeWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/pickaxe.png", 0);
+    shopChildWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/child.png", 0);
+    shopDrillWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/drill.png", 0);
+    shopDynamiteWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/dynamite.png", 0);
 
+    shop1Spacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    shop2Spacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    shop3Spacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    shop4Spacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    shop5Spacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+    column1Layout = new QVBoxLayout();
+    column1Layout -> insertWidget(0, shopHammerWidget);
+    column1Layout -> insertSpacerItem(1, shop1Spacer);
+    column1Layout -> insertWidget(2, shopPickaxeWidget);
+    column1Layout -> insertSpacerItem(3, shop2Spacer);
+    column1Layout -> insertWidget(4, shopChildWidget);
+
+    column2Layout = new QVBoxLayout();
+    column2Layout -> insertSpacerItem(0, shop3Spacer);
+    column2Layout -> insertWidget(1, shopDrillWidget);
+    column2Layout -> insertSpacerItem(2, shop4Spacer);
+    column2Layout -> insertWidget(3, shopDynamiteWidget);
+    column2Layout -> insertSpacerItem(4, shop5Spacer);
+
+    shopColumnsLayout = new QHBoxLayout();
+    shopColumnsLayout -> insertLayout(0, column1Layout);
+    shopColumnsLayout -> insertLayout(1, column2Layout);
+
+    shopWidget -> setLayout(shopColumnsLayout);
+
+    shopLayout = new QVBoxLayout();
+    shopLayout -> insertStretch(0, 1);
+    shopLayout -> insertWidget(1, shopLabel, 2);
+    shopLayout -> insertStretch(2, 1);
+    shopLayout -> insertWidget(3, shopWidget, 5);
+    shopLayout -> insertStretch(4, 1);
+
+    //MAIN LAYOUT
+    gameMainBodyLayout = new QHBoxLayout();
+    gameMainBodyLayout -> insertLayout(0, inventoryLayout, 3);
+    gameMainBodyLayout -> insertStretch(1, 1);
+    gameMainBodyLayout -> insertLayout(2, miningLayout, 5);
+    gameMainBodyLayout -> insertStretch(3, 1);
+    gameMainBodyLayout -> insertLayout(4, shopLayout, 3);
+    gameMainBodyLayout -> setContentsMargins(5, 0, 5, 0);
+
+    mainLayout -> insertLayout(1, gameMainBodyLayout);
+
+    //FUNCTIONALITIES
 }
 void MainWindow::setStyleGameScreen()
 {
+    ui->centralwidget->setStyleSheet("#centralwidget {"
+                                     "border-image: url(:/images/resources/Other/MineBackground.png) 0 0 0 0 stretch stretch;"
+                                     "}");
 
+    QString pointsStyle = "QLabel {"
+                          "color: rgb(254,220,105);"
+                          "border-radius: 20px;"
+                          "border-image: url(:/images/resources/Other/TitleScreenBackground.png) 0 0 0 0 stretch stretch;"
+                          "font-size: 40px;"
+                          "}";
+
+    scoreLabel -> setStyleSheet(pointsStyle);
+
+    QString invAndShopStyle = "QLabel {"
+                              "color: rgb(254, 220, 105);"
+                              "border-radius: 10px;"
+                              "font-size: 26px;"
+                              "background-color: rgb(40,60,69);"
+                              "border-style: solid;"
+                              "border-color: rgb(11,29,41);"
+                              "border-width: 5px;"
+                              "}";
+
+    inventoryLabel -> setStyleSheet(invAndShopStyle);
+    shopLabel -> setStyleSheet(invAndShopStyle);
+    multiplierLabel -> setStyleSheet(invAndShopStyle);
+
+    inventoryWidget -> setObjectName("inventoryWidget");
+    shopWidget -> setObjectName("shopWidget");
+    QString invWidgetStyle = "#inventoryWidget {"
+                             "background-color: rgb(40,60,69);"
+                             "color: rgb(254,220,105);"
+                             "font-size: 16px;"
+                             "border-style: solid;"
+                             "border-radius: 10px;"
+                             "border-color: rgb(11,29,41);"
+                             "border-width: 5px;"
+                             "}";
+    QString shopWidgetStyle = "#shopWidget {"
+                              "background-color: rgb(40,60,69);"
+                              "color: rgb(254,220,105);"
+                              "font-size: 16px;"
+                              "border-style: solid;"
+                              "border-radius: 10px;"
+                              "border-color: rgb(11,29,41);"
+                              "border-width: 5px;"
+                              "}";
+    inventoryWidget -> setStyleSheet(invWidgetStyle);
+    shopWidget -> setStyleSheet(shopWidgetStyle);
+
+    numHamm -> setStyleSheet("color: rgb(254,220,105); font-size: 24px;");
+    numPick -> setStyleSheet("color: rgb(254,220,105); font-size: 24px;");
+    numChild -> setStyleSheet("color: rgb(254,220,105); font-size: 24px;");
+    numDrill -> setStyleSheet("color: rgb(254,220,105); font-size: 24px;");
+    numDyn -> setStyleSheet("color: rgb(254,220,105); font-size: 24px;");
 }
 void MainWindow::removeLayoutGameScreen()
 {
