@@ -6,11 +6,11 @@ Download current version of Fool's Gold [here](https://github.com/AdrianSuliga/S
 
 ## Ores you can mine
 
-COMMON: SELENITE, ONYX, AMETHYST - each is worth 10 $, chance of appearing: 20 %
+COMMON: SELENITE, ONYX, AMETHYST - each is worth 100 $, chance of appearing: 20 %
 
-UNCOMMON: DIAMONDS, GOLD - each is worth 15 $, chance of appearing: 15 %
+UNCOMMON: DIAMONDS, GOLD - each is worth 150 $, chance of appearing: 15 %
 
-RARE: RUBY, JADE - each is worth 50 $, chance of appearing: 5 %
+RARE: RUBY, JADE - each is worth 500 $, chance of appearing: 5 %
 
 ## Description
 After launching an app user sees title screen where he can choose to either start a game, read tutorial or read "ABOUT" section.
