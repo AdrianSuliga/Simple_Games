@@ -17,6 +17,8 @@
         <file>resources/Other/Icon.png</file>
         <file>resources/Other/TitleScreenBackground.png</file>
         <file>resources/Other/YellowLine.png</file>
+        <file>resources/Other/HoverBackground.png</file>
+        <file>resources/Other/MineBackground.png</file>
     </qresource>
     <qresource prefix="/saves">
         <file>saves/Save_1.txt</file>
