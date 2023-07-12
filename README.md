@@ -20,3 +20,5 @@ All icons used in this project are from [icons8](https://icons8.com).
 ---
 
 **Fool's Gold Clicker** (work in progress)
+
+Download current version of Fool's Gold [here](https://github.com/AdrianSuliga/Simple_Games/releases/tag/F_G_C_2).
