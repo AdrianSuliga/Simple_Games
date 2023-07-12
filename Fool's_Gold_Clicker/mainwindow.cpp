@@ -5,8 +5,9 @@
 #include <QFontDatabase>
 #include <QSizeGrip>
 #include <QMessageBox>
+#include <QDebug>
 #include <cstdlib>
-#include "clickablewidget.h"
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -526,13 +527,10 @@ void MainWindow::setLayoutGameScreen()
     multiplierLabel = new QLabel("x " + QString::number(multiplier));
     multiplierLabel -> setAlignment(Qt::AlignCenter);
 
-    // COMMON: (0) SELENITE, (1) ONYX, (2) AMETHYST - 10 $ - 20 % - ALL 60 %
-    // UNCOMMON: (3) DIAMONDS, (4) GOLD - 50 $ - 15 % - ALL 30 %
-    // RARE: (5) RUBY, (6) JADE - 100 $ - 5 % - ALL 10 %
-
+    srand(time(nullptr));
     oreType = drawOreType();
 
-    oreLabel = new QLabel("ORE.png");
+    oreLabel = new ClickableLabel();
     switch (oreType)
     {
     case 0:
@@ -658,11 +656,11 @@ void MainWindow::setLayoutGameScreen()
 
     shopWidget = new QWidget();
 
-    shopHammerWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/hammer.png", 0);
-    shopPickaxeWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/pickaxe.png", 0);
-    shopChildWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/child.png", 0);
-    shopDrillWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/drill.png", 0);
-    shopDynamiteWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/dynamite.png", 0);
+    shopHammerWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/hammer.png", 1000);
+    shopPickaxeWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/pickaxe.png", 5000);
+    shopChildWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/child.png", 20000);
+    shopDrillWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/drill.png", 100000);
+    shopDynamiteWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/dynamite.png", 1000000);
 
     shop1Spacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
     shop2Spacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -709,6 +707,12 @@ void MainWindow::setLayoutGameScreen()
     mainLayout -> insertLayout(1, gameMainBodyLayout);
 
     //FUNCTIONALITIES
+    connect(oreLabel, &ClickableLabel::clicked, this, &MainWindow::userClickedOre);
+    connect(shopHammerWidget, &ShopItem::clicked, this, &MainWindow::userWantsToBuyHammer);
+    connect(shopPickaxeWidget, &ShopItem::clicked, this, &MainWindow::userWantsToBuyPickaxe);
+    connect(shopChildWidget, &ShopItem::clicked, this, &MainWindow::userWantsToBuyChild);
+    connect(shopDrillWidget, &ShopItem::clicked, this, &MainWindow::userWantsToBuyDrill);
+    connect(shopDynamiteWidget, &ShopItem::clicked, this, &MainWindow::userWantsToBuyDynamite);
 }
 void MainWindow::setStyleGameScreen()
 {
@@ -775,7 +779,6 @@ void MainWindow::removeLayoutGameScreen()
 
 short MainWindow::drawOreType()
 {
-    srand(time(nullptr));
     short x = rand() % 100 + 1;
     if (x > 0 && x <= 20)
         return 0;
@@ -793,4 +796,169 @@ short MainWindow::drawOreType()
         return 6;
     else
         return -1;
+}
+
+void MainWindow::userClickedOre()
+{
+    switch(oreType)
+    {
+    case 0:
+    case 1:
+    case 2:
+        points += multiplier * 100.0;
+        break;
+    case 3:
+    case 4:
+        points += multiplier * 150.0;
+        break;
+    case 5:
+    case 6:
+        points += multiplier * 500.0;
+        break;
+    default:
+        QMessageBox::critical(this, "ERROR", "WRONG ORE");
+        return;
+        break;
+    }
+    scoreLabel -> setText(QString::number(points) + " $");
+
+    oreType = drawOreType();
+    switch(oreType)
+    {
+    case 0:
+        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/selenite_ore.png"));
+        break;
+    case 1:
+        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/onyx_ore.png"));
+        break;
+    case 2:
+        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/amethyst_ore.png"));
+        break;
+    case 3:
+        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/diamond_ore.png"));
+        break;
+    case 4:
+        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/gold_ore.png"));
+        break;
+    case 5:
+        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/ruby_ore.png"));
+        break;
+    case 6:
+        oreLabel -> setPixmap(QPixmap(":/images/resources/Ores/jade_ore.png"));
+        break;
+    default:
+        QMessageBox::critical(this, "ALERT", "UNABLE TO LOAD ORE ICON!");
+        return;
+    }
+
+    if (points > 100000000 && children == 0)
+        goodEnding();
+    else if (points > 100000000 && children != 0)
+        badEnding();
+}
+
+void MainWindow::userWantsToBuyHammer()
+{
+    double price = 1000.0 * hammers * hammers + 1000.0;
+    if (points >= price)
+    {
+        points -= price;
+        hammers++;
+        multiplier += 0.1;
+        numHamm -> setText(QString::number(hammers, 10));
+        scoreLabel -> setText(QString::number(points) + " $");
+        multiplierLabel -> setText("x " + QString::number(multiplier));
+        price = 1000.0 * hammers * hammers + 1000.0;
+        shopHammerWidget -> priceLabel -> setText(QString::number(price) + " $");
+    }
+    else if (points < price)
+    {
+        return;
+    }
+}
+void MainWindow::userWantsToBuyPickaxe()
+{
+    double price = 5000.0 * pickaxes * pickaxes + 5000.0;
+    if (points >= price)
+    {
+        points -= price;
+        pickaxes++;
+        multiplier += 0.25;
+        numPick -> setText(QString::number(pickaxes, 10));
+        scoreLabel -> setText(QString::number(points) + " $");
+        multiplierLabel -> setText("x " + QString::number(multiplier));
+        price = 5000.0 * pickaxes * pickaxes + 5000.0;
+        shopPickaxeWidget -> priceLabel -> setText(QString::number(price) + " $");
+    }
+    else if (points < price)
+    {
+        return;
+    }
+}
+void MainWindow::userWantsToBuyChild()
+{
+    double price = 20000.0 * children * children + 20000.0;
+    if (points >= price)
+    {
+        points -= price;
+        children++;
+        multiplier += 0.5;
+        numChild -> setText(QString::number(children, 10));
+        scoreLabel -> setText(QString::number(points) + " $");
+        multiplierLabel -> setText("x " + QString::number(multiplier));
+        price = 20000.0 * children * children + 20000.0;
+        shopChildWidget -> priceLabel -> setText(QString::number(price) + " $");
+    }
+    else if (points < price)
+    {
+        return;
+    }
+}
+void MainWindow::userWantsToBuyDrill()
+{
+    double price = 100000.0 * drills * drills + 100000.0;
+    if (points >= price)
+    {
+        points -= price;
+        drills++;
+        multiplier += 2.0;
+        numDrill -> setText(QString::number(drills, 10));
+        scoreLabel -> setText(QString::number(points) + " $");
+        multiplierLabel -> setText("x " + QString::number(multiplier));
+        price = 100000.0 * drills * drills + 100000.0;
+        shopDrillWidget -> priceLabel -> setText(QString::number(price) + " $");
+    }
+    else if (points < price)
+    {
+        return;
+    }
+}
+void MainWindow::userWantsToBuyDynamite()
+{
+    double price = 1000000.0 * dynamite * dynamite + 1000000.0;
+    if (points >= price)
+    {
+        points -= price;
+        dynamite++;
+        multiplier += 5.0;
+        numDyn -> setText(QString::number(dynamite, 10));
+        scoreLabel -> setText(QString::number(points) + " $");
+        multiplierLabel -> setText("x " + QString::number(multiplier));
+        price = 1000000.0 * dynamite * dynamite + 1000000.0;
+        shopDynamiteWidget -> priceLabel -> setText(QString::number(price) + " $");
+    }
+    else if (points < price)
+    {
+        return;
+    }
+}
+
+void MainWindow::goodEnding()
+{
+
+}
+
+void MainWindow::badEnding()
+{
+
 }
