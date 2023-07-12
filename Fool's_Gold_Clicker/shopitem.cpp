@@ -3,7 +3,7 @@
 #include <QStyleOption>
 #include <QFontDatabase>
 
-ShopItem::ShopItem(QWidget *parent, QString path, int price)
+ShopItem::ShopItem(QWidget *parent, QString path, double price)
     : QWidget(parent)
 {
     setLayoutItemShop(path, price);
@@ -27,7 +27,7 @@ void ShopItem::paintEvent(QPaintEvent *event)
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-void ShopItem::setLayoutItemShop(QString path, int price)
+void ShopItem::setLayoutItemShop(QString path, double price)
 {
     iconLabel = new QLabel();
     iconLabel -> setPixmap(QPixmap(path));
@@ -35,7 +35,7 @@ void ShopItem::setLayoutItemShop(QString path, int price)
     iconLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     iconLabel -> setMinimumSize(50, 50);
 
-    priceLabel = new QLabel(QString::number(price, 10) + " $");
+    priceLabel = new QLabel(QString::number(price, 'g' ,10) + " $");
     priceLabel -> setAlignment(Qt::AlignCenter);
 
     mlayout = new QVBoxLayout();
@@ -54,7 +54,7 @@ void ShopItem::setStyleItemShop()
 
     QString priceLabelStyle = "QLabel {"
                               "color: rgb(254,220,105);"
-                              "font-size: 20px;"
+                              "font-size: 12px;"
                               "}";
 
     priceLabel -> setStyleSheet(priceLabelStyle);
