@@ -13,4 +13,4 @@ Having started the game, player has to choose save file to load.
 
 And than actual game starts.
 
-![Screenshot_of_Game_Screen]()
+![Screenshot_of_Game_Screen](/Fool's_Gold_Clicker/Screenshots/GameScreen.png)
