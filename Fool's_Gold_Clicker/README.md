@@ -2,6 +2,8 @@
 
 Fool's Gold is a simple clicker game. It has mechanic of saving your progress so that it won't get lost after closing an application.
 
+Download current version of Fool's Gold [here](https://github.com/AdrianSuliga/Simple_Games/releases/tag/F_G_C_2).
+
 ## Ores you can mine
 
 COMMON: SELENITE, ONYX, AMETHYST - each is worth 10 $, chance of appearing: 20 %
