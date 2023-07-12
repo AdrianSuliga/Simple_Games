@@ -35,7 +35,7 @@ void ShopItem::setLayoutItemShop(QString path, int price)
     iconLabel -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     iconLabel -> setMinimumSize(50, 50);
 
-    priceLabel = new QLabel(QString::number(price, 10));
+    priceLabel = new QLabel(QString::number(price, 10) + " $");
     priceLabel -> setAlignment(Qt::AlignCenter);
 
     mlayout = new QVBoxLayout();
@@ -49,4 +49,20 @@ void ShopItem::setStyleItemShop()
     int id_newfont = QFontDatabase::addApplicationFont(":/images/resources/Other/Bohemian Typewriter.ttf");
     QString family_newfont = QFontDatabase::applicationFontFamilies(id_newfont).at(0);
     QFont Bohemian(family_newfont);
+
+    priceLabel -> setFont(Bohemian);
+
+    QString priceLabelStyle = "QLabel {"
+                              "color: rgb(254,220,105);"
+                              "font-size: 20px;"
+                              "}";
+
+    priceLabel -> setStyleSheet(priceLabelStyle);
+
+    QString shopItemStyle = "ShopItem:hover {"
+                            "background-color: rgb(11,29,41);"
+                            "border-radius: 10px;"
+                            "}";
+
+    this->setStyleSheet(shopItemStyle);
 }
