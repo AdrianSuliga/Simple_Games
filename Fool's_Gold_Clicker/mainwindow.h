@@ -53,6 +53,9 @@ private:
     short oreType;
     int hammers, pickaxes, children, drills, dynamite;
     QFont Bohemian;
+
+    QVBoxLayout *mainLayout;
+
     //TITLE BAR
     QLabel *iconLabelTB, *titleLabelTB;
     QSpacerItem *spacerTB;
@@ -63,7 +66,7 @@ private:
     QPushButton *continueButtonTS, *newgameButtonTS, *tutorialButtonTS, *aboutButtonTS, *quitButtonTS;
     QLabel *titleLabelTS;
     QSpacerItem *lcSpacer, *rcSpacer, *lnSpacer, *rnSpacer, *ltSpacer, *rtSpacer, *laSpacer, *raSpacer, *lqSpacer, *rqSpacer;
-    QVBoxLayout *mainLayout, *titleLayoutTS;
+    QVBoxLayout *mainLayoutTS, *titleLayoutTS;
     QHBoxLayout *continueLayoutTS, *newgameLayoutTS, *tutorialLayoutTS, *aboutLayoutTS, *quitLayoutTS, *bGLayout;
     QSizeGrip *brGripTS, *blGripTS;
     QWidget *bottomGripTS, *titleWidgetTS;
@@ -71,7 +74,7 @@ private:
     QLabel *titleLabelSS, *lineTitleSS, *infoTitleSS;
     ClickableWidget *save1Widget, *save2Widget, *save3Widget, *save4Widget;
     QWidget *titleWidgetSS;
-    QVBoxLayout *titleLayoutSS;
+    QVBoxLayout *titleLayoutSS, *mainLayoutSS;
     QHBoxLayout *saveMainBodyLayout;
     //GAME SCREEN
     QLabel *scoreLabel, *multiplierLabel, *shopLabel, *oreLabel, *inventoryLabel, *numPick, *numHamm, *numChild, *numDrill, *numDyn,
