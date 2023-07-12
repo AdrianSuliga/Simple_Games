@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "qscreen.h"
 #include "ui_mainwindow.h"
 #include <QFile>
 #include <QTextStream>
@@ -36,8 +37,15 @@ MainWindow::MainWindow(QWidget *parent)
     checkContinueButton();
     setStyleTitleScreen();
 
-    setMinimumSize(400, 500);
-    setMaximumSize(820, 820);
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QRect screenGeo = screen->availableGeometry();
+    int height = screenGeo.height();
+    int width = screenGeo.width();
+    int x = (width - this->width()) / 2;
+    int y = (height - this->height()) / 2;
+    setGeometry(x, y, 400, 500);
+    setMinimumSize(500, 500);
+    setMaximumSize(width-500, height);
 }
 
 MainWindow::~MainWindow()
@@ -290,7 +298,15 @@ void MainWindow::removeLayoutTitleScreen()
     delete mainLayoutTS;
 }
 
-void MainWindow::showMaximisedWindow() {setGeometry(0, 0, 820, 820);}
+void MainWindow::showMaximisedWindow()
+{
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QRect screenGeo = screen->availableGeometry();
+    int height = screenGeo.height();
+    int width = screenGeo.width();
+    int x = (width - 420) / 2;
+    setGeometry(x, 0, 840, height);
+}
 
 void MainWindow::checkContinueButton()
 {
@@ -520,6 +536,7 @@ void MainWindow::transitionToGameScreen(int saveNr)
 
 void MainWindow::setLayoutGameScreen()
 {
+    setMinimumSize(500, 500);
     //ORE MINING LAYOUT
     scoreLabel = new QLabel(QString::number(points) + " $");
     scoreLabel -> setAlignment(Qt::AlignCenter);
@@ -820,7 +837,7 @@ void MainWindow::userClickedOre()
         return;
         break;
     }
-    scoreLabel -> setText(QString::number(points) + " $");
+    scoreLabel -> setText(QString::number(points, 'g', 10) + " $");
 
     oreType = drawOreType();
     switch(oreType)
@@ -866,10 +883,10 @@ void MainWindow::userWantsToBuyHammer()
         hammers++;
         multiplier += 0.1;
         numHamm -> setText(QString::number(hammers, 10));
-        scoreLabel -> setText(QString::number(points) + " $");
+        scoreLabel -> setText(QString::number(points, 'g', 10) + " $");
         multiplierLabel -> setText("x " + QString::number(multiplier));
         price = 1000.0 * hammers * hammers + 1000.0;
-        shopHammerWidget -> priceLabel -> setText(QString::number(price) + " $");
+        shopHammerWidget -> priceLabel -> setText(QString::number(price, 'g', 10) + " $");
     }
     else if (points < price)
     {
@@ -885,10 +902,10 @@ void MainWindow::userWantsToBuyPickaxe()
         pickaxes++;
         multiplier += 0.25;
         numPick -> setText(QString::number(pickaxes, 10));
-        scoreLabel -> setText(QString::number(points) + " $");
+        scoreLabel -> setText(QString::number(points, 'g', 10) + " $");
         multiplierLabel -> setText("x " + QString::number(multiplier));
         price = 5000.0 * pickaxes * pickaxes + 5000.0;
-        shopPickaxeWidget -> priceLabel -> setText(QString::number(price) + " $");
+        shopPickaxeWidget -> priceLabel -> setText(QString::number(price, 'g', 10) + " $");
     }
     else if (points < price)
     {
@@ -904,10 +921,10 @@ void MainWindow::userWantsToBuyChild()
         children++;
         multiplier += 0.5;
         numChild -> setText(QString::number(children, 10));
-        scoreLabel -> setText(QString::number(points) + " $");
+        scoreLabel -> setText(QString::number(points, 'g', 10) + " $");
         multiplierLabel -> setText("x " + QString::number(multiplier));
         price = 20000.0 * children * children + 20000.0;
-        shopChildWidget -> priceLabel -> setText(QString::number(price) + " $");
+        shopChildWidget -> priceLabel -> setText(QString::number(price, 'g', 10) + " $");
     }
     else if (points < price)
     {
@@ -923,10 +940,10 @@ void MainWindow::userWantsToBuyDrill()
         drills++;
         multiplier += 2.0;
         numDrill -> setText(QString::number(drills, 10));
-        scoreLabel -> setText(QString::number(points) + " $");
+        scoreLabel -> setText(QString::number(points, 'g', 10) + " $");
         multiplierLabel -> setText("x " + QString::number(multiplier));
         price = 100000.0 * drills * drills + 100000.0;
-        shopDrillWidget -> priceLabel -> setText(QString::number(price) + " $");
+        shopDrillWidget -> priceLabel -> setText(QString::number(price, 'g', 10) + " $");
     }
     else if (points < price)
     {
@@ -942,10 +959,10 @@ void MainWindow::userWantsToBuyDynamite()
         dynamite++;
         multiplier += 5.0;
         numDyn -> setText(QString::number(dynamite, 10));
-        scoreLabel -> setText(QString::number(points) + " $");
+        scoreLabel -> setText(QString::number(points, 'g', 10) + " $");
         multiplierLabel -> setText("x " + QString::number(multiplier));
         price = 1000000.0 * dynamite * dynamite + 1000000.0;
-        shopDynamiteWidget -> priceLabel -> setText(QString::number(price) + " $");
+        shopDynamiteWidget -> priceLabel -> setText(QString::number(price, 'g', 10) + " $");
     }
     else if (points < price)
     {
