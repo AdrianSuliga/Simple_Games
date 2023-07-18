@@ -55,6 +55,7 @@ private slots:
     void userWantsToBuyDynamite();
     void goodEnding();
     void badEnding();
+    void saveProgressToFile();
 
 private:
     Ui::MainWindow *ui;
