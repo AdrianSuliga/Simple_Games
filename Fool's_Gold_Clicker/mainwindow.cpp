@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     int y = (height - this->height()) / 2;
     setGeometry(x, y, 400, 500);
     setMinimumSize(500, 500);
-    setMaximumSize(width-500, height);
+    setMaximumSize(width, height);
 }
 
 MainWindow::~MainWindow()
@@ -304,8 +304,8 @@ void MainWindow::showMaximisedWindow()
     QRect screenGeo = screen->availableGeometry();
     int height = screenGeo.height();
     int width = screenGeo.width();
-    int x = (width - 420) / 2;
-    setGeometry(x, 0, 840, height);
+    int x = (width - 900) / 2;
+    setGeometry(x, 0, 900, height);
 }
 
 void MainWindow::checkContinueButton()
@@ -536,7 +536,6 @@ void MainWindow::transitionToGameScreen(int saveNr)
 
 void MainWindow::setLayoutGameScreen()
 {
-    setMinimumSize(500, 500);
     //ORE MINING LAYOUT
     scoreLabel = new QLabel(QString::number(points) + " $");
     scoreLabel -> setAlignment(Qt::AlignCenter);
@@ -730,6 +729,8 @@ void MainWindow::setLayoutGameScreen()
     connect(shopChildWidget, &ShopItem::clicked, this, &MainWindow::userWantsToBuyChild);
     connect(shopDrillWidget, &ShopItem::clicked, this, &MainWindow::userWantsToBuyDrill);
     connect(shopDynamiteWidget, &ShopItem::clicked, this, &MainWindow::userWantsToBuyDynamite);
+
+    connect(exitButtonTB, &QPushButton::clicked, this, &MainWindow::saveProgressToFile);
 }
 void MainWindow::setStyleGameScreen()
 {
@@ -976,6 +977,11 @@ void MainWindow::goodEnding()
 }
 
 void MainWindow::badEnding()
+{
+
+}
+
+void MainWindow::saveProgressToFile()
 {
 
 }
