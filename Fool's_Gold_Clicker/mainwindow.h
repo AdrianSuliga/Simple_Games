@@ -7,6 +7,7 @@
 #include <QSpacerItem>
 #include <QBoxLayout>
 #include <QSizeGrip>
+#include <QSettings>
 
 #include <clickablewidget.h>
 #include <shopitem.h>
@@ -25,6 +26,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     int hammers, pickaxes, children, drills, dynamite;
+    QSettings saveSettings;
 private slots:
     //FUNCTIONS CREATING TITLE SCREEN
     void setLayoutTitleScreen();
@@ -32,8 +34,6 @@ private slots:
     void removeLayoutTitleScreen();
     //TITLE SCREEN FUNCIONALITIES FUNCTIONS
     void showMaximisedWindow();
-    void checkContinueButton();
-    bool didYouUseThisSave(QString path);
     void showTutorialSection();
     void transitionToSaveScreen();
     //FUNCTIONS CREATING SAVE SCREEN
@@ -41,10 +41,9 @@ private slots:
     void setStyleSaveScreen();
     void removeLayoutSaveScreen();
     //SAVE SCREEN FUNCTIONALITIES FUNCTIONS
-    void loadContentFromSaveFile(QString path);
     void transitionToGameScreen(int saveNr);
     //FUNCTIONS CREATING GAME SCREEN
-    void setLayoutGameScreen();
+    void setLayoutGameScreen(int nr);
     void setStyleGameScreen();
     void removeLayoutGameScreen();
     //GAME SCREEN FUNCTIONALITIES FUNCTIONS
@@ -57,7 +56,8 @@ private slots:
     void userWantsToBuyDynamite();
     void goodEnding();
     void badEnding();
-    void saveProgressToFile(QString path);
+    void saveProgress(int nr);
+    void loadProgress(int nr);
 
 private:
     Ui::MainWindow *ui;
