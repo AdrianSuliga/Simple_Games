@@ -32,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent)
     cSave = -1;
 
     setLayoutTitleScreen();
-    checkContinueButton();
     setStyleTitleScreen();
 
     QScreen *screen = QGuiApplication::primaryScreen();
@@ -306,7 +305,6 @@ void MainWindow::showTutorialSection()
     tutorialScreen -> setModal(true);
     tutorialScreen -> show();
 }
-
 void MainWindow::showMaximisedWindow()
 {
     QScreen *screen = QGuiApplication::primaryScreen();
@@ -315,64 +313,6 @@ void MainWindow::showMaximisedWindow()
     int width = screenGeo.width();
     int x = (width - 900) / 2;
     setGeometry(x, 0, 900, height);
-}
-
-void MainWindow::checkContinueButton()
-{
-    if ((didYouUseThisSave(":/saves/saves/Save_1.txt") == true) || (didYouUseThisSave(":/saves/saves/Save_2.txt") == true)
-       || (didYouUseThisSave(":/saves/saves/Save_3.txt") == true) || (didYouUseThisSave(":/saves/saves/Save_4.txt") == true))
-        continueButtonTS -> setEnabled(true);
-    else
-        continueButtonTS -> setEnabled(false);
-}
-bool MainWindow::didYouUseThisSave(QString path)
-{
-    QFile file(path);
-    int nr = 1;
-    if (file.open(QIODevice::ReadOnly))
-    {
-        QTextStream line(&file);
-        while(!line.atEnd())
-        {
-            switch(nr)
-            {
-            case 1:
-            {
-                double saved_multi = line.readLine().toDouble(nullptr);
-                if (saved_multi > 1.0001)
-                    return true;
-                break;
-            }
-            case 2:
-            {
-                double saved_points = line.readLine().toDouble(nullptr);
-                if (saved_points > 0.0001)
-                    return true;
-                break;
-            }
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            {
-                int saved_bought_items = line.readLine().toInt(nullptr, 10);
-                if (saved_bought_items != 0)
-                    return true;
-                break;
-            }
-            default:
-                QMessageBox::critical(this, "TOO MANY LINES", "Tried to read too many lines");
-                break;
-            }
-            nr++;
-        }
-        file.close();
-    }
-    else
-        QMessageBox::critical(this, "FILE NOT FOUND", "File not found!");
-
-    return false;
 }
 
 void MainWindow::transitionToSaveScreen()
@@ -384,6 +324,7 @@ void MainWindow::transitionToSaveScreen()
 
 void MainWindow::setLayoutSaveScreen()
 {
+    //font
     int id_newfont = QFontDatabase::addApplicationFont(":/images/resources/Other/Bohemian Typewriter.ttf");
     QString family_newfont = QFontDatabase::applicationFontFamilies(id_newfont).at(0);
     QFont Bohemian(family_newfont);
@@ -411,16 +352,84 @@ void MainWindow::setLayoutSaveScreen()
     titleWidgetSS -> setLayout(titleLayoutSS);
 
     //SAVES
-    save1Widget = new ClickableWidget(nullptr, ":/saves/saves/Save_1.txt", 1);
+    if (saveSettings.value("Save1/Points").isValid() == true)
+        points = saveSettings.value("Save1/Points").toDouble(nullptr);
+    if (saveSettings.value("Save1/Multi").isValid() == true)
+        multiplier = saveSettings.value("Save1/Multi").toDouble(nullptr);
+    if (saveSettings.value("Save1/Hammers").isValid() == true)
+        hammers = saveSettings.value("Save1/Hammers").toInt(nullptr);
+    if (saveSettings.value("Save1/Pickaxes").isValid() == true)
+        pickaxes = saveSettings.value("Save1/Pickaxes").toInt(nullptr);
+    if (saveSettings.value("Save1/Children").isValid() == true)
+        children = saveSettings.value("Save1/Children").toInt(nullptr);
+    if (saveSettings.value("Save1/Drills").isValid() == true)
+        drills = saveSettings.value("Save1/Drills").toInt(nullptr);
+    if (saveSettings.value("Save1/Dynamite").isValid() == true)
+        dynamite = saveSettings.value("Save1/Dynamite").toInt(nullptr);
+
+    save1Widget = new ClickableWidget(nullptr, 1, QString::number(points), QString::number(multiplier), QString::number(hammers),
+                                      QString::number(pickaxes), QString::number(children), QString::number(drills),
+                                      QString::number(dynamite));
     save1Widget -> setMinimumHeight(280);
 
-    save2Widget = new ClickableWidget(nullptr, ":/saves/saves/Save_2.txt", 2);
+    if (saveSettings.value("Save2/Points").isValid() == true)
+        points = saveSettings.value("Save2/Points").toDouble(nullptr);
+    if (saveSettings.value("Save2/Multi").isValid() == true)
+        multiplier = saveSettings.value("Save2/Multi").toDouble(nullptr);
+    if (saveSettings.value("Save2/Hammers").isValid() == true)
+        hammers = saveSettings.value("Save2/Hammers").toInt(nullptr);
+    if (saveSettings.value("Save2/Pickaxes").isValid() == true)
+        pickaxes = saveSettings.value("Save2/Pickaxes").toInt(nullptr);
+    if (saveSettings.value("Save2/Children").isValid() == true)
+        children = saveSettings.value("Save2/Children").toInt(nullptr);
+    if (saveSettings.value("Save2/Drills").isValid() == true)
+        drills = saveSettings.value("Save2/Drills").toInt(nullptr);
+    if (saveSettings.value("Save2/Dynamite").isValid() == true)
+        dynamite = saveSettings.value("Save2/Dynamite").toInt(nullptr);
+
+    save2Widget = new ClickableWidget(nullptr, 2, QString::number(points), QString::number(multiplier), QString::number(hammers),
+                                      QString::number(pickaxes), QString::number(children), QString::number(drills),
+                                      QString::number(dynamite));
     save2Widget -> setMinimumHeight(280);
 
-    save3Widget = new ClickableWidget(nullptr, ":/saves/saves/Save_3.txt", 3);
+    if (saveSettings.value("Save3/Points").isValid() == true)
+        points = saveSettings.value("Save3/Points").toDouble(nullptr);
+    if (saveSettings.value("Save3/Multi").isValid() == true)
+        multiplier = saveSettings.value("Save3/Multi").toDouble(nullptr);
+    if (saveSettings.value("Save3/Hammers").isValid() == true)
+        hammers = saveSettings.value("Save3/Hammers").toInt(nullptr);
+    if (saveSettings.value("Save3/Pickaxes").isValid() == true)
+        pickaxes = saveSettings.value("Save3/Pickaxes").toInt(nullptr);
+    if (saveSettings.value("Save3/Children").isValid() == true)
+        children = saveSettings.value("Save3/Children").toInt(nullptr);
+    if (saveSettings.value("Save3/Drills").isValid() == true)
+        drills = saveSettings.value("Save3/Drills").toInt(nullptr);
+    if (saveSettings.value("Save3/Dynamite").isValid() == true)
+        dynamite = saveSettings.value("Save3/Dynamite").toInt(nullptr);
+
+    save3Widget = new ClickableWidget(nullptr, 3, QString::number(points), QString::number(multiplier), QString::number(hammers),
+                                      QString::number(pickaxes), QString::number(children), QString::number(drills),
+                                      QString::number(dynamite));
     save3Widget -> setMinimumHeight(280);
 
-    save4Widget = new ClickableWidget(nullptr, ":/saves/saves/Save_4.txt", 4);
+    if (saveSettings.value("Save4/Points").isValid() == true)
+        points = saveSettings.value("Save4/Points").toDouble(nullptr);
+    if (saveSettings.value("Save4/Multi").isValid() == true)
+        multiplier = saveSettings.value("Save4/Multi").toDouble(nullptr);
+    if (saveSettings.value("Save4/Hammers").isValid() == true)
+        hammers = saveSettings.value("Save4/Hammers").toInt(nullptr);
+    if (saveSettings.value("Save4/Pickaxes").isValid() == true)
+        pickaxes = saveSettings.value("Save4/Pickaxes").toInt(nullptr);
+    if (saveSettings.value("Save4/Children").isValid() == true)
+        children = saveSettings.value("Save4/Children").toInt(nullptr);
+    if (saveSettings.value("Save4/Drills").isValid() == true)
+        drills = saveSettings.value("Save4/Drills").toInt(nullptr);
+    if (saveSettings.value("Save4/Dynamite").isValid() == true)
+        dynamite = saveSettings.value("Save4/Dynamite").toInt(nullptr);
+
+    save4Widget = new ClickableWidget(nullptr, 4, QString::number(points), QString::number(multiplier), QString::number(hammers),
+                                      QString::number(pickaxes), QString::number(children), QString::number(drills),
+                                      QString::number(dynamite));
     save4Widget -> setMinimumHeight(280);
 
     //LAYOUT
@@ -479,78 +488,33 @@ void MainWindow::removeLayoutSaveScreen()
     delete mainLayoutSS;
 }
 
-void MainWindow::loadContentFromSaveFile(QString path)
-{
-    int counter = 1;
-    QFile saveFile(path);
-    if (saveFile.open(QIODevice::ReadOnly))
-    {
-        QTextStream textLine(&saveFile);
-        while (!textLine.atEnd())
-        {
-            switch(counter)
-            {
-            case 1:
-                multiplier = textLine.readLine().toDouble(nullptr);
-                break;
-            case 2:
-                points = textLine.readLine().toDouble(nullptr);
-                break;
-            case 3:
-                hammers = textLine.readLine().toInt(nullptr, 10);
-                break;
-            case 4:
-                pickaxes = textLine.readLine().toInt(nullptr, 10);
-                break;
-            case 5:
-                children = textLine.readLine().toInt(nullptr, 10);
-                break;
-            case 6:
-                drills = textLine.readLine().toInt(nullptr, 10);
-                break;
-            case 7:
-                dynamite = textLine.readLine().toInt(nullptr, 10);
-                break;
-            default:
-                QMessageBox::critical(this, "ERROR", "Tried to read too many lines.");
-                return;
-                break;
-            }
-            counter++;
-        }
-        saveFile.close();
-    }
-    else
-        QMessageBox::critical(this, "ERROR", "File not found!");
-}
-
 void MainWindow::transitionToGameScreen(int saveNr)
 {
     removeLayoutSaveScreen();
     switch (saveNr)
     {
     case 1:
-        loadContentFromSaveFile(":/saves/saves/Save_1.txt");
         cSave = 1;
+        loadProgress(1);
         break;
     case 2:
-        loadContentFromSaveFile(":/saves/saves/Save_2.txt");
         cSave = 2;
+        loadProgress(2);
         break;
     case 3:
-        loadContentFromSaveFile(":/saves/saves/Save_3.txt");
         cSave = 3;
+        loadProgress(3);
         break;
     case 4:
-        loadContentFromSaveFile(":/saves/saves/Save_4.txt");
         cSave = 4;
+        loadProgress(4);
         break;
     }
-    setLayoutGameScreen();
+    setLayoutGameScreen(cSave);
     setStyleGameScreen();
 }
 
-void MainWindow::setLayoutGameScreen()
+void MainWindow::setLayoutGameScreen(int nr)
 {
     int id_newfont = QFontDatabase::addApplicationFont(":/images/resources/Other/Bohemian Typewriter.ttf");
     QString family_newfont = QFontDatabase::applicationFontFamilies(id_newfont).at(0);
@@ -759,7 +723,21 @@ void MainWindow::setLayoutGameScreen()
     connect(shopDynamiteWidget, &ShopItem::clicked, this, &MainWindow::userWantsToBuyDynamite);
 
     disconnect(exitButtonTB, &QPushButton::clicked, this, &MainWindow::close);
-    connect(exitButtonTB, &QPushButton::clicked, this, [this]() { saveProgressToFile(":/saves/saves/Save_1.txt"); });
+    switch (nr)
+    {
+    case 1:
+        connect(exitButtonTB, &QPushButton::clicked, this, [this]() { saveProgress(1); });
+        break;
+    case 2:
+        connect(exitButtonTB, &QPushButton::clicked, this, [this]() { saveProgress(2); });
+        break;
+    case 3:
+        connect(exitButtonTB, &QPushButton::clicked, this, [this]() { saveProgress(3); });
+        break;
+    case 4:
+        connect(exitButtonTB, &QPushButton::clicked, this, [this]() { saveProgress(4); });
+        break;
+    }
     connect(exitButtonTB, &QPushButton::clicked, this, &MainWindow::close);
 }
 void MainWindow::setStyleGameScreen()
@@ -1010,7 +988,131 @@ void MainWindow::badEnding()
 
 }
 
-void MainWindow::saveProgressToFile(QString path)
+void MainWindow::saveProgress(int nr)
 {
+     switch (nr)
+     {
+     case 1:
+        saveSettings.beginGroup("Save1");
+        saveSettings.setValue("Points", points);
+        saveSettings.setValue("Multi", multiplier);
+        saveSettings.setValue("Hammers", hammers);
+        saveSettings.setValue("Pickaxes", pickaxes);
+        saveSettings.setValue("Children", children);
+        saveSettings.setValue("Drills", drills);
+        saveSettings.setValue("Dynamite", dynamite);
+        saveSettings.endGroup();
+        break;
+     case 2:
+        saveSettings.beginGroup("Save2");
+        saveSettings.setValue("Points", points);
+        saveSettings.setValue("Multi", multiplier);
+        saveSettings.setValue("Hammers", hammers);
+        saveSettings.setValue("Pickaxes", pickaxes);
+        saveSettings.setValue("Children", children);
+        saveSettings.setValue("Drills", drills);
+        saveSettings.setValue("Dynamite", dynamite);
+        saveSettings.endGroup();
+        break;
+     case 3:
+        saveSettings.beginGroup("Save3");
+        saveSettings.setValue("Points", points);
+        saveSettings.setValue("Multi", multiplier);
+        saveSettings.setValue("Hammers", hammers);
+        saveSettings.setValue("Pickaxes", pickaxes);
+        saveSettings.setValue("Children", children);
+        saveSettings.setValue("Drills", drills);
+        saveSettings.setValue("Dynamite", dynamite);
+        saveSettings.endGroup();
+        break;
+     case 4:
+        saveSettings.beginGroup("Save4");
+        saveSettings.setValue("Points", points);
+        saveSettings.setValue("Multi", multiplier);
+        saveSettings.setValue("Hammers", hammers);
+        saveSettings.setValue("Pickaxes", pickaxes);
+        saveSettings.setValue("Children", children);
+        saveSettings.setValue("Drills", drills);
+        saveSettings.setValue("Dynamite", dynamite);
+        saveSettings.endGroup();
+        break;
+     default:
+         QMessageBox::critical(this, "ERROR", "Something went wrong!");
+         return;
+         break;
+     }
+}
 
+void MainWindow::loadProgress(int nr)
+{
+    switch (nr)
+    {
+    case 1:
+        if (saveSettings.value("Save1/Points").isValid() == true)
+            points = saveSettings.value("Save1/Points").toDouble(nullptr);
+        if (saveSettings.value("Save1/Multi").isValid() == true)
+            multiplier = saveSettings.value("Save1/Multi").toDouble(nullptr);
+        if (saveSettings.value("Save1/Hammers").isValid() == true)
+            hammers = saveSettings.value("Save1/Hammers").toInt(nullptr);
+        if (saveSettings.value("Save1/Pickaxes").isValid() == true)
+            pickaxes = saveSettings.value("Save1/Pickaxes").toInt(nullptr);
+        if (saveSettings.value("Save1/Children").isValid() == true)
+            children = saveSettings.value("Save1/Children").toInt(nullptr);
+        if (saveSettings.value("Save1/Drills").isValid() == true)
+            drills = saveSettings.value("Save1/Drills").toInt(nullptr);
+        if (saveSettings.value("Save1/Dynamite").isValid() == true)
+            dynamite = saveSettings.value("Save1/Dynamite").toInt(nullptr);
+        break;
+    case 2:
+        if (saveSettings.value("Save2/Points").isValid() == true)
+            points = saveSettings.value("Save2/Points").toDouble(nullptr);
+        if (saveSettings.value("Save2/Multi").isValid() == true)
+            multiplier = saveSettings.value("Save2/Multi").toDouble(nullptr);
+        if (saveSettings.value("Save2/Hammers").isValid() == true)
+            hammers = saveSettings.value("Save2/Hammers").toInt(nullptr);
+        if (saveSettings.value("Save2/Pickaxes").isValid() == true)
+            pickaxes = saveSettings.value("Save2/Pickaxes").toInt(nullptr);
+        if (saveSettings.value("Save2/Children").isValid() == true)
+            children = saveSettings.value("Save2/Children").toInt(nullptr);
+        if (saveSettings.value("Save2/Drills").isValid() == true)
+            drills = saveSettings.value("Save2/Drills").toInt(nullptr);
+        if (saveSettings.value("Save2/Dynamite").isValid() == true)
+            dynamite = saveSettings.value("Save2/Dynamite").toInt(nullptr);
+        break;
+    case 3:
+        if (saveSettings.value("Save3/Points").isValid() == true)
+            points = saveSettings.value("Save3/Points").toDouble(nullptr);
+        if (saveSettings.value("Save3/Multi").isValid() == true)
+            multiplier = saveSettings.value("Save3/Multi").toDouble(nullptr);
+        if (saveSettings.value("Save3/Hammers").isValid() == true)
+            hammers = saveSettings.value("Save3/Hammers").toInt(nullptr);
+        if (saveSettings.value("Save3/Pickaxes").isValid() == true)
+            pickaxes = saveSettings.value("Save3/Pickaxes").toInt(nullptr);
+        if (saveSettings.value("Save3/Children").isValid() == true)
+            children = saveSettings.value("Save3/Children").toInt(nullptr);
+        if (saveSettings.value("Save3/Drills").isValid() == true)
+            drills = saveSettings.value("Save3/Drills").toInt(nullptr);
+        if (saveSettings.value("Save3/Dynamite").isValid() == true)
+            dynamite = saveSettings.value("Save3/Dynamite").toInt(nullptr);
+        break;
+    case 4:
+        if (saveSettings.value("Save4/Points").isValid() == true)
+            points = saveSettings.value("Save4/Points").toDouble(nullptr);
+        if (saveSettings.value("Save4/Multi").isValid() == true)
+            multiplier = saveSettings.value("Save4/Multi").toDouble(nullptr);
+        if (saveSettings.value("Save4/Hammers").isValid() == true)
+            hammers = saveSettings.value("Save4/Hammers").toInt(nullptr);
+        if (saveSettings.value("Save4/Pickaxes").isValid() == true)
+            pickaxes = saveSettings.value("Save4/Pickaxes").toInt(nullptr);
+        if (saveSettings.value("Save4/Children").isValid() == true)
+            children = saveSettings.value("Save4/Children").toInt(nullptr);
+        if (saveSettings.value("Save4/Drills").isValid() == true)
+            drills = saveSettings.value("Save4/Drills").toInt(nullptr);
+        if (saveSettings.value("Save4/Dynamite").isValid() == true)
+            dynamite = saveSettings.value("Save4/Dynamite").toInt(nullptr);
+        break;
+    default:
+        QMessageBox::critical(this, "ERROR", "Something went wrong!");
+        return;
+    }
 }
