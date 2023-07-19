@@ -1,32 +1,33 @@
 #include "clickablewidget.h"
 #include "qstyleoption.h"
+#include <QSettings>
 #include <QFontDatabase>
 #include <QPainter>
 #include <QFile>
 #include <QTextStream>
-#include <QDebug>
 
-ClickableWidget::ClickableWidget(QWidget* parent, QString path, int nr)
+ClickableWidget::ClickableWidget(QWidget* parent, int nr, QString pts, QString m,
+                                 QString h, QString pi, QString c, QString dl, QString dy)
     : QWidget(parent)
 {
     int id_newfont = QFontDatabase::addApplicationFont(":/images/resources/Other/Bohemian Typewriter.ttf");
     QString family_newfont = QFontDatabase::applicationFontFamilies(id_newfont).at(0);
     QFont Bohemian(family_newfont);
 
-    points = "";
-    multi = "";
-    ham = "";
-    pick = "";
-    ch = "";
-    dr = "";
-    dm = "";
+    points = pts;
+    multi = m;
+    ham = h;
+    pick = pi;
+    ch = c;
+    dr = dl;
+    dm = dy;
 
-    loadContentFromFile(path);
     setLayoutClickableWidget(nr, Bohemian);
     setStyleClickableWidget();
 }
 
-ClickableWidget::~ClickableWidget() {
+ClickableWidget::~ClickableWidget()
+{
     delete titleLabel;
     delete lineLabel;
     delete pointsLabel;
@@ -52,7 +53,7 @@ ClickableWidget::~ClickableWidget() {
     delete dynamiteIcon;
     delete dynamiteLayout;
 
-    delete this->layout();
+    delete layout();
 }
 
 void ClickableWidget::mousePressEvent(QMouseEvent *event) {emit clicked();}
@@ -196,46 +197,4 @@ void ClickableWidget::setStyleClickableWidget()
                               "color: rgb(254, 220, 105);"
                               "}";
     this->setStyleSheet(saveWidgetStyle);
-}
-
-void ClickableWidget::loadContentFromFile(QString path)
-{
-    int nr = 1;
-
-    QFile file(path);
-    if (file.open(QIODevice::ReadOnly))
-    {
-        QTextStream line(&file);
-        while (!line.atEnd())
-        {
-            switch(nr)
-            {
-            case 1:
-                multi = line.readLine();
-                break;
-            case 2:
-                points = line.readLine();
-                break;
-            case 3:
-                ham = line.readLine();
-                break;
-            case 4:
-                pick = line.readLine();
-                break;
-            case 5:
-                ch = line.readLine();
-                break;
-            case 6:
-                dr = line.readLine();
-                break;
-            case 7:
-                dm = line.readLine();
-                break;
-            }
-            nr++;
-        }
-        file.close();
-    }
-    else
-        return;
 }
