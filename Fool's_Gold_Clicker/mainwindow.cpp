@@ -20,10 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowIcon(QIcon(QPixmap(":/images/resources/Other/Icon.png")));
     setWindowTitle("FOOL'S GOLD");
 
-    int id_newfont = QFontDatabase::addApplicationFont(":/images/resources/Other/Bohemian Typewriter.ttf");
-    QString family_newfont = QFontDatabase::applicationFontFamilies(id_newfont).at(0);
-    QFont Bohemian(family_newfont);
-
     points = 0.0;
     multiplier = 1.0;
     hammers = 0;
@@ -31,7 +27,9 @@ MainWindow::MainWindow(QWidget *parent)
     children = 0;
     drills = 0;
     dynamite = 0;
+
     oreType = -1;
+    cSave = -1;
 
     setLayoutTitleScreen();
     checkContinueButton();
@@ -55,6 +53,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::setLayoutTitleScreen()
 {
+    int id_newfont = QFontDatabase::addApplicationFont(":/images/resources/Other/Bohemian Typewriter.ttf");
+    QString family_newfont = QFontDatabase::applicationFontFamilies(id_newfont).at(0);
+    QFont Bohemian(family_newfont);
     //TITLE BAR
     iconLabelTB = new QLabel("ICON.png");
     iconLabelTB -> setPixmap(QPixmap(":/images/resources/Other/Icon.png"));
@@ -190,8 +191,9 @@ void MainWindow::setLayoutTitleScreen()
     mainLayout -> setContentsMargins(0, 0, 0, 0);
 
     //functionalities
-    connect(quitButtonTS, &QPushButton::clicked, this, &MainWindow::close);
     connect(newgameButtonTS, &QPushButton::clicked, this, &MainWindow::transitionToSaveScreen);
+    connect(tutorialButtonTS, &QPushButton::clicked, this, &MainWindow::showTutorialSection);
+    connect(quitButtonTS, &QPushButton::clicked, this, &MainWindow::close);
 
     connect(minimiseButtonTB, &QPushButton::clicked, this, &MainWindow::showMinimized);
     connect(maximiseButtonTB, &QPushButton::clicked, this, &MainWindow::showMaximisedWindow);
@@ -298,6 +300,13 @@ void MainWindow::removeLayoutTitleScreen()
     delete mainLayoutTS;
 }
 
+void MainWindow::showTutorialSection()
+{
+    tutorialScreen = new Tutorial();
+    tutorialScreen -> setModal(true);
+    tutorialScreen -> show();
+}
+
 void MainWindow::showMaximisedWindow()
 {
     QScreen *screen = QGuiApplication::primaryScreen();
@@ -375,6 +384,9 @@ void MainWindow::transitionToSaveScreen()
 
 void MainWindow::setLayoutSaveScreen()
 {
+    int id_newfont = QFontDatabase::addApplicationFont(":/images/resources/Other/Bohemian Typewriter.ttf");
+    QString family_newfont = QFontDatabase::applicationFontFamilies(id_newfont).at(0);
+    QFont Bohemian(family_newfont);
     //TITLE
     titleLabelSS = new QLabel("SAVE FILES");
     titleLabelSS -> setAlignment(Qt::AlignCenter);
@@ -519,15 +531,19 @@ void MainWindow::transitionToGameScreen(int saveNr)
     {
     case 1:
         loadContentFromSaveFile(":/saves/saves/Save_1.txt");
+        cSave = 1;
         break;
     case 2:
         loadContentFromSaveFile(":/saves/saves/Save_2.txt");
+        cSave = 2;
         break;
     case 3:
         loadContentFromSaveFile(":/saves/saves/Save_3.txt");
+        cSave = 3;
         break;
     case 4:
         loadContentFromSaveFile(":/saves/saves/Save_4.txt");
+        cSave = 4;
         break;
     }
     setLayoutGameScreen();
@@ -536,12 +552,17 @@ void MainWindow::transitionToGameScreen(int saveNr)
 
 void MainWindow::setLayoutGameScreen()
 {
+    int id_newfont = QFontDatabase::addApplicationFont(":/images/resources/Other/Bohemian Typewriter.ttf");
+    QString family_newfont = QFontDatabase::applicationFontFamilies(id_newfont).at(0);
+    QFont Bohemian(family_newfont);
     //ORE MINING LAYOUT
     scoreLabel = new QLabel(QString::number(points) + " $");
     scoreLabel -> setAlignment(Qt::AlignCenter);
+    scoreLabel -> setFont(Bohemian);
 
     multiplierLabel = new QLabel("x " + QString::number(multiplier));
     multiplierLabel -> setAlignment(Qt::AlignCenter);
+    multiplierLabel -> setFont(Bohemian);
 
     srand(time(nullptr));
     oreType = drawOreType();
@@ -587,11 +608,13 @@ void MainWindow::setLayoutGameScreen()
     //INVENTORY LAYOUT
     inventoryLabel = new QLabel("INVENTORY");
     inventoryLabel -> setAlignment(Qt::AlignCenter);
+    inventoryLabel -> setFont(Bohemian);
 
     inventoryWidget = new QWidget();
 
     numHamm = new QLabel(QString::number(hammers, 10));
     numHamm -> setAlignment(Qt::AlignCenter);
+    numHamm -> setFont(Bohemian);
 
     hammIcon = new QLabel();
     hammIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/hammer.png"));
@@ -604,6 +627,7 @@ void MainWindow::setLayoutGameScreen()
 
     numPick = new QLabel(QString::number(pickaxes, 10));
     numPick -> setAlignment(Qt::AlignCenter);
+    numPick -> setFont(Bohemian);
 
     pickIcon = new QLabel();
     pickIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/pickaxe.png"));
@@ -616,6 +640,7 @@ void MainWindow::setLayoutGameScreen()
 
     numChild = new QLabel(QString::number(children, 10));
     numChild -> setAlignment(Qt::AlignCenter);
+    numChild -> setFont(Bohemian);
 
     childIcon = new QLabel();
     childIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/child.png"));
@@ -628,6 +653,7 @@ void MainWindow::setLayoutGameScreen()
 
     numDrill = new QLabel(QString::number(drills, 10));
     numDrill -> setAlignment(Qt::AlignCenter);
+    numDrill -> setFont(Bohemian);
 
     drillIcon = new QLabel();
     drillIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/drill.png"));
@@ -640,6 +666,7 @@ void MainWindow::setLayoutGameScreen()
 
     numDyn = new QLabel(QString::number(dynamite, 10));
     numDyn -> setAlignment(Qt::AlignCenter);
+    numDyn -> setFont(Bohemian);
 
     dynIcon = new QLabel();
     dynIcon -> setPixmap(QPixmap(":/images/resources/ShopItems/dynamite.png"));
@@ -669,6 +696,7 @@ void MainWindow::setLayoutGameScreen()
     //SHOP LAYOUT
     shopLabel = new QLabel("SHOP");
     shopLabel -> setAlignment(Qt::AlignCenter);
+    shopLabel -> setFont(Bohemian);
 
     shopWidget = new QWidget();
 
@@ -730,7 +758,9 @@ void MainWindow::setLayoutGameScreen()
     connect(shopDrillWidget, &ShopItem::clicked, this, &MainWindow::userWantsToBuyDrill);
     connect(shopDynamiteWidget, &ShopItem::clicked, this, &MainWindow::userWantsToBuyDynamite);
 
-    connect(exitButtonTB, &QPushButton::clicked, this, &MainWindow::saveProgressToFile);
+    disconnect(exitButtonTB, &QPushButton::clicked, this, &MainWindow::close);
+    connect(exitButtonTB, &QPushButton::clicked, this, [this]() { saveProgressToFile(":/saves/saves/Save_1.txt"); });
+    connect(exitButtonTB, &QPushButton::clicked, this, &MainWindow::close);
 }
 void MainWindow::setStyleGameScreen()
 {
@@ -975,13 +1005,12 @@ void MainWindow::goodEnding()
 {
 
 }
-
 void MainWindow::badEnding()
 {
 
 }
 
-void MainWindow::saveProgressToFile()
+void MainWindow::saveProgressToFile(QString path)
 {
 
 }
