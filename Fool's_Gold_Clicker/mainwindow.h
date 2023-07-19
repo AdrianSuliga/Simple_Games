@@ -11,6 +11,7 @@
 #include <clickablewidget.h>
 #include <shopitem.h>
 #include <clickablelabel.h>
+#include <tutorial.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,6 +34,7 @@ private slots:
     void showMaximisedWindow();
     void checkContinueButton();
     bool didYouUseThisSave(QString path);
+    void showTutorialSection();
     void transitionToSaveScreen();
     //FUNCTIONS CREATING SAVE SCREEN
     void setLayoutSaveScreen();
@@ -55,14 +57,13 @@ private slots:
     void userWantsToBuyDynamite();
     void goodEnding();
     void badEnding();
-    void saveProgressToFile();
+    void saveProgressToFile(QString path);
 
 private:
     Ui::MainWindow *ui;
     //GAME VARIABLES
     double points, multiplier;
-    short oreType;
-    QFont Bohemian;
+    short oreType, cSave;
 
     QVBoxLayout *mainLayout;
 
@@ -80,6 +81,7 @@ private:
     QHBoxLayout *continueLayoutTS, *newgameLayoutTS, *tutorialLayoutTS, *aboutLayoutTS, *quitLayoutTS, *bGLayout;
     QSizeGrip *brGripTS, *blGripTS;
     QWidget *bottomGripTS, *titleWidgetTS;
+    Tutorial *tutorialScreen;
     //SAVE SCREEN
     QLabel *titleLabelSS, *lineTitleSS, *infoTitleSS;
     ClickableWidget *save1Widget, *save2Widget, *save3Widget, *save4Widget;
