@@ -11,8 +11,10 @@
 
 #include <clickablewidget.h>
 #include <shopitem.h>
+#include <titlebarwidget.h>
 #include <clickablelabel.h>
 #include <tutorial.h>
+#include <goodending.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -67,13 +69,10 @@ private:
     short oreType, cSave;
 
     QVBoxLayout *mainLayout;
+    GoodEnding *gE;
 
     //TITLE BAR
-    QLabel *iconLabelTB, *titleLabelTB;
-    QSpacerItem *spacerTB;
-    QPushButton *minimiseButtonTB, *maximiseButtonTB, *exitButtonTB;
-    QWidget *TB;
-    QHBoxLayout *mainLayoutTB;
+    TitleBarWidget *TB;
     //TITLE SCREEN
     QPushButton *continueButtonTS, *newgameButtonTS, *tutorialButtonTS, *aboutButtonTS, *quitButtonTS;
     QLabel *titleLabelTS;
