@@ -55,37 +55,7 @@ void MainWindow::setLayoutTitleScreen()
     QString family_newfont = QFontDatabase::applicationFontFamilies(id_newfont).at(0);
     QFont Bohemian(family_newfont);
     //TITLE BAR
-    iconLabelTB = new QLabel("ICON.png");
-    iconLabelTB -> setPixmap(QPixmap(":/images/resources/Other/Icon.png"));
-    iconLabelTB -> setScaledContents(true);
-    iconLabelTB -> setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    iconLabelTB -> setMinimumSize(30, 30);
-
-    titleLabelTB = new QLabel("FOOL'S GOLD");
-    titleLabelTB -> setAlignment(Qt::AlignCenter);
-
-    spacerTB = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-    minimiseButtonTB = new QPushButton("-");
-    minimiseButtonTB -> setFixedSize(30, 30);
-    maximiseButtonTB = new QPushButton("O");
-    maximiseButtonTB -> setFixedSize(30, 30);
-    exitButtonTB = new QPushButton("X");
-    exitButtonTB -> setFixedSize(30, 30);
-
-    mainLayoutTB = new QHBoxLayout();
-    mainLayoutTB -> insertWidget(0, iconLabelTB);
-    mainLayoutTB -> insertSpacing(1, 30);
-    mainLayoutTB -> insertWidget(2, titleLabelTB);
-    mainLayoutTB -> insertSpacerItem(3, spacerTB);
-    mainLayoutTB -> insertWidget(4, minimiseButtonTB);
-    mainLayoutTB -> insertWidget(5, maximiseButtonTB);
-    mainLayoutTB -> insertWidget(6, exitButtonTB);
-    mainLayoutTB -> setContentsMargins(0, 0, 0, 0);
-    mainLayoutTB -> setSpacing(2);
-
-    TB = new QWidget();
-    TB -> setLayout(mainLayoutTB);
+    TB = new TitleBarWidget(this);
     TB -> setFixedHeight(30);
     //TITLE SCREEN
     //title label
@@ -193,9 +163,9 @@ void MainWindow::setLayoutTitleScreen()
     connect(tutorialButtonTS, &QPushButton::clicked, this, &MainWindow::showTutorialSection);
     connect(quitButtonTS, &QPushButton::clicked, this, &MainWindow::close);
 
-    connect(minimiseButtonTB, &QPushButton::clicked, this, &MainWindow::showMinimized);
-    connect(maximiseButtonTB, &QPushButton::clicked, this, &MainWindow::showMaximisedWindow);
-    connect(exitButtonTB, &QPushButton::clicked, this, &MainWindow::close);
+    connect(TB, &TitleBarWidget::mini, this, &MainWindow::showMinimized);
+    connect(TB, &TitleBarWidget::maxi, this, &MainWindow::showMaximisedWindow);
+    connect(TB, &TitleBarWidget::quitIt, this, &MainWindow::close);
 }
 void MainWindow::setStyleTitleScreen()
 {
@@ -262,29 +232,6 @@ void MainWindow::setStyleTitleScreen()
     tutorialButtonTS -> setStyleSheet(enabledButtons);
     aboutButtonTS -> setStyleSheet(enabledButtons);
     quitButtonTS -> setStyleSheet(enabledButtons);
-
-    QString buttonTBStyle = "QPushButton {"
-                            "color: white;"
-                            "background-color: rgb(84,94,106);"
-                            "border-style: solid;"
-                            "}"
-                            "QPushButton:hover {"
-                            "background-color: rgb(110, 120, 135);"
-                            "}";
-
-    minimiseButtonTB -> setStyleSheet(buttonTBStyle);
-    maximiseButtonTB -> setStyleSheet(buttonTBStyle);
-    exitButtonTB -> setStyleSheet("QPushButton {"
-                                  "color: white;"
-                                  "background-color: rgb(84,94,106);"
-                                  "border-style: solid;"
-                                  "}"
-                                  "QPushButton:hover {"
-                                  "background-color: red;"
-                                  "}");
-
-    QString titleLabelTBStyle = "color: white;";
-    titleLabelTB -> setStyleSheet(titleLabelTBStyle);
 }
 void MainWindow::removeLayoutTitleScreen()
 {
@@ -789,23 +736,23 @@ void MainWindow::setLayoutGameScreen(int nr)
     connect(shopDrillWidget, &ShopItem::clicked, this, &MainWindow::userWantsToBuyDrill);
     connect(shopDynamiteWidget, &ShopItem::clicked, this, &MainWindow::userWantsToBuyDynamite);
 
-    disconnect(exitButtonTB, &QPushButton::clicked, this, &MainWindow::close);
+    disconnect(TB, &TitleBarWidget::quitIt, this, &MainWindow::close);
     switch (nr)
     {
     case 1:
-        connect(exitButtonTB, &QPushButton::clicked, this, [this]() { saveProgress(1); });
+        connect(TB, &TitleBarWidget::quitIt, this, [this]() { saveProgress(1); });
         break;
     case 2:
-        connect(exitButtonTB, &QPushButton::clicked, this, [this]() { saveProgress(2); });
+        connect(TB, &TitleBarWidget::quitIt, this, [this]() { saveProgress(2); });
         break;
     case 3:
-        connect(exitButtonTB, &QPushButton::clicked, this, [this]() { saveProgress(3); });
+        connect(TB, &TitleBarWidget::quitIt, this, [this]() { saveProgress(3); });
         break;
     case 4:
-        connect(exitButtonTB, &QPushButton::clicked, this, [this]() { saveProgress(4); });
+        connect(TB, &TitleBarWidget::quitIt, this, [this]() { saveProgress(4); });
         break;
     }
-    connect(exitButtonTB, &QPushButton::clicked, this, &MainWindow::close);
+    connect(TB, &TitleBarWidget::quitIt, this, &MainWindow::close);
 }
 void MainWindow::setStyleGameScreen()
 {
@@ -898,7 +845,7 @@ void MainWindow::userClickedOre()
     case 0:
     case 1:
     case 2:
-        points += multiplier * 100.0;
+        points += multiplier * 10000000.0;
         break;
     case 3:
     case 4:
@@ -1048,7 +995,13 @@ void MainWindow::userWantsToBuyDynamite()
 
 void MainWindow::goodEnding()
 {
-
+    gE = new GoodEnding();
+    gE->setModal(true);
+    gE->show();
+    connect(gE, &GoodEnding::clickedButton, this, [this]() { saveProgress(cSave); });
+    connect(gE, &GoodEnding::clickedButton, this, &MainWindow::removeLayoutGameScreen);
+    //connect(gE, &GoodEnding::clickedButton, this, &MainWindow::setLayoutTitleScreen);
+    //connect(gE, &GoodEnding::clickedButton, this, &MainWindow::setStyleTitleScreen);
 }
 void MainWindow::badEnding()
 {
