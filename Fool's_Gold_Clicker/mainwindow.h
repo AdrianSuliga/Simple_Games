@@ -36,6 +36,7 @@ private slots:
     void showMaximisedWindow();
     void showTutorialSection();
     void transitionToSaveScreen();
+    void userWantsToContinue(int nr);
     //FUNCTIONS CREATING SAVE SCREEN
     void setLayoutSaveScreen();
     void setStyleSaveScreen();
