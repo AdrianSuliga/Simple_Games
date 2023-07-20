@@ -19,7 +19,6 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     setWindowIcon(QIcon(QPixmap(":/images/resources/Other/Icon.png")));
     setWindowTitle("FOOL'S GOLD");
-
     points = 0.0;
     multiplier = 1.0;
     hammers = 0;
@@ -247,10 +246,17 @@ void MainWindow::setStyleTitleScreen()
                              "QPushButton:hover {"
                              "background-color: rgb(11,29,41);"
                              "}";
-    if (continueButtonTS->isEnabled() == false)
+    if (saveSettings.contains("CB") == false)
+    {
+        continueButtonTS -> setEnabled(false);
         continueButtonTS -> setStyleSheet(disabledButtons);
+    }
     else
+    {
+        continueButtonTS -> setEnabled(true);
         continueButtonTS -> setStyleSheet(enabledButtons);
+        connect(continueButtonTS, &QPushButton::clicked, this, [this]() { userWantsToContinue(saveSettings.value("CB").toInt(nullptr)); });
+    }
 
     newgameButtonTS -> setStyleSheet(enabledButtons);
     tutorialButtonTS -> setStyleSheet(enabledButtons);
@@ -352,19 +358,19 @@ void MainWindow::setLayoutSaveScreen()
     titleWidgetSS -> setLayout(titleLayoutSS);
 
     //SAVES
-    if (saveSettings.value("Save1/Points").isValid() == true)
+    if (saveSettings.contains("Save1/Points") == true)
         points = saveSettings.value("Save1/Points").toDouble(nullptr);
-    if (saveSettings.value("Save1/Multi").isValid() == true)
+    if (saveSettings.contains("Save1/Multi") == true)
         multiplier = saveSettings.value("Save1/Multi").toDouble(nullptr);
-    if (saveSettings.value("Save1/Hammers").isValid() == true)
+    if (saveSettings.contains("Save1/Hammers") == true)
         hammers = saveSettings.value("Save1/Hammers").toInt(nullptr);
-    if (saveSettings.value("Save1/Pickaxes").isValid() == true)
+    if (saveSettings.contains("Save1/Pickaxes") == true)
         pickaxes = saveSettings.value("Save1/Pickaxes").toInt(nullptr);
-    if (saveSettings.value("Save1/Children").isValid() == true)
+    if (saveSettings.contains("Save1/Children") == true)
         children = saveSettings.value("Save1/Children").toInt(nullptr);
-    if (saveSettings.value("Save1/Drills").isValid() == true)
+    if (saveSettings.contains("Save1/Drills") == true)
         drills = saveSettings.value("Save1/Drills").toInt(nullptr);
-    if (saveSettings.value("Save1/Dynamite").isValid() == true)
+    if (saveSettings.contains("Save1/Dynamite") == true)
         dynamite = saveSettings.value("Save1/Dynamite").toInt(nullptr);
 
     save1Widget = new ClickableWidget(nullptr, 1, QString::number(points), QString::number(multiplier), QString::number(hammers),
@@ -372,39 +378,55 @@ void MainWindow::setLayoutSaveScreen()
                                       QString::number(dynamite));
     save1Widget -> setMinimumHeight(280);
 
-    if (saveSettings.value("Save2/Points").isValid() == true)
+    points = 0.0;
+    multiplier = 1.0;
+    hammers = 0;
+    pickaxes = 0;
+    children = 0;
+    drills = 0;
+    dynamite = 0;
+
+    if (saveSettings.contains("Save2/Points") == true)
         points = saveSettings.value("Save2/Points").toDouble(nullptr);
-    if (saveSettings.value("Save2/Multi").isValid() == true)
+    if (saveSettings.contains("Save2/Multi") == true)
         multiplier = saveSettings.value("Save2/Multi").toDouble(nullptr);
-    if (saveSettings.value("Save2/Hammers").isValid() == true)
+    if (saveSettings.contains("Save2/Hammers") == true)
         hammers = saveSettings.value("Save2/Hammers").toInt(nullptr);
-    if (saveSettings.value("Save2/Pickaxes").isValid() == true)
+    if (saveSettings.contains("Save2/Pickaxes") == true)
         pickaxes = saveSettings.value("Save2/Pickaxes").toInt(nullptr);
-    if (saveSettings.value("Save2/Children").isValid() == true)
+    if (saveSettings.contains("Save2/Children") == true)
         children = saveSettings.value("Save2/Children").toInt(nullptr);
-    if (saveSettings.value("Save2/Drills").isValid() == true)
+    if (saveSettings.contains("Save2/Drills") == true)
         drills = saveSettings.value("Save2/Drills").toInt(nullptr);
-    if (saveSettings.value("Save2/Dynamite").isValid() == true)
+    if (saveSettings.contains("Save2/Dynamite") == true)
         dynamite = saveSettings.value("Save2/Dynamite").toInt(nullptr);
 
-    save2Widget = new ClickableWidget(nullptr, 2, QString::number(points), QString::number(multiplier), QString::number(hammers),
+    save2Widget = new ClickableWidget(nullptr, 1, QString::number(points), QString::number(multiplier), QString::number(hammers),
                                       QString::number(pickaxes), QString::number(children), QString::number(drills),
                                       QString::number(dynamite));
     save2Widget -> setMinimumHeight(280);
 
-    if (saveSettings.value("Save3/Points").isValid() == true)
+    points = 0.0;
+    multiplier = 1.0;
+    hammers = 0;
+    pickaxes = 0;
+    children = 0;
+    drills = 0;
+    dynamite = 0;
+
+    if (saveSettings.contains("Save3/Points") == true)
         points = saveSettings.value("Save3/Points").toDouble(nullptr);
-    if (saveSettings.value("Save3/Multi").isValid() == true)
+    if (saveSettings.contains("Save3/Multi") == true)
         multiplier = saveSettings.value("Save3/Multi").toDouble(nullptr);
-    if (saveSettings.value("Save3/Hammers").isValid() == true)
+    if (saveSettings.contains("Save3/Hammers") == true)
         hammers = saveSettings.value("Save3/Hammers").toInt(nullptr);
-    if (saveSettings.value("Save3/Pickaxes").isValid() == true)
+    if (saveSettings.contains("Save3/Pickaxes") == true)
         pickaxes = saveSettings.value("Save3/Pickaxes").toInt(nullptr);
-    if (saveSettings.value("Save3/Children").isValid() == true)
+    if (saveSettings.contains("Save3/Children") == true)
         children = saveSettings.value("Save3/Children").toInt(nullptr);
-    if (saveSettings.value("Save3/Drills").isValid() == true)
+    if (saveSettings.contains("Save3/Drills") == true)
         drills = saveSettings.value("Save3/Drills").toInt(nullptr);
-    if (saveSettings.value("Save3/Dynamite").isValid() == true)
+    if (saveSettings.contains("Save3/Dynamite") == true)
         dynamite = saveSettings.value("Save3/Dynamite").toInt(nullptr);
 
     save3Widget = new ClickableWidget(nullptr, 3, QString::number(points), QString::number(multiplier), QString::number(hammers),
@@ -412,25 +434,41 @@ void MainWindow::setLayoutSaveScreen()
                                       QString::number(dynamite));
     save3Widget -> setMinimumHeight(280);
 
-    if (saveSettings.value("Save4/Points").isValid() == true)
+    points = 0.0;
+    multiplier = 1.0;
+    hammers = 0;
+    pickaxes = 0;
+    children = 0;
+    drills = 0;
+    dynamite = 0;
+
+    if (saveSettings.contains("Save4/Points") == true)
         points = saveSettings.value("Save4/Points").toDouble(nullptr);
-    if (saveSettings.value("Save4/Multi").isValid() == true)
+    if (saveSettings.contains("Save4/Multi") == true)
         multiplier = saveSettings.value("Save4/Multi").toDouble(nullptr);
-    if (saveSettings.value("Save4/Hammers").isValid() == true)
+    if (saveSettings.contains("Save4/Hammers") == true)
         hammers = saveSettings.value("Save4/Hammers").toInt(nullptr);
-    if (saveSettings.value("Save4/Pickaxes").isValid() == true)
+    if (saveSettings.contains("Save4/Pickaxes") == true)
         pickaxes = saveSettings.value("Save4/Pickaxes").toInt(nullptr);
-    if (saveSettings.value("Save4/Children").isValid() == true)
+    if (saveSettings.contains("Save4/Children") == true)
         children = saveSettings.value("Save4/Children").toInt(nullptr);
-    if (saveSettings.value("Save4/Drills").isValid() == true)
+    if (saveSettings.contains("Save4/Drills") == true)
         drills = saveSettings.value("Save4/Drills").toInt(nullptr);
-    if (saveSettings.value("Save4/Dynamite").isValid() == true)
+    if (saveSettings.contains("Save4/Dynamite") == true)
         dynamite = saveSettings.value("Save4/Dynamite").toInt(nullptr);
 
     save4Widget = new ClickableWidget(nullptr, 4, QString::number(points), QString::number(multiplier), QString::number(hammers),
                                       QString::number(pickaxes), QString::number(children), QString::number(drills),
                                       QString::number(dynamite));
     save4Widget -> setMinimumHeight(280);
+
+    points = 0.0;
+    multiplier = 1.0;
+    hammers = 0;
+    pickaxes = 0;
+    children = 0;
+    drills = 0;
+    dynamite = 0;
 
     //LAYOUT
     saveMainBodyLayout = new QHBoxLayout();
@@ -496,18 +534,47 @@ void MainWindow::transitionToGameScreen(int saveNr)
     case 1:
         cSave = 1;
         loadProgress(1);
+        saveSettings.setValue("CB", 1);
         break;
     case 2:
         cSave = 2;
         loadProgress(2);
+        saveSettings.setValue("CB", 2);
         break;
     case 3:
         cSave = 3;
         loadProgress(3);
+        saveSettings.setValue("CB", 3);
         break;
     case 4:
         cSave = 4;
         loadProgress(4);
+        saveSettings.setValue("CB", 4);
+        break;
+    }
+    setLayoutGameScreen(cSave);
+    setStyleGameScreen();
+}
+void MainWindow::userWantsToContinue(int nr)
+{
+    removeLayoutTitleScreen();
+    switch (nr)
+    {
+    case 1:
+        loadProgress(1);
+        cSave = 1;
+        break;
+    case 2:
+        loadProgress(2);
+        cSave = 2;
+        break;
+    case 3:
+        loadProgress(3);
+        cSave = 3;
+        break;
+    case 4:
+        loadProgress(4);
+        cSave = 4;
         break;
     }
     setLayoutGameScreen(cSave);
@@ -664,11 +731,11 @@ void MainWindow::setLayoutGameScreen(int nr)
 
     shopWidget = new QWidget();
 
-    shopHammerWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/hammer.png", 1000);
-    shopPickaxeWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/pickaxe.png", 5000);
-    shopChildWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/child.png", 20000);
-    shopDrillWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/drill.png", 100000);
-    shopDynamiteWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/dynamite.png", 1000000);
+    shopHammerWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/hammer.png", 1000.0 * hammers * hammers + 1000.0);
+    shopPickaxeWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/pickaxe.png", 5000.0 * pickaxes * pickaxes + 5000.0);
+    shopChildWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/child.png", 20000.0 * children * children + 20000.0);
+    shopDrillWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/drill.png", 100000.0 * drills * drills + 100000.0);
+    shopDynamiteWidget = new ShopItem(shopWidget, ":/images/resources/ShopItems/dynamite.png", 1000000.0 * dynamite * dynamite + 1000000.0);
 
     shop1Spacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
     shop2Spacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -1042,73 +1109,72 @@ void MainWindow::saveProgress(int nr)
          break;
      }
 }
-
 void MainWindow::loadProgress(int nr)
 {
     switch (nr)
     {
     case 1:
-        if (saveSettings.value("Save1/Points").isValid() == true)
+        if (saveSettings.contains("Save1/Points") == true)
             points = saveSettings.value("Save1/Points").toDouble(nullptr);
-        if (saveSettings.value("Save1/Multi").isValid() == true)
+        if (saveSettings.contains("Save1/Multi") == true)
             multiplier = saveSettings.value("Save1/Multi").toDouble(nullptr);
-        if (saveSettings.value("Save1/Hammers").isValid() == true)
+        if (saveSettings.contains("Save1/Hammers") == true)
             hammers = saveSettings.value("Save1/Hammers").toInt(nullptr);
-        if (saveSettings.value("Save1/Pickaxes").isValid() == true)
+        if (saveSettings.contains("Save1/Pickaxes") == true)
             pickaxes = saveSettings.value("Save1/Pickaxes").toInt(nullptr);
-        if (saveSettings.value("Save1/Children").isValid() == true)
+        if (saveSettings.contains("Save1/Children") == true)
             children = saveSettings.value("Save1/Children").toInt(nullptr);
-        if (saveSettings.value("Save1/Drills").isValid() == true)
+        if (saveSettings.contains("Save1/Drills") == true)
             drills = saveSettings.value("Save1/Drills").toInt(nullptr);
-        if (saveSettings.value("Save1/Dynamite").isValid() == true)
+        if (saveSettings.contains("Save1/Dynamite") == true)
             dynamite = saveSettings.value("Save1/Dynamite").toInt(nullptr);
         break;
     case 2:
-        if (saveSettings.value("Save2/Points").isValid() == true)
+        if (saveSettings.contains("Save2/Points") == true)
             points = saveSettings.value("Save2/Points").toDouble(nullptr);
-        if (saveSettings.value("Save2/Multi").isValid() == true)
+        if (saveSettings.contains("Save2/Multi") == true)
             multiplier = saveSettings.value("Save2/Multi").toDouble(nullptr);
-        if (saveSettings.value("Save2/Hammers").isValid() == true)
+        if (saveSettings.contains("Save2/Hammers") == true)
             hammers = saveSettings.value("Save2/Hammers").toInt(nullptr);
-        if (saveSettings.value("Save2/Pickaxes").isValid() == true)
+        if (saveSettings.contains("Save2/Pickaxes") == true)
             pickaxes = saveSettings.value("Save2/Pickaxes").toInt(nullptr);
-        if (saveSettings.value("Save2/Children").isValid() == true)
+        if (saveSettings.contains("Save2/Children") == true)
             children = saveSettings.value("Save2/Children").toInt(nullptr);
-        if (saveSettings.value("Save2/Drills").isValid() == true)
+        if (saveSettings.contains("Save2/Drills") == true)
             drills = saveSettings.value("Save2/Drills").toInt(nullptr);
-        if (saveSettings.value("Save2/Dynamite").isValid() == true)
+        if (saveSettings.contains("Save2/Dynamite") == true)
             dynamite = saveSettings.value("Save2/Dynamite").toInt(nullptr);
         break;
     case 3:
-        if (saveSettings.value("Save3/Points").isValid() == true)
+        if (saveSettings.contains("Save3/Points") == true)
             points = saveSettings.value("Save3/Points").toDouble(nullptr);
-        if (saveSettings.value("Save3/Multi").isValid() == true)
+        if (saveSettings.contains("Save3/Multi") == true)
             multiplier = saveSettings.value("Save3/Multi").toDouble(nullptr);
-        if (saveSettings.value("Save3/Hammers").isValid() == true)
+        if (saveSettings.contains("Save3/Hammers") == true)
             hammers = saveSettings.value("Save3/Hammers").toInt(nullptr);
-        if (saveSettings.value("Save3/Pickaxes").isValid() == true)
+        if (saveSettings.contains("Save3/Pickaxes") == true)
             pickaxes = saveSettings.value("Save3/Pickaxes").toInt(nullptr);
-        if (saveSettings.value("Save3/Children").isValid() == true)
+        if (saveSettings.contains("Save3/Children") == true)
             children = saveSettings.value("Save3/Children").toInt(nullptr);
-        if (saveSettings.value("Save3/Drills").isValid() == true)
+        if (saveSettings.contains("Save3/Drills") == true)
             drills = saveSettings.value("Save3/Drills").toInt(nullptr);
-        if (saveSettings.value("Save3/Dynamite").isValid() == true)
+        if (saveSettings.contains("Save3/Dynamite") == true)
             dynamite = saveSettings.value("Save3/Dynamite").toInt(nullptr);
         break;
     case 4:
-        if (saveSettings.value("Save4/Points").isValid() == true)
+        if (saveSettings.contains("Save4/Points") == true)
             points = saveSettings.value("Save4/Points").toDouble(nullptr);
-        if (saveSettings.value("Save4/Multi").isValid() == true)
+        if (saveSettings.contains("Save4/Multi") == true)
             multiplier = saveSettings.value("Save4/Multi").toDouble(nullptr);
-        if (saveSettings.value("Save4/Hammers").isValid() == true)
+        if (saveSettings.contains("Save4/Hammers") == true)
             hammers = saveSettings.value("Save4/Hammers").toInt(nullptr);
-        if (saveSettings.value("Save4/Pickaxes").isValid() == true)
+        if (saveSettings.contains("Save4/Pickaxes") == true)
             pickaxes = saveSettings.value("Save4/Pickaxes").toInt(nullptr);
-        if (saveSettings.value("Save4/Children").isValid() == true)
+        if (saveSettings.contains("Save4/Children") == true)
             children = saveSettings.value("Save4/Children").toInt(nullptr);
-        if (saveSettings.value("Save4/Drills").isValid() == true)
+        if (saveSettings.contains("Save4/Drills") == true)
             drills = saveSettings.value("Save4/Drills").toInt(nullptr);
-        if (saveSettings.value("Save4/Dynamite").isValid() == true)
+        if (saveSettings.contains("Save4/Dynamite") == true)
             dynamite = saveSettings.value("Save4/Dynamite").toInt(nullptr);
         break;
     default:
