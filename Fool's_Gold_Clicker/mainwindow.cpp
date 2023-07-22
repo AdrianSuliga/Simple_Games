@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     dynamite = 0;
     oreType = -1;
     cSave = -1;
-    saveSettings.clear();
+
     setLayoutTitleScreen();
     setStyleTitleScreen();
 
@@ -190,6 +190,7 @@ void MainWindow::setLayoutTitleScreen()
     //functionalities
     connect(newgameButtonTS, &QPushButton::clicked, this, &MainWindow::transitionToSaveScreen);
     connect(tutorialButtonTS, &QPushButton::clicked, this, &MainWindow::showTutorialSection);
+    connect(aboutButtonTS, &QPushButton::clicked, this, &MainWindow::showAboutSection);
     connect(quitButtonTS, &QPushButton::clicked, this, &MainWindow::close);
 
     connect(TB, &TitleBarWidget::mini, this, &MainWindow::showMinimized);
@@ -286,6 +287,12 @@ void MainWindow::showTutorialSection()
     tutorialScreen = new Tutorial();
     tutorialScreen -> setModal(true);
     tutorialScreen -> show();
+}
+void MainWindow::showAboutSection()
+{
+    aboutScreen = new About();
+    aboutScreen -> setModal(true);
+    aboutScreen -> show();
 }
 void MainWindow::showMaximisedWindow()
 {
@@ -912,7 +919,7 @@ void MainWindow::userClickedOre()
     case 0:
     case 1:
     case 2:
-        points += multiplier * 10000000.0;
+        points += multiplier * 100.0;
         break;
     case 3:
     case 4:
