@@ -15,6 +15,7 @@
 #include <clickablelabel.h>
 #include <tutorial.h>
 #include <goodending.h>
+#include <badending.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -61,6 +62,7 @@ private slots:
     void badEnding();
     void saveProgress(int nr);
     void loadProgress(int nr);
+    void removeProgress(int nr);
 
 private:
     Ui::MainWindow *ui;
@@ -70,6 +72,7 @@ private:
 
     QVBoxLayout *mainLayout;
     GoodEnding *gE;
+    BadEnding *bE;
 
     //TITLE BAR
     TitleBarWidget *TB;
