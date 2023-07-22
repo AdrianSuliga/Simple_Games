@@ -14,6 +14,7 @@
 #include <titlebarwidget.h>
 #include <clickablelabel.h>
 #include <tutorial.h>
+#include <about.h>
 #include <goodending.h>
 #include <badending.h>
 
@@ -38,6 +39,7 @@ private slots:
     //TITLE SCREEN FUNCIONALITIES FUNCTIONS
     void showMaximisedWindow();
     void showTutorialSection();
+    void showAboutSection();
     void transitionToSaveScreen();
     void userWantsToContinue(int nr);
     //FUNCTIONS CREATING SAVE SCREEN
@@ -85,6 +87,7 @@ private:
     QSizeGrip *brGripTS, *blGripTS;
     QWidget *bottomGripTS, *titleWidgetTS;
     Tutorial *tutorialScreen;
+    About *aboutScreen;
     //SAVE SCREEN
     QLabel *titleLabelSS, *lineTitleSS, *infoTitleSS;
     ClickableWidget *save1Widget, *save2Widget, *save3Widget, *save4Widget;
