@@ -26,10 +26,9 @@ MainWindow::MainWindow(QWidget *parent)
     children = 0;
     drills = 0;
     dynamite = 0;
-
     oreType = -1;
     cSave = -1;
-
+    saveSettings.clear();
     setLayoutTitleScreen();
     setStyleTitleScreen();
 
@@ -152,11 +151,41 @@ void MainWindow::setLayoutTitleScreen()
     mainLayoutTS -> insertLayout(7, quitLayoutTS, 2);
     mainLayoutTS -> insertStretch(8, 1);
 
-    mainLayout = new QVBoxLayout(ui->centralwidget);
-    mainLayout -> insertWidget(0, TB);
-    mainLayout -> insertLayout(1, mainLayoutTS);
-    mainLayout -> insertWidget(2, bottomGripTS);
-    mainLayout -> setContentsMargins(0, 0, 0, 0);
+    QString s;
+    switch (cSave)
+    {
+    case -1:
+        break;
+    case 1:
+        s = "Save1/GameEnded";
+        break;
+    case 2:
+        s = "Save2/GameEnded";
+        break;
+    case 3:
+        s = "Save3/GameEnded";
+        break;
+    case 4:
+        s = "Save4/GameEnded";
+        break;
+    default:
+        QMessageBox::critical(this, "ERROR", "Something went wrong");
+        return;
+    }
+
+    if (saveSettings.contains(s) == false || cSave == -1)
+    {
+        mainLayout = new QVBoxLayout(ui->centralwidget);
+        mainLayout -> insertWidget(0, TB);
+        mainLayout -> insertLayout(1, mainLayoutTS);
+        mainLayout -> insertWidget(2, bottomGripTS);
+        mainLayout -> setContentsMargins(0, 0, 0, 0);
+    }
+    else
+    {
+        mainLayout -> insertLayout(1, mainLayoutTS);
+        mainLayout -> setContentsMargins(0, 0, 0, 0);
+    }
 
     //functionalities
     connect(newgameButtonTS, &QPushButton::clicked, this, &MainWindow::transitionToSaveScreen);
@@ -814,7 +843,45 @@ void MainWindow::setStyleGameScreen()
 }
 void MainWindow::removeLayoutGameScreen()
 {
+    delete scoreLabel;
+    delete multiplierLabel;
+    delete oreLabel;
+    delete miningLayout;
 
+    delete shopLabel;
+    delete shopHammerWidget;
+    delete shopPickaxeWidget;
+    delete shopChildWidget;
+    delete shopDrillWidget;
+    delete shopDynamiteWidget;
+    delete column1Layout;
+    delete column2Layout;
+    delete shopColumnsLayout;
+    delete shopLayout;
+    delete shopWidget;
+
+    delete inventoryLabel;
+    delete numPick;
+    delete numHamm;
+    delete numChild;
+    delete numDrill;
+    delete numDyn;
+    delete pickIcon;
+    delete hammIcon;
+    delete childIcon;
+    delete drillIcon;
+    delete dynIcon;
+
+    delete ownedPickaxesLayout;
+    delete ownedHammersLayout;
+    delete ownedChildrenLayout;
+    delete ownedDrillsLayout;
+    delete ownedDynamiteLayout;
+    delete invBodyLayout;
+    delete inventoryLayout;
+
+    delete inventoryWidget;
+    delete gameMainBodyLayout;
 }
 
 short MainWindow::drawOreType()
@@ -890,10 +957,29 @@ void MainWindow::userClickedOre()
         QMessageBox::critical(this, "ALERT", "UNABLE TO LOAD ORE ICON!");
         return;
     }
+    QString s;
+    switch (cSave)
+    {
+    case 1:
+        s = "Save1/GameEnded";
+        break;
+    case 2:
+        s = "Save2/GameEnded";
+        break;
+    case 3:
+        s = "Save3/GameEnded";
+        break;
+    case 4:
+        s = "Save4/GameEnded";
+        break;
+    default:
+        QMessageBox::critical(this, "ERROR", "Something went wrong");
+        return;
+    }
 
-    if (points > 100000000 && children == 0)
+    if (points > 100000000 && children == 0 && saveSettings.contains(s) == false)
         goodEnding();
-    else if (points > 100000000 && children != 0)
+    else if (points > 100000000 && children != 0 && saveSettings.contains(s) == false)
         badEnding();
 }
 
@@ -995,17 +1081,65 @@ void MainWindow::userWantsToBuyDynamite()
 
 void MainWindow::goodEnding()
 {
+    switch (cSave)
+    {
+    case 1:
+        saveSettings.beginGroup("Save1");
+        break;
+    case 2:
+        saveSettings.beginGroup("Save2");
+        break;
+    case 3:
+        saveSettings.beginGroup("Save3");
+        break;
+    case 4:
+        saveSettings.beginGroup("Save4");
+        break;
+    default:
+        QMessageBox::critical(this, "ERROR", "Something went wrong!");
+        return;
+        break;
+    }
+    saveSettings.setValue("GameEnded", true);
+    saveSettings.endGroup();
     gE = new GoodEnding();
-    gE->setModal(true);
-    gE->show();
+    gE -> setModal(true);
+    gE -> show();
     connect(gE, &GoodEnding::clickedButton, this, [this]() { saveProgress(cSave); });
     connect(gE, &GoodEnding::clickedButton, this, &MainWindow::removeLayoutGameScreen);
-    //connect(gE, &GoodEnding::clickedButton, this, &MainWindow::setLayoutTitleScreen);
-    //connect(gE, &GoodEnding::clickedButton, this, &MainWindow::setStyleTitleScreen);
+    connect(gE, &GoodEnding::clickedButton, this, &MainWindow::setLayoutTitleScreen);
+    connect(gE, &GoodEnding::clickedButton, this, &MainWindow::setStyleTitleScreen);
 }
 void MainWindow::badEnding()
 {
-
+    switch (cSave)
+    {
+    case 1:
+        saveSettings.beginGroup("Save1");
+        break;
+    case 2:
+        saveSettings.beginGroup("Save2");
+        break;
+    case 3:
+        saveSettings.beginGroup("Save3");
+        break;
+    case 4:
+        saveSettings.beginGroup("Save4");
+        break;
+    default:
+        QMessageBox::critical(this, "ERROR", "Something went wrong!");
+        return;
+        break;
+    }
+    saveSettings.setValue("GameEnded", true);
+    saveSettings.endGroup();
+    bE = new BadEnding();
+    bE -> setModal(true);
+    bE -> show();
+    connect(bE, &BadEnding::buttonClicked, this, [this]() { removeProgress(cSave); });
+    connect(bE, &BadEnding::buttonClicked, this, &MainWindow::removeLayoutGameScreen);
+    connect(bE, &BadEnding::buttonClicked, this, &MainWindow::setLayoutTitleScreen);
+    connect(bE, &BadEnding::buttonClicked, this, &MainWindow::setStyleTitleScreen);
 }
 
 void MainWindow::saveProgress(int nr)
@@ -1134,4 +1268,65 @@ void MainWindow::loadProgress(int nr)
         QMessageBox::critical(this, "ERROR", "Something went wrong!");
         return;
     }
+}
+void MainWindow::removeProgress(int nr)
+{
+    switch (nr)
+    {
+    case 1:
+       saveSettings.beginGroup("Save1");
+       saveSettings.setValue("Points", 0.0);
+       saveSettings.setValue("Multi", 1.0);
+       saveSettings.setValue("Hammers", 0);
+       saveSettings.setValue("Pickaxes", 0);
+       saveSettings.setValue("Children", 0);
+       saveSettings.setValue("Drills", 0);
+       saveSettings.setValue("Dynamite", 0);
+       saveSettings.endGroup();
+       break;
+    case 2:
+       saveSettings.beginGroup("Save2");
+       saveSettings.setValue("Points", 0.0);
+       saveSettings.setValue("Multi", 1.0);
+       saveSettings.setValue("Hammers", 0);
+       saveSettings.setValue("Pickaxes", 0);
+       saveSettings.setValue("Children", 0);
+       saveSettings.setValue("Drills", 0);
+       saveSettings.setValue("Dynamite", 0);
+       saveSettings.endGroup();
+       break;
+    case 3:
+       saveSettings.beginGroup("Save3");
+       saveSettings.setValue("Points", 0.0);
+       saveSettings.setValue("Multi", 1.0);
+       saveSettings.setValue("Hammers", 0);
+       saveSettings.setValue("Pickaxes", 0);
+       saveSettings.setValue("Children", 0);
+       saveSettings.setValue("Drills", 0);
+       saveSettings.setValue("Dynamite", 0);
+       saveSettings.endGroup();
+       break;
+    case 4:
+       saveSettings.beginGroup("Save4");
+       saveSettings.setValue("Points", 0.0);
+       saveSettings.setValue("Multi", 1.0);
+       saveSettings.setValue("Hammers", 0);
+       saveSettings.setValue("Pickaxes", 0);
+       saveSettings.setValue("Children", 0);
+       saveSettings.setValue("Drills", 0);
+       saveSettings.setValue("Dynamite", 0);
+       saveSettings.endGroup();
+       break;
+    default:
+        QMessageBox::critical(this, "ERROR", "Something went wrong!");
+        return;
+        break;
+    }
+    points = 0.0;
+    multiplier = 1.0;
+    hammers = 0;
+    pickaxes = 0;
+    children = 0;
+    drills = 0;
+    dynamite = 0;
 }
