@@ -28,7 +28,6 @@ MainWindow::MainWindow(QWidget *parent)
     dynamite = 0;
     oreType = -1;
     cSave = -1;
-
     setLayoutTitleScreen();
     setStyleTitleScreen();
 
