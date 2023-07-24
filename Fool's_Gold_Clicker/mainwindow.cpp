@@ -7,6 +7,7 @@
 #include <QSizeGrip>
 #include <QMessageBox>
 #include <QDebug>
+#include <QTime>
 #include <cstdlib>
 
 
@@ -1002,11 +1003,10 @@ void MainWindow::userWantsToBuyHammer()
         multiplierLabel -> setText("x " + QString::number(multiplier));
         price = 1000.0 * hammers * hammers + 1000.0;
         shopHammerWidget -> priceLabel -> setText(QString::number(price, 'g', 10) + " $");
+        youBoughtItAnimation(numHamm);
     }
     else if (points < price)
-    {
-        return;
-    }
+        cannotBuyAnimation();
 }
 void MainWindow::userWantsToBuyPickaxe()
 {
@@ -1021,11 +1021,10 @@ void MainWindow::userWantsToBuyPickaxe()
         multiplierLabel -> setText("x " + QString::number(multiplier));
         price = 5000.0 * pickaxes * pickaxes + 5000.0;
         shopPickaxeWidget -> priceLabel -> setText(QString::number(price, 'g', 10) + " $");
+        youBoughtItAnimation(numPick);
     }
     else if (points < price)
-    {
-        return;
-    }
+        cannotBuyAnimation();
 }
 void MainWindow::userWantsToBuyChild()
 {
@@ -1040,11 +1039,10 @@ void MainWindow::userWantsToBuyChild()
         multiplierLabel -> setText("x " + QString::number(multiplier));
         price = 20000.0 * children * children + 20000.0;
         shopChildWidget -> priceLabel -> setText(QString::number(price, 'g', 10) + " $");
+        youBoughtItAnimation(numChild);
     }
     else if (points < price)
-    {
-        return;
-    }
+        cannotBuyAnimation();
 }
 void MainWindow::userWantsToBuyDrill()
 {
@@ -1059,11 +1057,10 @@ void MainWindow::userWantsToBuyDrill()
         multiplierLabel -> setText("x " + QString::number(multiplier));
         price = 100000.0 * drills * drills + 100000.0;
         shopDrillWidget -> priceLabel -> setText(QString::number(price, 'g', 10) + " $");
+        youBoughtItAnimation(numDrill);
     }
     else if (points < price)
-    {
-        return;
-    }
+        cannotBuyAnimation();
 }
 void MainWindow::userWantsToBuyDynamite()
 {
@@ -1078,11 +1075,57 @@ void MainWindow::userWantsToBuyDynamite()
         multiplierLabel -> setText("x " + QString::number(multiplier));
         price = 1000000.0 * dynamite * dynamite + 1000000.0;
         shopDynamiteWidget -> priceLabel -> setText(QString::number(price, 'g', 10) + " $");
+        youBoughtItAnimation(numDyn);
     }
     else if (points < price)
-    {
-        return;
-    }
+        cannotBuyAnimation();
+}
+
+void MainWindow::cannotBuyAnimation()
+{
+    QString fStyle = "QLabel {"
+                     "color: red;"
+                     "border-radius: 20px;"
+                     "border-image: url(:/images/resources/Other/TitleScreenBackground.png) 0 0 0 0 stretch stretch;"
+                     "font-size: 40px;"
+                     "}";
+
+    scoreLabel -> setStyleSheet(fStyle);
+    delay(500);
+    QString sStyle = "QLabel {"
+                     "color: rgb(254,220,105);"
+                     "border-radius: 20px;"
+                     "border-image: url(:/images/resources/Other/TitleScreenBackground.png) 0 0 0 0 stretch stretch;"
+                     "font-size: 40px;"
+                     "}";
+
+    scoreLabel -> setStyleSheet(sStyle);
+}
+void MainWindow::youBoughtItAnimation(QLabel *label)
+{
+    label->setStyleSheet("color: rgb(0,255,0); font-size: 24px;");
+    multiplierLabel->setStyleSheet("QLabel {"
+                                   "color: rgb(0,255,0);"
+                                   "border-radius: 10px;"
+                                   "font-size: 26px;"
+                                   "background-color: rgb(40,60,69);"
+                                   "border-style: solid;"
+                                   "border-color: rgb(11,29,41);"
+                                   "border-width: 5px;"
+                                   "}");
+
+    delay(500);
+
+    label->setStyleSheet("color: rgb(254, 220, 105); font-size: 24px;");
+    multiplierLabel->setStyleSheet("QLabel {"
+                                   "color: rgb(254, 220, 105);"
+                                   "border-radius: 10px;"
+                                   "font-size: 26px;"
+                                   "background-color: rgb(40,60,69);"
+                                   "border-style: solid;"
+                                   "border-color: rgb(11,29,41);"
+                                   "border-width: 5px;"
+                                   "}");
 }
 
 void MainWindow::goodEnding()
@@ -1335,4 +1378,11 @@ void MainWindow::removeProgress(int nr)
     children = 0;
     drills = 0;
     dynamite = 0;
+}
+
+void MainWindow::delay(int msec)
+{
+    QTime dieTime = QTime::currentTime().addMSecs(msec);
+    while (QTime::currentTime() < dieTime)
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
