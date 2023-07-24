@@ -66,6 +66,10 @@ private slots:
     void loadProgress(int nr);
     void removeProgress(int nr);
 
+    void delay(int msec);
+    void cannotBuyAnimation();
+    void youBoughtItAnimation(QLabel *label);
+
 private:
     Ui::MainWindow *ui;
     //GAME VARIABLES
